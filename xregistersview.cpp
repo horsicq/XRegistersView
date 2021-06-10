@@ -40,6 +40,9 @@ void XRegistersView::setMode(XRegistersView::MODE mode)
 
     if(mode==MODE_X86_32)
     {
+        qint32 nLeft=0;
+        qint32 nTop=0;
+
         qint32 nTitleWidth=g_nCharWidth*3;
         qint32 nValueWidth=g_nCharWidth*8;
         qint32 nCommentWidth=nValueWidth;
@@ -54,21 +57,28 @@ void XRegistersView::setMode(XRegistersView::MODE mode)
         listGeneralRegs.append("ESI");
         listGeneralRegs.append("EDI");
 
-        addRegsList(&listGeneralRegs,0,0,nTitleWidth,nValueWidth,nCommentWidth,XBinary::MODE_32);
+        addRegsList(&listGeneralRegs,nLeft,nTop,nTitleWidth,nValueWidth,nCommentWidth,XBinary::MODE_32);
 
-//        addRegion("EIP",
-//                  nTitleWidth,
-//                  nValueWidth,
-//                  nCommentWidth,
-//                  XBinary::MODE_32);
-//        nTitleWidth=XAbstractTableView::getCharWidth(this)*5;
-//        addRegion("EFLAGS",
-//                  nTitleWidth,
-//                  nValueWidth,
-//                  nCommentWidth,
-//                  XBinary::MODE_32);
+        nTop+=listGeneralRegs.count()*g_nCharHeight;
+        nTop+=3; // TODO const
 
-//        setTotalLineCount(g_listRegions.count()-1);
+        addRegion("EIP",
+                  nLeft,
+                  nTop,
+                  nTitleWidth,
+                  nValueWidth,
+                  nCommentWidth,
+                  XBinary::MODE_32);
+
+        nTop+=g_nCharHeight;
+
+        addRegion("EFLAGS",
+                  nLeft,
+                  nTop,
+                  g_nCharWidth*6,
+                  nValueWidth,
+                  nCommentWidth,
+                  XBinary::MODE_32);
     }
 }
 
@@ -131,8 +141,6 @@ void XRegistersView::addRegsList(QList<QString> *pRegsList, qint32 nLeft, qint32
 
 void XRegistersView::paintEvent(QPaintEvent *pEvent)
 {
-    qDebug("paintEvent");
-
     QPainter *pPainter=new QPainter(this->viewport());
     pPainter->setPen(viewport()->palette().color(QPalette::WindowText));
     pPainter->setBackgroundMode(Qt::TransparentMode);
