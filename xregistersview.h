@@ -52,6 +52,7 @@ public:
     XRegistersView(QWidget *pParent=nullptr);
     void setMode(MODE mode);
     void setData(QMap<QString, QVariant> *pMapRegisters);
+    void clear();
 
 private:
     void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XBinary::MODE mode);

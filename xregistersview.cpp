@@ -108,6 +108,13 @@ void XRegistersView::setData(QMap<QString, QVariant> *pMapRegisters)
     viewport()->update();
 }
 
+void XRegistersView::clear()
+{
+#ifdef QT_DEBUG
+    qDebug("void XRegistersView::clear()");
+#endif
+}
+
 void XRegistersView::addRegion(QString sTitle, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XBinary::MODE mode)
 {
     REGION region={};
