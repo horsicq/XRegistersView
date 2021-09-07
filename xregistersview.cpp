@@ -34,11 +34,11 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
 //    setLineDelta(0);
 }
 
-void XRegistersView::setMode(XRegistersView::MODE mode)
+void XRegistersView::setMode(XBinary::DM disasmMode)
 {
     g_listRegions.clear();
 
-    if(mode==MODE_X86_32)
+    if(disasmMode==XBinary::DM_X86_32)
     {
         qint32 nLeft=0;
         qint32 nTop=0;
@@ -69,6 +69,56 @@ void XRegistersView::setMode(XRegistersView::MODE mode)
                   nValueWidth,
                   nCommentWidth,
                   XBinary::MODE_32);
+
+        nTop+=g_nCharHeight;
+
+        addRegion("EFLAGS",
+                  nLeft,
+                  nTop,
+                  g_nCharWidth*6,
+                  nValueWidth,
+                  nCommentWidth,
+                  XBinary::MODE_32);
+    }
+    else if(disasmMode==XBinary::DM_X86_64)
+    {
+        qint32 nLeft=0;
+        qint32 nTop=0;
+
+        qint32 nTitleWidth=g_nCharWidth*3;
+        qint32 nValueWidth=g_nCharWidth*12;
+        qint32 nCommentWidth=nValueWidth;
+
+        QList<QString> listGeneralRegs;
+        listGeneralRegs.append("RAX");
+        listGeneralRegs.append("RCX");
+        listGeneralRegs.append("RDX");
+        listGeneralRegs.append("RBX");
+        listGeneralRegs.append("RBP");
+        listGeneralRegs.append("RSP");
+        listGeneralRegs.append("RSI");
+        listGeneralRegs.append("RDI");
+        listGeneralRegs.append("R8");
+        listGeneralRegs.append("R9");
+        listGeneralRegs.append("R10");
+        listGeneralRegs.append("R11");
+        listGeneralRegs.append("R12");
+        listGeneralRegs.append("R13");
+        listGeneralRegs.append("R14");
+        listGeneralRegs.append("R15");
+
+        addRegsList(&listGeneralRegs,nLeft,nTop,nTitleWidth,nValueWidth,nCommentWidth,XBinary::MODE_64);
+
+        nTop+=listGeneralRegs.count()*g_nCharHeight;
+        nTop+=3; // TODO const
+
+        addRegion("RIP",
+                  nLeft,
+                  nTop,
+                  nTitleWidth,
+                  nValueWidth,
+                  nCommentWidth,
+                  XBinary::MODE_64);
 
         nTop+=g_nCharHeight;
 
@@ -142,7 +192,7 @@ void XRegistersView::addRegsList(QList<QString> *pRegsList, qint32 nLeft, qint32
                   nTitleWidth,
                   nValueWidth,
                   nCommentWidth,
-                  XBinary::MODE_32);
+                  mode);
     }
 }
 

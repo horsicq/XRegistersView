@@ -45,12 +45,8 @@ class XRegistersView : public XShortcutstScrollArea // TODO no table !!!
     };
 
 public:
-    enum MODE
-    {
-        MODE_X86_32=0,
-    };
     XRegistersView(QWidget *pParent=nullptr);
-    void setMode(MODE mode);
+    void setMode(XBinary::DM disasmMode);
     void setData(QMap<QString, QVariant> *pMapRegisters);
     void clear();
 
