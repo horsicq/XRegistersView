@@ -28,6 +28,7 @@
 #include <QVariant>
 #include "xabstracttableview.h"
 #include "xformats.h"
+#include "xabstractdebugger.h"
 
 class XRegistersView : public XShortcutstScrollArea // TODO no table !!!
 {
@@ -41,14 +42,23 @@ class XRegistersView : public XShortcutstScrollArea // TODO no table !!!
         qint32 nTitleWidth;
         qint32 nValueWidth;
         qint32 nCommentWidth;
+        qint32 nHeight;
         XBinary::MODE mode;
     };
 
 public:
+
+    struct OPTIONS
+    {
+        XBinary::DM disasmMode;
+        XAbstractDebugger::REG_OPTIONS regOptions;
+    };
+
     XRegistersView(QWidget *pParent=nullptr);
-    void setMode(XBinary::DM disasmMode);
+    void setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OPTIONS regOptions);
     void setData(QMap<QString, QVariant> *pMapRegisters);
     void clear();
+    void adjust();
 
 private:
     void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XBinary::MODE mode);
@@ -67,6 +77,8 @@ private:
     QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
+    XBinary::DM g_disasmMode;
+    XAbstractDebugger::REG_OPTIONS g_regOptions;
 };
 
 #endif // XREGISTERSVIEW_H
