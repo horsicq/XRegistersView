@@ -165,9 +165,11 @@ void XRegistersView::adjust()
                   nValueWidth32,
                   nCommentWidth,
                   XBinary::MODE_32);
-
+        // TODO Flag bits
         nTop+=g_nCharHeight;
     }
+
+    // TODO Segments
 
     qint32 nMinWidth=0;
     qint32 nMinHeight=0;
