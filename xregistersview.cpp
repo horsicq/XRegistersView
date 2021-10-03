@@ -79,28 +79,34 @@ void XRegistersView::adjust()
     qint32 nLeft=0;
     qint32 nTop=0;
 
-    qint32 nTitleWidth=g_nCharWidth*3;
+    qint32 nValueWidthBit=g_nCharWidth*1;
     qint32 nValueWidth32=g_nCharWidth*8;
     qint32 nValueWidth64=g_nCharWidth*12;
     qint32 nCommentWidth=nValueWidth32;
 
     g_listRegions.clear();
 
+    bool bFirst=false;
+
+    nTop+=g_nCharHeight;
+
     if(g_regOptions.bGeneral)
     {
+        bFirst=true;
+
         if(g_disasmMode==XBinary::DM_X86_32)
         {
             QList<QString> listGeneralRegs;
             listGeneralRegs.append("EAX");
+            listGeneralRegs.append("EBX");
             listGeneralRegs.append("ECX");
             listGeneralRegs.append("EDX");
-            listGeneralRegs.append("EBX");
             listGeneralRegs.append("EBP");
             listGeneralRegs.append("ESP");
             listGeneralRegs.append("ESI");
             listGeneralRegs.append("EDI");
 
-            addRegsList(&listGeneralRegs,nLeft,nTop,nTitleWidth,nValueWidth32,nCommentWidth,XBinary::MODE_32);
+            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth,XBinary::MODE_32);
 
             nTop+=listGeneralRegs.count()*g_nCharHeight;
         }
@@ -108,9 +114,9 @@ void XRegistersView::adjust()
         {
             QList<QString> listGeneralRegs;
             listGeneralRegs.append("RAX");
+            listGeneralRegs.append("RBX");
             listGeneralRegs.append("RCX");
             listGeneralRegs.append("RDX");
-            listGeneralRegs.append("RBX");
             listGeneralRegs.append("RBP");
             listGeneralRegs.append("RSP");
             listGeneralRegs.append("RSI");
@@ -124,7 +130,7 @@ void XRegistersView::adjust()
             listGeneralRegs.append("R14");
             listGeneralRegs.append("R15");
 
-            addRegsList(&listGeneralRegs,nLeft,nTop,nTitleWidth,nValueWidth64,nCommentWidth,XBinary::MODE_64);
+            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth,XBinary::MODE_64);
 
             nTop+=listGeneralRegs.count()*g_nCharHeight;
         }
@@ -132,12 +138,19 @@ void XRegistersView::adjust()
 
     if(g_regOptions.bIP)
     {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
         if(g_disasmMode==XBinary::DM_X86_32)
         {
             addRegion("EIP",
                       nLeft,
                       nTop,
-                      nTitleWidth,
+                      g_nCharWidth*3,
                       nValueWidth32,
                       nCommentWidth,
                       XBinary::MODE_32);
@@ -147,7 +160,7 @@ void XRegistersView::adjust()
             addRegion("RIP",
                       nLeft,
                       nTop,
-                      nTitleWidth,
+                      g_nCharWidth*3,
                       nValueWidth64,
                       nCommentWidth,
                       XBinary::MODE_64);
@@ -158,6 +171,13 @@ void XRegistersView::adjust()
 
     if(g_regOptions.bFlags)
     {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
         addRegion("EFLAGS",
                   nLeft,
                   nTop,
@@ -165,8 +185,27 @@ void XRegistersView::adjust()
                   nValueWidth32,
                   nCommentWidth,
                   XBinary::MODE_32);
-        // TODO Flag bits
         nTop+=g_nCharHeight;
+
+        QList<QString> listRegs1;
+        listRegs1.append("ZF");
+        listRegs1.append("OF");
+        listRegs1.append("CF");
+        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,XBinary::MODE_BIT);
+
+        QList<QString> listRegs2;
+        listRegs2.append("ZF");
+        listRegs2.append("OF");
+        listRegs2.append("CF");
+        addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0,XBinary::MODE_BIT);
+
+        QList<QString> listRegs3;
+        listRegs3.append("AF");
+        listRegs3.append("DF");
+        listRegs3.append("IF");
+        addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0,XBinary::MODE_BIT);
+
+        nTop+=(3)*g_nCharHeight;
     }
 
     // TODO Segments
