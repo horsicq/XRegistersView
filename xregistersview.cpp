@@ -208,7 +208,30 @@ void XRegistersView::adjust()
         nTop+=(3)*g_nCharHeight;
     }
 
-    // TODO Segments
+    if(g_regOptions.bSegments)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<QString> listRegs1;
+        listRegs1.append("GS");
+        listRegs1.append("ES");
+        listRegs1.append("CS");
+        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,XBinary::MODE_16);
+
+        QList<QString> listRegs2;
+        listRegs2.append("FS");
+        listRegs2.append("DS");
+        listRegs2.append("SS");
+        addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0,XBinary::MODE_16);
+
+        nTop+=(3)*g_nCharHeight;
+    }
+    // TODO Debug
 
     qint32 nMinWidth=0;
     qint32 nMinHeight=0;
