@@ -238,7 +238,7 @@ void XRegistersView::adjust()
 
     int nNumberOfRegions=g_listRegions.count();
 
-    for(int i=0;i<nNumberOfRegions;i++)
+    for(qint32 i=0;i<nNumberOfRegions;i++)
     {
         nMinWidth=qMax(nMinWidth,g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth+g_listRegions.at(i).nCommentWidth);
         nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight);
