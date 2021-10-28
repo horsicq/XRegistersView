@@ -231,7 +231,35 @@ void XRegistersView::adjust()
 
         nTop+=(3)*g_nCharHeight;
     }
-    // TODO Debug
+
+    if(g_regOptions.bSegments)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<QString> listDebugRegs;
+        listDebugRegs.append("DR0");
+        listDebugRegs.append("DR1");
+        listDebugRegs.append("DR2");
+        listDebugRegs.append("DR3");
+        listDebugRegs.append("DR6");
+        listDebugRegs.append("DR7");
+
+        if(g_disasmMode==XBinary::DM_X86_32)
+        {
+            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth,XBinary::MODE_32);
+        }
+        else if(g_disasmMode==XBinary::DM_X86_64)
+        {
+            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth,XBinary::MODE_64);
+        }
+
+        nTop+=listDebugRegs.count()*g_nCharHeight;
+    }
 
     qint32 nMinWidth=0;
     qint32 nMinHeight=0;
