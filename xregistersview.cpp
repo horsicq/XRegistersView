@@ -264,7 +264,7 @@ void XRegistersView::adjust()
     qint32 nMinWidth=0;
     qint32 nMinHeight=0;
 
-    int nNumberOfRegions=g_listRegions.count();
+    qint32 nNumberOfRegions=g_listRegions.count();
 
     for(qint32 i=0;i<nNumberOfRegions;i++)
     {
