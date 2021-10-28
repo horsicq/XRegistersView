@@ -294,9 +294,9 @@ void XRegistersView::addRegion(QString sTitle, qint32 nLeft, qint32 nTop, qint32
 
 void XRegistersView::addRegsList(QList<QString> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XBinary::MODE mode)
 {
-    int nNumberOfRegs=pRegsList->count();
+    qint32 nNumberOfRegs=pRegsList->count();
 
-    for(int i=0;i<nNumberOfRegs;i++)
+    for(qint32 i=0;i<nNumberOfRegs;i++)
     {
         addRegion(pRegsList->at(i),
                   nLeft,
