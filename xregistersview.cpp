@@ -314,9 +314,9 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
     pPainter->setPen(viewport()->palette().color(QPalette::WindowText));
     pPainter->setBackgroundMode(Qt::TransparentMode);
 
-    int nNumberOfRegions=g_listRegions.count();
+    qint32 nNumberOfRegions=g_listRegions.count();
 
-    for(int i=0;i<nNumberOfRegions;i++)
+    for(qint32 i=0;i<nNumberOfRegions;i++)
     {
         pPainter->save();
         QString sTitle=g_listRegions.at(i).sTitle;
