@@ -43,7 +43,6 @@ class XRegistersView : public XShortcutstScrollArea // TODO no table !!!
         qint32 nValueWidth;
         qint32 nCommentWidth;
         qint32 nHeight;
-        XBinary::MODE mode;
     };
 
 public:
@@ -56,13 +55,13 @@ public:
 
     XRegistersView(QWidget *pParent=nullptr);
     void setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OPTIONS regOptions);
-    void setData(QMap<QString, QVariant> *pMapRegisters); // TODO mb TODO set only threadId
+    void setData(QMap<QString, XBinary::XVARIANT> *pMapRegisters); // TODO mb TODO set only threadId
     void clear();
     void adjust();
 
 private:
-    void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XBinary::MODE mode);
-    void addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XBinary::MODE mode);
+    void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
+    void addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
@@ -72,7 +71,7 @@ protected:
     virtual void registerShortcuts(bool bState) override;
 
 private:
-    QMap<QString, QVariant> g_mapRegisters;
+    QMap<QString, XBinary::XVARIANT> g_mapRegisters;
     QList<REGION> g_listRegions;
     QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
