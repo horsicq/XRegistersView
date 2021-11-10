@@ -83,6 +83,7 @@ void XRegistersView::adjust()
     qint32 nValueWidthBit=g_nCharWidth*1;
     qint32 nValueWidth32=g_nCharWidth*8;
     qint32 nValueWidth64=g_nCharWidth*12;
+    qint32 nValueWidth128=g_nCharWidth*20; // Check
     qint32 nCommentWidth=nValueWidth32;
 
     g_listRegions.clear();
@@ -261,7 +262,19 @@ void XRegistersView::adjust()
 
     if(g_regOptions.bXMM)
     {
-        // TODO
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<QString> listXmmRegs;
+        listXmmRegs.append("XMM0");
+
+        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*4,nValueWidth128,nCommentWidth);
+
+        nTop+=listXmmRegs.count()*g_nCharHeight;
     }
 
     qint32 nMinWidth=0;
