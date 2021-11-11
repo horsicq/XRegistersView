@@ -271,8 +271,23 @@ void XRegistersView::adjust()
 
         QList<QString> listXmmRegs;
         listXmmRegs.append("XMM0");
+        listXmmRegs.append("XMM1");
+        listXmmRegs.append("XMM2");
+        listXmmRegs.append("XMM3");
+        listXmmRegs.append("XMM4");
+        listXmmRegs.append("XMM5");
+        listXmmRegs.append("XMM6");
+        listXmmRegs.append("XMM7");
+        listXmmRegs.append("XMM8");
+        listXmmRegs.append("XMM9");
+        listXmmRegs.append("XMM10");
+        listXmmRegs.append("XMM11");
+        listXmmRegs.append("XMM12");
+        listXmmRegs.append("XMM13");
+        listXmmRegs.append("XMM14");
+        listXmmRegs.append("XMM15");
 
-        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*4,nValueWidth128,nCommentWidth);
+        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
 
         nTop+=listXmmRegs.count()*g_nCharHeight;
     }
