@@ -71,6 +71,7 @@ protected:
     virtual void registerShortcuts(bool bState) override;
 
 private:
+    bool g_bActive;
     QMap<QString, XBinary::XVARIANT> g_mapRegisters;
     QList<REGION> g_listRegions;
     QSet<QString> g_stChanged;

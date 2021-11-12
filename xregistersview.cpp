@@ -22,6 +22,8 @@
 
 XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent)
 {
+    g_bActive=false;
+
     setFont(XAbstractTableView::getMonoFont(10)); // TODO options
 
     g_nCharWidth=XAbstractTableView::getCharWidth(this);
@@ -39,8 +41,6 @@ void XRegistersView::setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OP
 {
     g_disasmMode=disasmMode;
     g_regOptions=regOptions;
-
-    adjust();
 }
 
 void XRegistersView::setData(QMap<QString, XBinary::XVARIANT> *pMapRegisters)
@@ -65,242 +65,284 @@ void XRegistersView::setData(QMap<QString, XBinary::XVARIANT> *pMapRegisters)
 
     g_mapRegisters=*pMapRegisters;
 
+    g_bActive=true;
+
+    adjust();
+
     viewport()->update();
 }
 
 void XRegistersView::clear()
 {
+    g_bActive=false;
 #ifdef QT_DEBUG
     qDebug("void XRegistersView::clear()");
 #endif
+
+    adjust();
+
+    viewport()->update();
 }
 
 void XRegistersView::adjust()
 {
-    qint32 nLeft=0;
-    qint32 nTop=0;
-
-    qint32 nValueWidthBit=g_nCharWidth*1;
-    qint32 nValueWidth32=g_nCharWidth*8;
-    qint32 nValueWidth64=g_nCharWidth*12;
-    qint32 nValueWidth128=g_nCharWidth*20; // Check
-    qint32 nCommentWidth=nValueWidth32;
-
     g_listRegions.clear();
-
-    bool bFirst=false;
-
-    nTop+=g_nCharHeight;
-
-    if(g_regOptions.bGeneral)
-    {
-        bFirst=true;
-
-        if(g_disasmMode==XBinary::DM_X86_32)
-        {
-            QList<QString> listGeneralRegs;
-            listGeneralRegs.append("EAX");
-            listGeneralRegs.append("EBX");
-            listGeneralRegs.append("ECX");
-            listGeneralRegs.append("EDX");
-            listGeneralRegs.append("EBP");
-            listGeneralRegs.append("ESP");
-            listGeneralRegs.append("ESI");
-            listGeneralRegs.append("EDI");
-
-            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
-
-            nTop+=listGeneralRegs.count()*g_nCharHeight;
-        }
-        else if(g_disasmMode==XBinary::DM_X86_64)
-        {
-            QList<QString> listGeneralRegs;
-            listGeneralRegs.append("RAX");
-            listGeneralRegs.append("RBX");
-            listGeneralRegs.append("RCX");
-            listGeneralRegs.append("RDX");
-            listGeneralRegs.append("RBP");
-            listGeneralRegs.append("RSP");
-            listGeneralRegs.append("RSI");
-            listGeneralRegs.append("RDI");
-            listGeneralRegs.append("R8");
-            listGeneralRegs.append("R9");
-            listGeneralRegs.append("R10");
-            listGeneralRegs.append("R11");
-            listGeneralRegs.append("R12");
-            listGeneralRegs.append("R13");
-            listGeneralRegs.append("R14");
-            listGeneralRegs.append("R15");
-
-            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
-
-            nTop+=listGeneralRegs.count()*g_nCharHeight;
-        }
-    }
-
-    if(g_regOptions.bIP)
-    {
-        if(bFirst)
-        {
-            nTop+=g_nCharHeight/2; // Empty
-        }
-
-        bFirst=true;
-
-        if(g_disasmMode==XBinary::DM_X86_32)
-        {
-            addRegion("EIP",
-                      nLeft,
-                      nTop,
-                      g_nCharWidth*3,
-                      nValueWidth32,
-                      nCommentWidth);
-        }
-        else if(g_disasmMode==XBinary::DM_X86_64)
-        {
-            addRegion("RIP",
-                      nLeft,
-                      nTop,
-                      g_nCharWidth*3,
-                      nValueWidth64,
-                      nCommentWidth);
-        }
-
-        nTop+=g_nCharHeight;
-    }
-
-    if(g_regOptions.bFlags)
-    {
-        if(bFirst)
-        {
-            nTop+=g_nCharHeight/2; // Empty
-        }
-
-        bFirst=true;
-
-        addRegion("EFLAGS",
-                  nLeft,
-                  nTop,
-                  g_nCharWidth*6,
-                  nValueWidth32,
-                  nCommentWidth);
-        nTop+=g_nCharHeight;
-
-        QList<QString> listRegs1;
-        listRegs1.append("ZF");
-        listRegs1.append("OF");
-        listRegs1.append("CF");
-        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-        QList<QString> listRegs2;
-        listRegs2.append("ZF");
-        listRegs2.append("OF");
-        listRegs2.append("CF");
-        addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-        QList<QString> listRegs3;
-        listRegs3.append("AF");
-        listRegs3.append("DF");
-        listRegs3.append("IF");
-        addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-        nTop+=(3)*g_nCharHeight;
-    }
-
-    if(g_regOptions.bSegments)
-    {
-        if(bFirst)
-        {
-            nTop+=g_nCharHeight/2; // Empty
-        }
-
-        bFirst=true;
-
-        QList<QString> listRegs1;
-        listRegs1.append("GS");
-        listRegs1.append("ES");
-        listRegs1.append("CS");
-        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-        QList<QString> listRegs2;
-        listRegs2.append("FS");
-        listRegs2.append("DS");
-        listRegs2.append("SS");
-        addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-        nTop+=(3)*g_nCharHeight;
-    }
-
-    if(g_regOptions.bSegments)
-    {
-        if(bFirst)
-        {
-            nTop+=g_nCharHeight/2; // Empty
-        }
-
-        bFirst=true;
-
-        QList<QString> listDebugRegs;
-        listDebugRegs.append("DR0");
-        listDebugRegs.append("DR1");
-        listDebugRegs.append("DR2");
-        listDebugRegs.append("DR3");
-        listDebugRegs.append("DR6");
-        listDebugRegs.append("DR7");
-
-        if(g_disasmMode==XBinary::DM_X86_32)
-        {
-            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
-        }
-        else if(g_disasmMode==XBinary::DM_X86_64)
-        {
-            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
-        }
-
-        nTop+=listDebugRegs.count()*g_nCharHeight;
-    }
-
-    if(g_regOptions.bXMM)
-    {
-        if(bFirst)
-        {
-            nTop+=g_nCharHeight/2; // Empty
-        }
-
-        bFirst=true;
-
-        QList<QString> listXmmRegs;
-        listXmmRegs.append("XMM0");
-        listXmmRegs.append("XMM1");
-        listXmmRegs.append("XMM2");
-        listXmmRegs.append("XMM3");
-        listXmmRegs.append("XMM4");
-        listXmmRegs.append("XMM5");
-        listXmmRegs.append("XMM6");
-        listXmmRegs.append("XMM7");
-        listXmmRegs.append("XMM8");
-        listXmmRegs.append("XMM9");
-        listXmmRegs.append("XMM10");
-        listXmmRegs.append("XMM11");
-        listXmmRegs.append("XMM12");
-        listXmmRegs.append("XMM13");
-        listXmmRegs.append("XMM14");
-        listXmmRegs.append("XMM15");
-
-        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
-
-        nTop+=listXmmRegs.count()*g_nCharHeight;
-    }
 
     qint32 nMinWidth=0;
     qint32 nMinHeight=0;
 
-    qint32 nNumberOfRegions=g_listRegions.count();
-
-    for(qint32 i=0;i<nNumberOfRegions;i++)
+    if(g_bActive)
     {
-        nMinWidth=qMax(nMinWidth,g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth+g_listRegions.at(i).nCommentWidth);
-        nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight);
+        qint32 nLeft=5;
+        qint32 nTop=0;
+
+        qint32 nValueWidthBit=g_nCharWidth*1;
+        qint32 nValueWidth32=g_nCharWidth*8;
+        qint32 nValueWidth64=g_nCharWidth*12;
+        qint32 nValueWidth128=g_nCharWidth*20; // Check
+        qint32 nCommentWidth=nValueWidth32;
+
+        bool bFirst=false;
+
+        nTop+=g_nCharHeight;
+
+        if(g_regOptions.bGeneral)
+        {
+            bFirst=true;
+
+            if(g_disasmMode==XBinary::DM_X86_32)
+            {
+                QList<QString> listGeneralRegs;
+                listGeneralRegs.append("EAX");
+                listGeneralRegs.append("EBX");
+                listGeneralRegs.append("ECX");
+                listGeneralRegs.append("EDX");
+                listGeneralRegs.append("EBP");
+                listGeneralRegs.append("ESP");
+                listGeneralRegs.append("ESI");
+                listGeneralRegs.append("EDI");
+
+                addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
+
+                nTop+=listGeneralRegs.count()*g_nCharHeight;
+            }
+            else if(g_disasmMode==XBinary::DM_X86_64)
+            {
+                QList<QString> listGeneralRegs;
+                listGeneralRegs.append("RAX");
+                listGeneralRegs.append("RBX");
+                listGeneralRegs.append("RCX");
+                listGeneralRegs.append("RDX");
+                listGeneralRegs.append("RBP");
+                listGeneralRegs.append("RSP");
+                listGeneralRegs.append("RSI");
+                listGeneralRegs.append("RDI");
+                listGeneralRegs.append("R8");
+                listGeneralRegs.append("R9");
+                listGeneralRegs.append("R10");
+                listGeneralRegs.append("R11");
+                listGeneralRegs.append("R12");
+                listGeneralRegs.append("R13");
+                listGeneralRegs.append("R14");
+                listGeneralRegs.append("R15");
+
+                addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
+
+                nTop+=listGeneralRegs.count()*g_nCharHeight;
+            }
+        }
+
+        if(g_regOptions.bIP)
+        {
+            if(bFirst)
+            {
+                nTop+=g_nCharHeight/2; // Empty
+            }
+
+            bFirst=true;
+
+            if(g_disasmMode==XBinary::DM_X86_32)
+            {
+                addRegion("EIP",
+                          nLeft,
+                          nTop,
+                          g_nCharWidth*3,
+                          nValueWidth32,
+                          nCommentWidth);
+            }
+            else if(g_disasmMode==XBinary::DM_X86_64)
+            {
+                addRegion("RIP",
+                          nLeft,
+                          nTop,
+                          g_nCharWidth*3,
+                          nValueWidth64,
+                          nCommentWidth);
+            }
+
+            nTop+=g_nCharHeight;
+        }
+
+        if(g_regOptions.bFlags)
+        {
+            if(bFirst)
+            {
+                nTop+=g_nCharHeight/2; // Empty
+            }
+
+            bFirst=true;
+
+            addRegion("EFLAGS",
+                      nLeft,
+                      nTop,
+                      g_nCharWidth*6,
+                      nValueWidth32,
+                      nCommentWidth);
+            nTop+=g_nCharHeight;
+
+            QList<QString> listRegs1;
+            listRegs1.append("ZF");
+            listRegs1.append("OF");
+            listRegs1.append("CF");
+            addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+            QList<QString> listRegs2;
+            listRegs2.append("ZF");
+            listRegs2.append("OF");
+            listRegs2.append("CF");
+            addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+            QList<QString> listRegs3;
+            listRegs3.append("AF");
+            listRegs3.append("DF");
+            listRegs3.append("IF");
+            addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+            nTop+=(3)*g_nCharHeight;
+        }
+
+        if(g_regOptions.bSegments)
+        {
+            if(bFirst)
+            {
+                nTop+=g_nCharHeight/2; // Empty
+            }
+
+            bFirst=true;
+
+            QList<QString> listRegs1;
+            listRegs1.append("GS");
+            listRegs1.append("ES");
+            listRegs1.append("CS");
+            addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+            QList<QString> listRegs2;
+            listRegs2.append("FS");
+            listRegs2.append("DS");
+            listRegs2.append("SS");
+            addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+            nTop+=(3)*g_nCharHeight;
+        }
+
+        if(g_regOptions.bFloat)
+        {
+            if(bFirst)
+            {
+                nTop+=g_nCharHeight/2; // Empty
+            }
+
+            bFirst=true;
+
+            QList<QString> listXmmFloat;
+            listXmmFloat.append("ST0");
+            listXmmFloat.append("ST1");
+            listXmmFloat.append("ST2");
+            listXmmFloat.append("ST3");
+            listXmmFloat.append("ST4");
+            listXmmFloat.append("ST5");
+            listXmmFloat.append("ST6");
+            listXmmFloat.append("ST7");
+
+            addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth);
+
+            nTop+=listXmmFloat.count()*g_nCharHeight;
+
+            // TODO tagWord
+            // TODO StatusWord
+            // ControlWord
+        }
+
+        if(g_regOptions.bSegments)
+        {
+            if(bFirst)
+            {
+                nTop+=g_nCharHeight/2; // Empty
+            }
+
+            bFirst=true;
+
+            QList<QString> listDebugRegs;
+            listDebugRegs.append("DR0");
+            listDebugRegs.append("DR1");
+            listDebugRegs.append("DR2");
+            listDebugRegs.append("DR3");
+            listDebugRegs.append("DR6");
+            listDebugRegs.append("DR7");
+
+            if(g_disasmMode==XBinary::DM_X86_32)
+            {
+                addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
+            }
+            else if(g_disasmMode==XBinary::DM_X86_64)
+            {
+                addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
+            }
+
+            nTop+=listDebugRegs.count()*g_nCharHeight;
+        }
+
+        if(g_regOptions.bXMM)
+        {
+            if(bFirst)
+            {
+                nTop+=g_nCharHeight/2; // Empty
+            }
+
+            bFirst=true;
+
+            QList<QString> listXmmRegs;
+            listXmmRegs.append("XMM0");
+            listXmmRegs.append("XMM1");
+            listXmmRegs.append("XMM2");
+            listXmmRegs.append("XMM3");
+            listXmmRegs.append("XMM4");
+            listXmmRegs.append("XMM5");
+            listXmmRegs.append("XMM6");
+            listXmmRegs.append("XMM7");
+            listXmmRegs.append("XMM8");
+            listXmmRegs.append("XMM9");
+            listXmmRegs.append("XMM10");
+            listXmmRegs.append("XMM11");
+            listXmmRegs.append("XMM12");
+            listXmmRegs.append("XMM13");
+            listXmmRegs.append("XMM14");
+            listXmmRegs.append("XMM15");
+
+            addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
+
+            nTop+=listXmmRegs.count()*g_nCharHeight;
+
+            // TODO MxCsr
+        }
+
+        qint32 nNumberOfRegions=g_listRegions.count();
+
+        for(qint32 i=0;i<nNumberOfRegions;i++)
+        {
+            nMinWidth=qMax(nMinWidth,g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth+g_listRegions.at(i).nCommentWidth);
+            nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight);
+        }
     }
 
     setMinimumWidth(nMinWidth);
