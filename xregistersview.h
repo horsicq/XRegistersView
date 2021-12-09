@@ -21,11 +21,11 @@
 #ifndef XREGISTERSVIEW_H
 #define XREGISTERSVIEW_H
 
-#include <QObject>
-#include <QWidget>
 #include <QMap>
+#include <QObject>
 #include <QRect>
 #include <QVariant>
+#include <QWidget>
 #include "xabstracttableview.h"
 #include "xformats.h"
 #include "xabstractdebugger.h"
