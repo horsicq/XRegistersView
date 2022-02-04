@@ -43,7 +43,7 @@ void XRegistersView::setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OP
     g_regOptions=regOptions;
 }
 
-void XRegistersView::setData(QMap<QString, XBinary::XVARIANT> *pMapRegisters)
+void XRegistersView::setData(QMap<QString,XBinary::XVARIANT> *pMapRegisters)
 {
     QMapIterator<QString,XBinary::XVARIANT> iter(*pMapRegisters);
     while(iter.hasNext())
