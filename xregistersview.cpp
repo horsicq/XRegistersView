@@ -349,7 +349,7 @@ void XRegistersView::adjust()
     setMinimumHeight(nMinHeight);
 }
 
-void XRegistersView::addRegion(QString sTitle, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth)
+void XRegistersView::addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
 {
     REGION region={};
 
