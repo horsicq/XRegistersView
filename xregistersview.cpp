@@ -417,7 +417,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
     delete pPainter;
 }
 
-void XRegistersView::paintCell(QPainter *pPainter, qint32 nRow, qint32 nColumn, qint32 nLeft, qint32 nTop, qint32 nWidth, qint32 nHeight)
+void XRegistersView::paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight)
 {
     // TODO remove
     qint32 nIndex=0;
