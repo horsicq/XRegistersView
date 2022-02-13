@@ -55,7 +55,7 @@ public:
 
     XRegistersView(QWidget *pParent=nullptr);
     void setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OPTIONS regOptions);
-    void setData(QMap<QString, XBinary::XVARIANT> *pMapRegisters); // TODO mb TODO set only threadId
+    void setData(QMap<QString,XBinary::XVARIANT> *pMapRegisters); // TODO mb TODO set only threadId
     void clear();
     void adjust();
 
