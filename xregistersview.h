@@ -72,7 +72,7 @@ protected:
 
 private:
     bool g_bActive;
-    QMap<QString, XBinary::XVARIANT> g_mapRegisters;
+    QMap<QString,XBinary::XVARIANT> g_mapRegisters;
     QList<REGION> g_listRegions;
     QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
