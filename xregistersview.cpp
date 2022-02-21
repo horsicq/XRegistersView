@@ -43,9 +43,67 @@ void XRegistersView::setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OP
     g_regOptions=regOptions;
 }
 
-void XRegistersView::setData(QMap<QString,XBinary::XVARIANT> *pMapRegisters)
+void XRegistersView::setData(XAbstractDebugger::REGISTERS *pRegisters)
 {
-    QMapIterator<QString,XBinary::XVARIANT> iter(*pMapRegisters);
+    g_pRegisters=pRegisters;
+
+    QMap<QString,XBinary::XVARIANT> mapRegisters;
+#ifdef Q_PROCESSOR_X86_32
+    addMapValue(&mapRegisters,"EAX",pRegisters->EAX);
+    addMapValue(&mapRegisters,"EBX",pRegisters->EBX);
+    addMapValue(&mapRegisters,"ECX",pRegisters->ECX);
+    addMapValue(&mapRegisters,"EDX",pRegisters->EDX);
+    addMapValue(&mapRegisters,"EBP",pRegisters->EBP);
+    addMapValue(&mapRegisters,"ESP",pRegisters->ESP);
+    addMapValue(&mapRegisters,"ESI",pRegisters->ESI);
+    addMapValue(&mapRegisters,"EDI",pRegisters->EDI);
+    addMapValue(&mapRegisters,"EIP",pRegisters->EIP);
+#endif
+#ifdef Q_PROCESSOR_X86_64
+    addMapValue(&mapRegisters,"RAX",pRegisters->RAX);
+    addMapValue(&mapRegisters,"RBX",pRegisters->RBX);
+    addMapValue(&mapRegisters,"RCX",pRegisters->RCX);
+    addMapValue(&mapRegisters,"RDX",pRegisters->RDX);
+    addMapValue(&mapRegisters,"RBP",pRegisters->RBP);
+    addMapValue(&mapRegisters,"RSP",pRegisters->RSP);
+    addMapValue(&mapRegisters,"RSI",pRegisters->RSI);
+    addMapValue(&mapRegisters,"RDI",pRegisters->RDI);
+    addMapValue(&mapRegisters,"R8",pRegisters->R8);
+    addMapValue(&mapRegisters,"R9",pRegisters->R9);
+    addMapValue(&mapRegisters,"R10",pRegisters->R10);
+    addMapValue(&mapRegisters,"R11",pRegisters->R11);
+    addMapValue(&mapRegisters,"R12",pRegisters->R12);
+    addMapValue(&mapRegisters,"R13",pRegisters->R13);
+    addMapValue(&mapRegisters,"R14",pRegisters->R14);
+    addMapValue(&mapRegisters,"R15",pRegisters->R15);
+    addMapValue(&mapRegisters,"RIP",pRegisters->RIP);
+#endif
+#ifdef Q_PROCESSOR_X86
+    addMapValue(&mapRegisters,"EFLAGS",pRegisters->EFLAGS);
+    addMapValue(&mapRegisters,"CF",(bool)((pRegisters->EFLAGS)&0x0001));
+    addMapValue(&mapRegisters,"PF",(bool)((pRegisters->EFLAGS)&0x0004));
+    addMapValue(&mapRegisters,"AF",(bool)((pRegisters->EFLAGS)&0x0010));
+    addMapValue(&mapRegisters,"ZF",(bool)((pRegisters->EFLAGS)&0x0040));
+    addMapValue(&mapRegisters,"SF",(bool)((pRegisters->EFLAGS)&0x0080));
+    addMapValue(&mapRegisters,"TF",(bool)((pRegisters->EFLAGS)&0x0100));
+    addMapValue(&mapRegisters,"IF",(bool)((pRegisters->EFLAGS)&0x0200));
+    addMapValue(&mapRegisters,"DF",(bool)((pRegisters->EFLAGS)&0x0400));
+    addMapValue(&mapRegisters,"OF",(bool)((pRegisters->EFLAGS)&0x0800));
+    addMapValue(&mapRegisters,"GS",pRegisters->GS);
+    addMapValue(&mapRegisters,"FS",pRegisters->FS);
+    addMapValue(&mapRegisters,"ES",pRegisters->ES);
+    addMapValue(&mapRegisters,"DS",pRegisters->DS);
+    addMapValue(&mapRegisters,"CS",pRegisters->CS);
+    addMapValue(&mapRegisters,"SS",pRegisters->SS);
+    addMapValue(&mapRegisters,"DR0",pRegisters->DR[0]);
+    addMapValue(&mapRegisters,"DR1",pRegisters->DR[1]);
+    addMapValue(&mapRegisters,"DR2",pRegisters->DR[2]);
+    addMapValue(&mapRegisters,"DR3",pRegisters->DR[3]);
+    addMapValue(&mapRegisters,"DR6",pRegisters->DR[6]);
+    addMapValue(&mapRegisters,"DR7",pRegisters->DR[7]);
+#endif
+
+    QMapIterator<QString,XBinary::XVARIANT> iter(mapRegisters);
 
     while(iter.hasNext())
     {
@@ -64,11 +122,11 @@ void XRegistersView::setData(QMap<QString,XBinary::XVARIANT> *pMapRegisters)
         }
     }
 
-    g_mapRegisters=*pMapRegisters;
+    g_mapRegisters=mapRegisters;
 
     g_bActive=true;
 
-    adjust();
+    adjustView();
 
     viewport()->update();
 }
@@ -80,12 +138,12 @@ void XRegistersView::clear()
     qDebug("void XRegistersView::clear()");
 #endif
 
-    adjust();
+    adjustView();
 
     viewport()->update();
 }
 
-void XRegistersView::adjust()
+void XRegistersView::adjustView()
 {
     g_listRegions.clear();
 
@@ -378,6 +436,51 @@ void XRegistersView::addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 n
                   nValueWidth,
                   nCommentWidth);
     }
+}
+
+void XRegistersView::addMapValue(QMap<QString, XBinary::XVARIANT> *pMap, QString sName, quint64 nValue)
+{
+    XBinary::XVARIANT xVariant={};
+    xVariant.bIsBigEndian=false;
+    xVariant.mode=XBinary::MODE_64;
+    xVariant.var.v_uint64=nValue;
+    pMap->insert(sName,xVariant);
+}
+
+void XRegistersView::addMapValue(QMap<QString, XBinary::XVARIANT> *pMap, QString sName, quint32 nValue)
+{
+    XBinary::XVARIANT xVariant={};
+    xVariant.bIsBigEndian=false;
+    xVariant.mode=XBinary::MODE_32;
+    xVariant.var.v_uint32=nValue;
+    pMap->insert(sName,xVariant);
+}
+
+void XRegistersView::addMapValue(QMap<QString, XBinary::XVARIANT> *pMap, QString sName, quint16 nValue)
+{
+    XBinary::XVARIANT xVariant={};
+    xVariant.bIsBigEndian=false;
+    xVariant.mode=XBinary::MODE_16;
+    xVariant.var.v_uint16=nValue;
+    pMap->insert(sName,xVariant);
+}
+
+void XRegistersView::addMapValue(QMap<QString, XBinary::XVARIANT> *pMap, QString sName, quint8 nValue)
+{
+    XBinary::XVARIANT xVariant={};
+    xVariant.bIsBigEndian=false;
+    xVariant.mode=XBinary::MODE_8;
+    xVariant.var.v_uint8=nValue;
+    pMap->insert(sName,xVariant);
+}
+
+void XRegistersView::addMapValue(QMap<QString, XBinary::XVARIANT> *pMap, QString sName, bool bValue)
+{
+    XBinary::XVARIANT xVariant={};
+    xVariant.bIsBigEndian=false;
+    xVariant.mode=XBinary::MODE_BIT;
+    xVariant.var.v_bool=bValue;
+    pMap->insert(sName,xVariant);
 }
 
 void XRegistersView::paintEvent(QPaintEvent *pEvent)

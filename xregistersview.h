@@ -55,13 +55,18 @@ public:
 
     XRegistersView(QWidget *pParent=nullptr);
     void setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OPTIONS regOptions);
-    void setData(QMap<QString,XBinary::XVARIANT> *pMapRegisters); // TODO mb TODO set only threadId
+    void setData(XAbstractDebugger::REGISTERS *pRegisters);
     void clear();
-    void adjust();
+    void adjustView();
 
 private:
     void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
     void addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
+    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint64 nValue);
+    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint32 nValue);
+    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint16 nValue);
+    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint8 nValue);
+    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,bool bValue);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
@@ -72,6 +77,7 @@ protected:
 
 private:
     bool g_bActive;
+    XAbstractDebugger::REGISTERS *g_pRegisters;
     QMap<QString,XBinary::XVARIANT> g_mapRegisters;
     QList<REGION> g_listRegions;
     QSet<QString> g_stChanged;
