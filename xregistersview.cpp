@@ -37,9 +37,8 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
 
 }
 
-void XRegistersView::setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OPTIONS regOptions)
+void XRegistersView::setOptions(XAbstractDebugger::REG_OPTIONS regOptions)
 {
-    g_disasmMode=disasmMode;
     g_regOptions=regOptions;
 }
 
@@ -169,46 +168,44 @@ void XRegistersView::adjustView()
         {
             bFirst=true;
 
-            if(g_disasmMode==XBinary::DM_X86_32)
-            {
-                QList<QString> listGeneralRegs;
-                listGeneralRegs.append("EAX");
-                listGeneralRegs.append("EBX");
-                listGeneralRegs.append("ECX");
-                listGeneralRegs.append("EDX");
-                listGeneralRegs.append("EBP");
-                listGeneralRegs.append("ESP");
-                listGeneralRegs.append("ESI");
-                listGeneralRegs.append("EDI");
+        #ifdef Q_PROCESSOR_X86_32
+            QList<QString> listGeneralRegs;
+            listGeneralRegs.append("EAX");
+            listGeneralRegs.append("EBX");
+            listGeneralRegs.append("ECX");
+            listGeneralRegs.append("EDX");
+            listGeneralRegs.append("EBP");
+            listGeneralRegs.append("ESP");
+            listGeneralRegs.append("ESI");
+            listGeneralRegs.append("EDI");
 
-                addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
+            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
 
-                nTop+=listGeneralRegs.count()*g_nCharHeight;
-            }
-            else if(g_disasmMode==XBinary::DM_X86_64)
-            {
-                QList<QString> listGeneralRegs;
-                listGeneralRegs.append("RAX");
-                listGeneralRegs.append("RBX");
-                listGeneralRegs.append("RCX");
-                listGeneralRegs.append("RDX");
-                listGeneralRegs.append("RBP");
-                listGeneralRegs.append("RSP");
-                listGeneralRegs.append("RSI");
-                listGeneralRegs.append("RDI");
-                listGeneralRegs.append("R8");
-                listGeneralRegs.append("R9");
-                listGeneralRegs.append("R10");
-                listGeneralRegs.append("R11");
-                listGeneralRegs.append("R12");
-                listGeneralRegs.append("R13");
-                listGeneralRegs.append("R14");
-                listGeneralRegs.append("R15");
+            nTop+=listGeneralRegs.count()*g_nCharHeight;
+        #endif
+        #ifdef Q_PROCESSOR_X86_64
+            QList<QString> listGeneralRegs;
+            listGeneralRegs.append("RAX");
+            listGeneralRegs.append("RBX");
+            listGeneralRegs.append("RCX");
+            listGeneralRegs.append("RDX");
+            listGeneralRegs.append("RBP");
+            listGeneralRegs.append("RSP");
+            listGeneralRegs.append("RSI");
+            listGeneralRegs.append("RDI");
+            listGeneralRegs.append("R8");
+            listGeneralRegs.append("R9");
+            listGeneralRegs.append("R10");
+            listGeneralRegs.append("R11");
+            listGeneralRegs.append("R12");
+            listGeneralRegs.append("R13");
+            listGeneralRegs.append("R14");
+            listGeneralRegs.append("R15");
 
-                addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
+            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
 
-                nTop+=listGeneralRegs.count()*g_nCharHeight;
-            }
+            nTop+=listGeneralRegs.count()*g_nCharHeight;
+        #endif
         }
 
         if(g_regOptions.bIP)
@@ -220,24 +217,22 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            if(g_disasmMode==XBinary::DM_X86_32)
-            {
-                addRegion("EIP",
-                          nLeft,
-                          nTop,
-                          g_nCharWidth*3,
-                          nValueWidth32,
-                          nCommentWidth);
-            }
-            else if(g_disasmMode==XBinary::DM_X86_64)
-            {
-                addRegion("RIP",
-                          nLeft,
-                          nTop,
-                          g_nCharWidth*3,
-                          nValueWidth64,
-                          nCommentWidth);
-            }
+        #ifdef Q_PROCESSOR_X86_32
+            addRegion("EIP",
+                      nLeft,
+                      nTop,
+                      g_nCharWidth*3,
+                      nValueWidth32,
+                      nCommentWidth);
+        #endif
+        #ifdef Q_PROCESSOR_X86_64
+            addRegion("RIP",
+                      nLeft,
+                      nTop,
+                      g_nCharWidth*3,
+                      nValueWidth64,
+                      nCommentWidth);
+        #endif
 
             nTop+=g_nCharHeight;
         }
@@ -349,15 +344,12 @@ void XRegistersView::adjustView()
             listDebugRegs.append("DR6");
             listDebugRegs.append("DR7");
 
-            if(g_disasmMode==XBinary::DM_X86_32)
-            {
-                addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
-            }
-            else if(g_disasmMode==XBinary::DM_X86_64)
-            {
-                addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
-            }
-
+        #ifdef Q_PROCESSOR_X86_32
+            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
+        #endif
+        #ifdef Q_PROCESSOR_X86_64
+            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
+        #endif
             nTop+=listDebugRegs.count()*g_nCharHeight;
         }
 

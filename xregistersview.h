@@ -54,10 +54,10 @@ public:
     };
 
     XRegistersView(QWidget *pParent=nullptr);
-    void setOptions(XBinary::DM disasmMode,XAbstractDebugger::REG_OPTIONS regOptions);
+    void setOptions(XAbstractDebugger::REG_OPTIONS regOptions);
     void setData(XAbstractDebugger::REGISTERS *pRegisters);
     void clear();
-    void adjustView();
+    virtual void adjustView() override;
 
 private:
     void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
@@ -83,7 +83,6 @@ private:
     QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
-    XBinary::DM g_disasmMode;
     XAbstractDebugger::REG_OPTIONS g_regOptions;
 };
 
