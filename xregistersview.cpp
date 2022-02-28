@@ -466,7 +466,7 @@ void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString s
     pMap->insert(sName,xVariant);
 }
 
-void XRegistersView::addMapValue(QMap<QString, XBinary::XVARIANT> *pMap,QString sName,bool bValue)
+void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,bool bValue)
 {
     XBinary::XVARIANT xVariant={};
     xVariant.bIsBigEndian=false;
