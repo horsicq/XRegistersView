@@ -34,7 +34,8 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
 ////    setHorisontalLinesVisible(true);
 //    setHeaderVisible(false);
 //    setLineDelta(0);
-
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(_customContextMenu(QPoint)));
 }
 
 void XRegistersView::setOptions(XAbstractDebugger::REG_OPTIONS regOptions)
@@ -513,6 +514,11 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
     delete pPainter;
 }
 
+void XRegistersView::_customContextMenu(const QPoint &pos)
+{
+    contextMenu(pos);
+}
+
 void XRegistersView::paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight)
 {
     // TODO remove
@@ -545,4 +551,9 @@ void XRegistersView::paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qin
 void XRegistersView::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
+}
+
+void XRegistersView::contextMenu(const QPoint &pos)
+{
+    Q_UNUSED(pos)
 }

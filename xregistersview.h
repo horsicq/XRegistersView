@@ -30,7 +30,7 @@
 #include "xformats.h"
 #include "xabstractdebugger.h"
 
-class XRegistersView : public XShortcutstScrollArea // TODO no table !!!
+class XRegistersView : public XShortcutstScrollArea
 {
     Q_OBJECT
 
@@ -71,9 +71,13 @@ private:
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
 
+private slots:
+    void _customContextMenu(const QPoint &pos);
+
 protected:
     virtual void paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight);
     virtual void registerShortcuts(bool bState) override;
+    virtual void contextMenu(const QPoint &pos);
 
 private:
     bool g_bActive;
