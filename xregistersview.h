@@ -47,16 +47,16 @@ class XRegistersView : public XShortcutstScrollArea
 
 public:
 
-    struct OPTIONS
+    struct OPTIONS // TODO remove
     {
         XBinary::DM disasmMode;
-        XProcess::REG_OPTIONS regOptions;
+        XBinary::REG_OPTIONS regOptions;
     };
 
     XRegistersView(QWidget *pParent=nullptr);
-    void setOptions(XProcess::REG_OPTIONS regOptions);
-    XProcess::REG_OPTIONS getOptions();
-    void setData(XProcess::REGISTERS *pRegisters);
+    void setOptions(XBinary::REG_OPTIONS regOptions);
+    XBinary::REG_OPTIONS getOptions();
+    void setData(XBinary::REGISTERS *pRegisters);
     void clear();
     virtual void adjustView() override;
 
@@ -91,13 +91,13 @@ protected:
 
 private:
     bool g_bActive;
-    XProcess::REGISTERS *g_pRegisters;
+    XBinary::REGISTERS *g_pRegisters;
     QMap<QString,XBinary::XVARIANT> g_mapRegisters;
     QList<REGION> g_listRegions;
     QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
-    XProcess::REG_OPTIONS g_regOptions;
+    XBinary::REG_OPTIONS g_regOptions;
 };
 
 #endif // XREGISTERSVIEW_H
