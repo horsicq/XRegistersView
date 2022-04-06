@@ -29,6 +29,15 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     g_nCharWidth=XAbstractTableView::getCharWidth(this);
     g_nCharHeight=XAbstractTableView::getCharHeight(this);
 
+    g_regOptions={};
+    g_regOptions.bGeneral=true;
+    g_regOptions.bIP=true;
+    g_regOptions.bFlags=true;
+    g_regOptions.bSegments=true;
+    g_regOptions.bDebug=true;
+    g_regOptions.bFloat=true;
+    g_regOptions.bXMM=true;
+
 //    addColumn("",300); // TODO Width
 //    setVerticalLinesVisible(true);
 ////    setHorisontalLinesVisible(true);
@@ -38,12 +47,17 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(_customContextMenu(QPoint)));
 }
 
-void XRegistersView::setOptions(XAbstractDebugger::REG_OPTIONS regOptions)
+void XRegistersView::setOptions(XProcess::REG_OPTIONS regOptions)
 {
     g_regOptions=regOptions;
 }
 
-void XRegistersView::setData(XAbstractDebugger::REGISTERS *pRegisters)
+XProcess::REG_OPTIONS XRegistersView::getOptions()
+{
+    return g_regOptions;
+}
+
+void XRegistersView::setData(XProcess::REGISTERS *pRegisters)
 {
     g_pRegisters=pRegisters;
 
@@ -328,7 +342,7 @@ void XRegistersView::adjustView()
             // ControlWord
         }
 
-        if(g_regOptions.bSegments)
+        if(g_regOptions.bDebug)
         {
             if(bFirst)
             {
@@ -519,6 +533,62 @@ void XRegistersView::_customContextMenu(const QPoint &pos)
     contextMenu(pos);
 }
 
+void XRegistersView::actionViewGeneral()
+{
+    g_regOptions.bGeneral=!(g_regOptions.bGeneral);
+
+    adjustView();
+    viewport()->update();
+}
+
+void XRegistersView::actionViewIP()
+{
+    g_regOptions.bIP=!(g_regOptions.bIP);
+
+    adjustView();
+    viewport()->update();
+}
+
+void XRegistersView::actionViewFlags()
+{
+    g_regOptions.bFlags=!(g_regOptions.bFlags);
+
+    adjustView();
+    viewport()->update();
+}
+
+void XRegistersView::actionViewSegments()
+{
+    g_regOptions.bSegments=!(g_regOptions.bSegments);
+
+    adjustView();
+    viewport()->update();
+}
+
+void XRegistersView::actionViewDebug()
+{
+    g_regOptions.bDebug=!(g_regOptions.bDebug);
+
+    adjustView();
+    viewport()->update();
+}
+
+void XRegistersView::actionViewFloat()
+{
+    g_regOptions.bFloat=!(g_regOptions.bFloat);
+
+    adjustView();
+    viewport()->update();
+}
+
+void XRegistersView::actionViewXMM()
+{
+    g_regOptions.bXMM=!(g_regOptions.bXMM);
+
+    adjustView();
+    viewport()->update();
+}
+
 void XRegistersView::paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight)
 {
     // TODO remove
@@ -555,5 +625,54 @@ void XRegistersView::registerShortcuts(bool bState)
 
 void XRegistersView::contextMenu(const QPoint &pos)
 {
-    Q_UNUSED(pos)
+    QMenu contextMenu(this);
+
+    QMenu menuView(tr("View"),this);
+
+    QAction actionGeneral(QString("General"),this);
+    actionGeneral.setCheckable(true);
+    actionGeneral.setChecked(g_regOptions.bGeneral);
+    connect(&actionGeneral,SIGNAL(triggered()),this,SLOT(actionViewGeneral()));
+    menuView.addAction(&actionGeneral);
+
+    QAction actionIP(QString("IP"),this);
+    actionIP.setCheckable(true);
+    actionIP.setChecked(g_regOptions.bIP);
+    connect(&actionIP,SIGNAL(triggered()),this,SLOT(actionViewIP()));
+    menuView.addAction(&actionIP);
+
+    QAction actionFlags(QString("Flags"),this);
+    actionFlags.setCheckable(true);
+    actionFlags.setChecked(g_regOptions.bFlags);
+    connect(&actionFlags,SIGNAL(triggered()),this,SLOT(actionViewFlags()));
+    menuView.addAction(&actionFlags);
+
+    QAction actionSegments(QString("Segments"),this);
+    actionSegments.setCheckable(true);
+    actionSegments.setChecked(g_regOptions.bSegments);
+    connect(&actionSegments,SIGNAL(triggered()),this,SLOT(actionViewSegments()));
+    menuView.addAction(&actionSegments);
+
+    QAction actionDebug(QString("Debug"),this);
+    actionDebug.setCheckable(true);
+    actionDebug.setChecked(g_regOptions.bDebug);
+    connect(&actionDebug,SIGNAL(triggered()),this,SLOT(actionViewDebug()));
+    menuView.addAction(&actionDebug);
+
+    QAction actionFloat(QString("Float"),this);
+    actionFloat.setCheckable(true);
+    actionFloat.setChecked(g_regOptions.bFloat);
+    connect(&actionFloat,SIGNAL(triggered()),this,SLOT(actionViewFloat()));
+    menuView.addAction(&actionFloat);
+
+    QAction actionXMM(QString("XMM"),this);
+    actionXMM.setCheckable(true);
+    actionXMM.setChecked(g_regOptions.bXMM);
+    connect(&actionXMM,SIGNAL(triggered()),this,SLOT(actionViewXMM()));
+    menuView.addAction(&actionXMM);
+
+
+    contextMenu.addMenu(&menuView);
+
+    contextMenu.exec(viewport()->mapToGlobal(pos));
 }

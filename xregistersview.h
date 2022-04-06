@@ -50,12 +50,13 @@ public:
     struct OPTIONS
     {
         XBinary::DM disasmMode;
-        XAbstractDebugger::REG_OPTIONS regOptions;
+        XProcess::REG_OPTIONS regOptions;
     };
 
     XRegistersView(QWidget *pParent=nullptr);
-    void setOptions(XAbstractDebugger::REG_OPTIONS regOptions);
-    void setData(XAbstractDebugger::REGISTERS *pRegisters);
+    void setOptions(XProcess::REG_OPTIONS regOptions);
+    XProcess::REG_OPTIONS getOptions();
+    void setData(XProcess::REGISTERS *pRegisters);
     void clear();
     virtual void adjustView() override;
 
@@ -74,6 +75,15 @@ protected:
 private slots:
     void _customContextMenu(const QPoint &pos);
 
+public slots:
+    void actionViewGeneral();
+    void actionViewIP();
+    void actionViewFlags();
+    void actionViewSegments();
+    void actionViewDebug();
+    void actionViewFloat();
+    void actionViewXMM();
+
 protected:
     virtual void paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight);
     virtual void registerShortcuts(bool bState) override;
@@ -81,13 +91,13 @@ protected:
 
 private:
     bool g_bActive;
-    XAbstractDebugger::REGISTERS *g_pRegisters;
+    XProcess::REGISTERS *g_pRegisters;
     QMap<QString,XBinary::XVARIANT> g_mapRegisters;
     QList<REGION> g_listRegions;
     QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
-    XAbstractDebugger::REG_OPTIONS g_regOptions;
+    XProcess::REG_OPTIONS g_regOptions;
 };
 
 #endif // XREGISTERSVIEW_H
