@@ -24,10 +24,12 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
 {
     g_bActive=false;
 
-    setFont(XAbstractTableView::getMonoFont(10)); // TODO options
+    XOptions::setMonoFont(this,10); // TODO options
 
-    g_nCharWidth=XAbstractTableView::getCharWidth(this);
-    g_nCharHeight=XAbstractTableView::getCharHeight(this);
+    g_nCharWidth=XOptions::getCharWidth(this);
+    g_nCharHeight=XOptions::getCharHeight(this);
+
+    g_pInfoDB=nullptr;
 
     g_regOptions={};
     g_regOptions.bGeneral=true;
@@ -47,96 +49,19 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(_customContextMenu(QPoint)));
 }
 
-void XRegistersView::setOptions(XBinary::REG_OPTIONS regOptions)
+void XRegistersView::setOptions(XInfoDB::REG_OPTIONS regOptions)
 {
     g_regOptions=regOptions;
 }
 
-XBinary::REG_OPTIONS XRegistersView::getOptions()
+XInfoDB::REG_OPTIONS XRegistersView::getOptions()
 {
     return g_regOptions;
 }
 
-void XRegistersView::setData(XBinary::REGISTERS *pRegisters)
+void XRegistersView::update(XInfoDB *pInfoDB)
 {
-    g_pRegisters=pRegisters;
-
-    QMap<QString,XBinary::XVARIANT> mapRegisters;
-#ifdef Q_PROCESSOR_X86_32
-    addMapValue(&mapRegisters,"EAX",pRegisters->EAX);
-    addMapValue(&mapRegisters,"EBX",pRegisters->EBX);
-    addMapValue(&mapRegisters,"ECX",pRegisters->ECX);
-    addMapValue(&mapRegisters,"EDX",pRegisters->EDX);
-    addMapValue(&mapRegisters,"EBP",pRegisters->EBP);
-    addMapValue(&mapRegisters,"ESP",pRegisters->ESP);
-    addMapValue(&mapRegisters,"ESI",pRegisters->ESI);
-    addMapValue(&mapRegisters,"EDI",pRegisters->EDI);
-    addMapValue(&mapRegisters,"EIP",pRegisters->EIP);
-#endif
-#ifdef Q_PROCESSOR_X86_64
-    addMapValue(&mapRegisters,"RAX",pRegisters->RAX);
-    addMapValue(&mapRegisters,"RBX",pRegisters->RBX);
-    addMapValue(&mapRegisters,"RCX",pRegisters->RCX);
-    addMapValue(&mapRegisters,"RDX",pRegisters->RDX);
-    addMapValue(&mapRegisters,"RBP",pRegisters->RBP);
-    addMapValue(&mapRegisters,"RSP",pRegisters->RSP);
-    addMapValue(&mapRegisters,"RSI",pRegisters->RSI);
-    addMapValue(&mapRegisters,"RDI",pRegisters->RDI);
-    addMapValue(&mapRegisters,"R8",pRegisters->R8);
-    addMapValue(&mapRegisters,"R9",pRegisters->R9);
-    addMapValue(&mapRegisters,"R10",pRegisters->R10);
-    addMapValue(&mapRegisters,"R11",pRegisters->R11);
-    addMapValue(&mapRegisters,"R12",pRegisters->R12);
-    addMapValue(&mapRegisters,"R13",pRegisters->R13);
-    addMapValue(&mapRegisters,"R14",pRegisters->R14);
-    addMapValue(&mapRegisters,"R15",pRegisters->R15);
-    addMapValue(&mapRegisters,"RIP",pRegisters->RIP);
-#endif
-#ifdef Q_PROCESSOR_X86
-    addMapValue(&mapRegisters,"EFLAGS",pRegisters->EFLAGS);
-    addMapValue(&mapRegisters,"CF",(bool)((pRegisters->EFLAGS)&0x0001));
-    addMapValue(&mapRegisters,"PF",(bool)((pRegisters->EFLAGS)&0x0004));
-    addMapValue(&mapRegisters,"AF",(bool)((pRegisters->EFLAGS)&0x0010));
-    addMapValue(&mapRegisters,"ZF",(bool)((pRegisters->EFLAGS)&0x0040));
-    addMapValue(&mapRegisters,"SF",(bool)((pRegisters->EFLAGS)&0x0080));
-    addMapValue(&mapRegisters,"TF",(bool)((pRegisters->EFLAGS)&0x0100));
-    addMapValue(&mapRegisters,"IF",(bool)((pRegisters->EFLAGS)&0x0200));
-    addMapValue(&mapRegisters,"DF",(bool)((pRegisters->EFLAGS)&0x0400));
-    addMapValue(&mapRegisters,"OF",(bool)((pRegisters->EFLAGS)&0x0800));
-    addMapValue(&mapRegisters,"GS",pRegisters->GS);
-    addMapValue(&mapRegisters,"FS",pRegisters->FS);
-    addMapValue(&mapRegisters,"ES",pRegisters->ES);
-    addMapValue(&mapRegisters,"DS",pRegisters->DS);
-    addMapValue(&mapRegisters,"CS",pRegisters->CS);
-    addMapValue(&mapRegisters,"SS",pRegisters->SS);
-    addMapValue(&mapRegisters,"DR0",pRegisters->DR[0]);
-    addMapValue(&mapRegisters,"DR1",pRegisters->DR[1]);
-    addMapValue(&mapRegisters,"DR2",pRegisters->DR[2]);
-    addMapValue(&mapRegisters,"DR3",pRegisters->DR[3]);
-    addMapValue(&mapRegisters,"DR6",pRegisters->DR[6]);
-    addMapValue(&mapRegisters,"DR7",pRegisters->DR[7]);
-#endif
-
-    QMapIterator<QString,XBinary::XVARIANT> iter(mapRegisters);
-
-    while(iter.hasNext())
-    {
-        iter.next();
-        XBinary::XVARIANT varValue=iter.value();
-        QString sKey=iter.key();
-
-        if( (g_mapRegisters.value(sKey).var.v_uint128.low!=varValue.var.v_uint128.low)||
-            (g_mapRegisters.value(sKey).var.v_uint128.high!=varValue.var.v_uint128.high))
-        {
-            g_stChanged.insert(sKey);
-        }
-        else
-        {
-            g_stChanged.remove(sKey);
-        }
-    }
-
-    g_mapRegisters=mapRegisters;
+    g_pInfoDB=pInfoDB;
 
     g_bActive=true;
 
@@ -184,7 +109,7 @@ void XRegistersView::adjustView()
             bFirst=true;
 
         #ifdef Q_PROCESSOR_X86_32
-            QList<QString> listGeneralRegs;
+            QList<XInfoDB::REG> listGeneralRegs;
             listGeneralRegs.append("EAX");
             listGeneralRegs.append("EBX");
             listGeneralRegs.append("ECX");
@@ -199,23 +124,23 @@ void XRegistersView::adjustView()
             nTop+=listGeneralRegs.count()*g_nCharHeight;
         #endif
         #ifdef Q_PROCESSOR_X86_64
-            QList<QString> listGeneralRegs;
-            listGeneralRegs.append("RAX");
-            listGeneralRegs.append("RBX");
-            listGeneralRegs.append("RCX");
-            listGeneralRegs.append("RDX");
-            listGeneralRegs.append("RBP");
-            listGeneralRegs.append("RSP");
-            listGeneralRegs.append("RSI");
-            listGeneralRegs.append("RDI");
-            listGeneralRegs.append("R8");
-            listGeneralRegs.append("R9");
-            listGeneralRegs.append("R10");
-            listGeneralRegs.append("R11");
-            listGeneralRegs.append("R12");
-            listGeneralRegs.append("R13");
-            listGeneralRegs.append("R14");
-            listGeneralRegs.append("R15");
+            QList<XInfoDB::REG> listGeneralRegs;
+            listGeneralRegs.append(XInfoDB::REG_RAX);
+            listGeneralRegs.append(XInfoDB::REG_RBX);
+            listGeneralRegs.append(XInfoDB::REG_RCX);
+            listGeneralRegs.append(XInfoDB::REG_RDX);
+            listGeneralRegs.append(XInfoDB::REG_RBP);
+            listGeneralRegs.append(XInfoDB::REG_RSP);
+            listGeneralRegs.append(XInfoDB::REG_RSI);
+            listGeneralRegs.append(XInfoDB::REG_RDI);
+            listGeneralRegs.append(XInfoDB::REG_R8);
+            listGeneralRegs.append(XInfoDB::REG_R9);
+            listGeneralRegs.append(XInfoDB::REG_R10);
+            listGeneralRegs.append(XInfoDB::REG_R11);
+            listGeneralRegs.append(XInfoDB::REG_R12);
+            listGeneralRegs.append(XInfoDB::REG_R13);
+            listGeneralRegs.append(XInfoDB::REG_R14);
+            listGeneralRegs.append(XInfoDB::REG_R15);
 
             addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
 
@@ -241,7 +166,7 @@ void XRegistersView::adjustView()
                       nCommentWidth);
         #endif
         #ifdef Q_PROCESSOR_X86_64
-            addRegion("RIP",
+            addRegion(XInfoDB::REG_RIP,
                       nLeft,
                       nTop,
                       g_nCharWidth*3,
@@ -261,7 +186,7 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            addRegion("EFLAGS",
+            addRegion(XInfoDB::REG_EFLAGS,
                       nLeft,
                       nTop,
                       g_nCharWidth*6,
@@ -269,22 +194,22 @@ void XRegistersView::adjustView()
                       nCommentWidth);
             nTop+=g_nCharHeight;
 
-            QList<QString> listRegs1;
-            listRegs1.append("ZF");
-            listRegs1.append("OF");
-            listRegs1.append("CF");
+            QList<XInfoDB::REG> listRegs1;
+            listRegs1.append(XInfoDB::REG_ZF);
+            listRegs1.append(XInfoDB::REG_OF);
+            listRegs1.append(XInfoDB::REG_CF);
             addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
-            QList<QString> listRegs2;
-            listRegs2.append("ZF");
-            listRegs2.append("OF");
-            listRegs2.append("CF");
+            QList<XInfoDB::REG> listRegs2;
+            listRegs2.append(XInfoDB::REG_ZF);
+            listRegs2.append(XInfoDB::REG_OF);
+            listRegs2.append(XInfoDB::REG_CF);
             addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
-            QList<QString> listRegs3;
-            listRegs3.append("AF");
-            listRegs3.append("DF");
-            listRegs3.append("IF");
+            QList<XInfoDB::REG> listRegs3;
+            listRegs3.append(XInfoDB::REG_AF);
+            listRegs3.append(XInfoDB::REG_DF);
+            listRegs3.append(XInfoDB::REG_IF);
             addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
             nTop+=(3)*g_nCharHeight;
@@ -299,16 +224,16 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<QString> listRegs1;
-            listRegs1.append("GS");
-            listRegs1.append("ES");
-            listRegs1.append("CS");
+            QList<XInfoDB::REG> listRegs1;
+            listRegs1.append(XInfoDB::REG_GS);
+            listRegs1.append(XInfoDB::REG_ES);
+            listRegs1.append(XInfoDB::REG_CS);
             addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
-            QList<QString> listRegs2;
-            listRegs2.append("FS");
-            listRegs2.append("DS");
-            listRegs2.append("SS");
+            QList<XInfoDB::REG> listRegs2;
+            listRegs2.append(XInfoDB::REG_FS);
+            listRegs2.append(XInfoDB::REG_DS);
+            listRegs2.append(XInfoDB::REG_SS);
             addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
             nTop+=(3)*g_nCharHeight;
@@ -323,15 +248,15 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<QString> listXmmFloat;
-            listXmmFloat.append("ST0");
-            listXmmFloat.append("ST1");
-            listXmmFloat.append("ST2");
-            listXmmFloat.append("ST3");
-            listXmmFloat.append("ST4");
-            listXmmFloat.append("ST5");
-            listXmmFloat.append("ST6");
-            listXmmFloat.append("ST7");
+            QList<XInfoDB::REG> listXmmFloat;
+            listXmmFloat.append(XInfoDB::REG_ST0);
+            listXmmFloat.append(XInfoDB::REG_ST1);
+            listXmmFloat.append(XInfoDB::REG_ST2);
+            listXmmFloat.append(XInfoDB::REG_ST3);
+            listXmmFloat.append(XInfoDB::REG_ST4);
+            listXmmFloat.append(XInfoDB::REG_ST5);
+            listXmmFloat.append(XInfoDB::REG_ST6);
+            listXmmFloat.append(XInfoDB::REG_ST7);
 
             addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth);
 
@@ -351,13 +276,13 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<QString> listDebugRegs;
-            listDebugRegs.append("DR0");
-            listDebugRegs.append("DR1");
-            listDebugRegs.append("DR2");
-            listDebugRegs.append("DR3");
-            listDebugRegs.append("DR6");
-            listDebugRegs.append("DR7");
+            QList<XInfoDB::REG> listDebugRegs;
+            listDebugRegs.append(XInfoDB::REG_DR0);
+            listDebugRegs.append(XInfoDB::REG_DR1);
+            listDebugRegs.append(XInfoDB::REG_DR2);
+            listDebugRegs.append(XInfoDB::REG_DR3);
+            listDebugRegs.append(XInfoDB::REG_DR6);
+            listDebugRegs.append(XInfoDB::REG_DR7);
 
         #ifdef Q_PROCESSOR_X86_32
             addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
@@ -377,23 +302,23 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<QString> listXmmRegs;
-            listXmmRegs.append("XMM0");
-            listXmmRegs.append("XMM1");
-            listXmmRegs.append("XMM2");
-            listXmmRegs.append("XMM3");
-            listXmmRegs.append("XMM4");
-            listXmmRegs.append("XMM5");
-            listXmmRegs.append("XMM6");
-            listXmmRegs.append("XMM7");
-            listXmmRegs.append("XMM8");
-            listXmmRegs.append("XMM9");
-            listXmmRegs.append("XMM10");
-            listXmmRegs.append("XMM11");
-            listXmmRegs.append("XMM12");
-            listXmmRegs.append("XMM13");
-            listXmmRegs.append("XMM14");
-            listXmmRegs.append("XMM15");
+            QList<XInfoDB::REG> listXmmRegs;
+            listXmmRegs.append(XInfoDB::REG_XMM0);
+            listXmmRegs.append(XInfoDB::REG_XMM1);
+            listXmmRegs.append(XInfoDB::REG_XMM2);
+            listXmmRegs.append(XInfoDB::REG_XMM3);
+            listXmmRegs.append(XInfoDB::REG_XMM4);
+            listXmmRegs.append(XInfoDB::REG_XMM5);
+            listXmmRegs.append(XInfoDB::REG_XMM6);
+            listXmmRegs.append(XInfoDB::REG_XMM7);
+            listXmmRegs.append(XInfoDB::REG_XMM8);
+            listXmmRegs.append(XInfoDB::REG_XMM9);
+            listXmmRegs.append(XInfoDB::REG_XMM10);
+            listXmmRegs.append(XInfoDB::REG_XMM11);
+            listXmmRegs.append(XInfoDB::REG_XMM12);
+            listXmmRegs.append(XInfoDB::REG_XMM13);
+            listXmmRegs.append(XInfoDB::REG_XMM14);
+            listXmmRegs.append(XInfoDB::REG_XMM15);
 
             addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
 
@@ -415,11 +340,11 @@ void XRegistersView::adjustView()
     setMinimumHeight(nMinHeight);
 }
 
-void XRegistersView::addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
+void XRegistersView::addRegion(XInfoDB::REG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
 {
     REGION region={};
 
-    region.sTitle=sTitle;
+    region.reg=reg;
     region.nLeft=nLeft;
     region.nTop=nTop;
     region.nTitleWidth=nTitleWidth;
@@ -430,7 +355,7 @@ void XRegistersView::addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nT
     g_listRegions.append(region);
 }
 
-void XRegistersView::addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
+void XRegistersView::addRegsList(QList<XInfoDB::REG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth)
 {
     qint32 nNumberOfRegs=pRegsList->count();
 
@@ -445,51 +370,6 @@ void XRegistersView::addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 n
     }
 }
 
-void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint64 nValue)
-{
-    XBinary::XVARIANT xVariant={};
-    xVariant.bIsBigEndian=false;
-    xVariant.mode=XBinary::MODE_64;
-    xVariant.var.v_uint64=nValue;
-    pMap->insert(sName,xVariant);
-}
-
-void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint32 nValue)
-{
-    XBinary::XVARIANT xVariant={};
-    xVariant.bIsBigEndian=false;
-    xVariant.mode=XBinary::MODE_32;
-    xVariant.var.v_uint32=nValue;
-    pMap->insert(sName,xVariant);
-}
-
-void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint16 nValue)
-{
-    XBinary::XVARIANT xVariant={};
-    xVariant.bIsBigEndian=false;
-    xVariant.mode=XBinary::MODE_16;
-    xVariant.var.v_uint16=nValue;
-    pMap->insert(sName,xVariant);
-}
-
-void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint8 nValue)
-{
-    XBinary::XVARIANT xVariant={};
-    xVariant.bIsBigEndian=false;
-    xVariant.mode=XBinary::MODE_8;
-    xVariant.var.v_uint8=nValue;
-    pMap->insert(sName,xVariant);
-}
-
-void XRegistersView::addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,bool bValue)
-{
-    XBinary::XVARIANT xVariant={};
-    xVariant.bIsBigEndian=false;
-    xVariant.mode=XBinary::MODE_BIT;
-    xVariant.var.v_bool=bValue;
-    pMap->insert(sName,xVariant);
-}
-
 void XRegistersView::paintEvent(QPaintEvent *pEvent)
 {
     QPainter *pPainter=new QPainter(this->viewport());
@@ -501,8 +381,8 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
     for(qint32 i=0;i<nNumberOfRegions;i++)
     {
         pPainter->save();
-        QString sTitle=g_listRegions.at(i).sTitle;
-        bool bChanged=g_stChanged.contains(sTitle);
+        QString sTitle=XInfoDB::regIdToString(g_listRegions.at(i).reg);
+        bool bChanged=g_pInfoDB->isRegChanged(g_listRegions.at(i).reg);
         qint32 nTop=g_listRegions.at(i).nTop;
         qint32 nLeft=g_listRegions.at(i).nLeft;
 
@@ -519,7 +399,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
         }
 
         // TODO MMX
-        pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop,XBinary::xVariantToHex(g_mapRegisters.value(sTitle))); // TODO Text Optional
+        pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop,XBinary::xVariantToHex(g_pInfoDB->getCurrentReg(g_listRegions.at(i).reg))); // TODO Text Optional
 
         pPainter->restore();
         // TODO Comment
@@ -587,35 +467,6 @@ void XRegistersView::actionViewXMM()
 
     adjustView();
     viewport()->update();
-}
-
-void XRegistersView::paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight)
-{
-    // TODO remove
-    qint32 nIndex=0;
-
-    if(nIndex<g_listRegions.count())
-    {
-        // TODO grey titles
-        QString sTitle=g_listRegions.at(nIndex).sTitle;
-        bool bChanged=g_stChanged.contains(sTitle);
-
-        pPainter->drawText(nLeft,nTop+nHeight,sTitle); // TODO Text Optional
-
-        if(bChanged)
-        {
-            pPainter->save();
-            pPainter->setPen(QColor(Qt::red));
-        }
-
-        pPainter->drawText(nLeft+g_listRegions.at(nIndex).nTitleWidth,nTop+nHeight,XBinary::xVariantToHex(g_mapRegisters.value(sTitle))); // TODO Text Optional
-
-        if(bChanged)
-        {
-            pPainter->restore();
-        }
-        // TODO Comment
-    }
 }
 
 void XRegistersView::registerShortcuts(bool bState)

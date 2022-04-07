@@ -26,9 +26,10 @@
 #include <QRect>
 #include <QVariant>
 #include <QWidget>
-#include "xabstracttableview.h"
+#include <QPainter>
+#include "xshortcutstscrollarea.h"
 #include "xformats.h"
-#include "xabstractdebugger.h"
+#include "xinfodb.h"
 
 class XRegistersView : public XShortcutstScrollArea
 {
@@ -36,38 +37,27 @@ class XRegistersView : public XShortcutstScrollArea
 
     struct REGION
     {
-        QString sTitle;
         qint32 nLeft;
         qint32 nTop;
         qint32 nTitleWidth;
         qint32 nValueWidth;
         qint32 nCommentWidth;
         qint32 nHeight;
+        XInfoDB::REG reg;
     };
 
 public:
 
-    struct OPTIONS // TODO remove
-    {
-        XBinary::DM disasmMode;
-        XBinary::REG_OPTIONS regOptions;
-    };
-
     XRegistersView(QWidget *pParent=nullptr);
-    void setOptions(XBinary::REG_OPTIONS regOptions);
-    XBinary::REG_OPTIONS getOptions();
-    void setData(XBinary::REGISTERS *pRegisters);
+    void setOptions(XInfoDB::REG_OPTIONS regOptions);
+    XInfoDB::REG_OPTIONS getOptions();
+    void update(XInfoDB *pInfoDB);
     void clear();
     virtual void adjustView() override;
 
 private:
-    void addRegion(QString sTitle,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
-    void addRegsList(QList<QString> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
-    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint64 nValue);
-    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint32 nValue);
-    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint16 nValue);
-    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,quint8 nValue);
-    void addMapValue(QMap<QString,XBinary::XVARIANT> *pMap,QString sName,bool bValue);
+    void addRegion(XInfoDB::REG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth);
+    void addRegsList(QList<XInfoDB::REG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
@@ -85,19 +75,16 @@ public slots:
     void actionViewXMM();
 
 protected:
-    virtual void paintCell(QPainter *pPainter,qint32 nRow,qint32 nColumn,qint32 nLeft,qint32 nTop,qint32 nWidth,qint32 nHeight);
     virtual void registerShortcuts(bool bState) override;
     virtual void contextMenu(const QPoint &pos);
 
 private:
     bool g_bActive;
-    XBinary::REGISTERS *g_pRegisters;
-    QMap<QString,XBinary::XVARIANT> g_mapRegisters;
+    XInfoDB *g_pInfoDB;
     QList<REGION> g_listRegions;
-    QSet<QString> g_stChanged;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
-    XBinary::REG_OPTIONS g_regOptions;
+    XInfoDB::REG_OPTIONS g_regOptions;
 };
 
 #endif // XREGISTERSVIEW_H

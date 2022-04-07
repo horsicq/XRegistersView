@@ -7,7 +7,7 @@ HEADERS += \
 SOURCES += \
     $$PWD/xregistersview.cpp
 
-!contains(XCONFIG, xspecdebugger) {
-    XCONFIG += xspecdebugger
-    include($$PWD/../XSpecDebugger/xspecdebugger.pri)
+!contains(XCONFIG, xinfodb) {
+    XCONFIG += xinfodb
+    include($$PWD/../XInfoDB/xinfodb.pri)
 }
