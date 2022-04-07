@@ -43,21 +43,21 @@ class XRegistersView : public XShortcutstScrollArea
         qint32 nValueWidth;
         qint32 nCommentWidth;
         qint32 nHeight;
-        XInfoDB::REG reg;
+        XInfoDB::XREG reg;
     };
 
 public:
 
     XRegistersView(QWidget *pParent=nullptr);
-    void setOptions(XInfoDB::REG_OPTIONS regOptions);
-    XInfoDB::REG_OPTIONS getOptions();
+    void setOptions(XInfoDB::XREG_OPTIONS regOptions);
+    XInfoDB::XREG_OPTIONS getOptions();
     void update(XInfoDB *pInfoDB);
     void clear();
     virtual void adjustView() override;
 
 private:
-    void addRegion(XInfoDB::REG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth);
-    void addRegsList(QList<XInfoDB::REG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
+    void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth);
+    void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
@@ -84,7 +84,7 @@ private:
     QList<REGION> g_listRegions;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
-    XInfoDB::REG_OPTIONS g_regOptions;
+    XInfoDB::XREG_OPTIONS g_regOptions;
 };
 
 #endif // XREGISTERSVIEW_H

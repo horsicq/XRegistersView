@@ -49,12 +49,12 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     connect(this,SIGNAL(customContextMenuRequested(QPoint)),this,SLOT(_customContextMenu(QPoint)));
 }
 
-void XRegistersView::setOptions(XInfoDB::REG_OPTIONS regOptions)
+void XRegistersView::setOptions(XInfoDB::XREG_OPTIONS regOptions)
 {
     g_regOptions=regOptions;
 }
 
-XInfoDB::REG_OPTIONS XRegistersView::getOptions()
+XInfoDB::XREG_OPTIONS XRegistersView::getOptions()
 {
     return g_regOptions;
 }
@@ -124,23 +124,23 @@ void XRegistersView::adjustView()
             nTop+=listGeneralRegs.count()*g_nCharHeight;
         #endif
         #ifdef Q_PROCESSOR_X86_64
-            QList<XInfoDB::REG> listGeneralRegs;
-            listGeneralRegs.append(XInfoDB::REG_RAX);
-            listGeneralRegs.append(XInfoDB::REG_RBX);
-            listGeneralRegs.append(XInfoDB::REG_RCX);
-            listGeneralRegs.append(XInfoDB::REG_RDX);
-            listGeneralRegs.append(XInfoDB::REG_RBP);
-            listGeneralRegs.append(XInfoDB::REG_RSP);
-            listGeneralRegs.append(XInfoDB::REG_RSI);
-            listGeneralRegs.append(XInfoDB::REG_RDI);
-            listGeneralRegs.append(XInfoDB::REG_R8);
-            listGeneralRegs.append(XInfoDB::REG_R9);
-            listGeneralRegs.append(XInfoDB::REG_R10);
-            listGeneralRegs.append(XInfoDB::REG_R11);
-            listGeneralRegs.append(XInfoDB::REG_R12);
-            listGeneralRegs.append(XInfoDB::REG_R13);
-            listGeneralRegs.append(XInfoDB::REG_R14);
-            listGeneralRegs.append(XInfoDB::REG_R15);
+            QList<XInfoDB::XREG> listGeneralRegs;
+            listGeneralRegs.append(XInfoDB::XREG_RAX);
+            listGeneralRegs.append(XInfoDB::XREG_RBX);
+            listGeneralRegs.append(XInfoDB::XREG_RCX);
+            listGeneralRegs.append(XInfoDB::XREG_RDX);
+            listGeneralRegs.append(XInfoDB::XREG_RBP);
+            listGeneralRegs.append(XInfoDB::XREG_RSP);
+            listGeneralRegs.append(XInfoDB::XREG_RSI);
+            listGeneralRegs.append(XInfoDB::XREG_RDI);
+            listGeneralRegs.append(XInfoDB::XREG_R8);
+            listGeneralRegs.append(XInfoDB::XREG_R9);
+            listGeneralRegs.append(XInfoDB::XREG_R10);
+            listGeneralRegs.append(XInfoDB::XREG_R11);
+            listGeneralRegs.append(XInfoDB::XREG_R12);
+            listGeneralRegs.append(XInfoDB::XREG_R13);
+            listGeneralRegs.append(XInfoDB::XREG_R14);
+            listGeneralRegs.append(XInfoDB::XREG_R15);
 
             addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
 
@@ -166,7 +166,7 @@ void XRegistersView::adjustView()
                       nCommentWidth);
         #endif
         #ifdef Q_PROCESSOR_X86_64
-            addRegion(XInfoDB::REG_RIP,
+            addRegion(XInfoDB::XREG_RIP,
                       nLeft,
                       nTop,
                       g_nCharWidth*3,
@@ -186,7 +186,7 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            addRegion(XInfoDB::REG_EFLAGS,
+            addRegion(XInfoDB::XREG_EFLAGS,
                       nLeft,
                       nTop,
                       g_nCharWidth*6,
@@ -194,22 +194,22 @@ void XRegistersView::adjustView()
                       nCommentWidth);
             nTop+=g_nCharHeight;
 
-            QList<XInfoDB::REG> listRegs1;
-            listRegs1.append(XInfoDB::REG_ZF);
-            listRegs1.append(XInfoDB::REG_OF);
-            listRegs1.append(XInfoDB::REG_CF);
+            QList<XInfoDB::XREG> listRegs1;
+            listRegs1.append(XInfoDB::XREG_ZF);
+            listRegs1.append(XInfoDB::XREG_OF);
+            listRegs1.append(XInfoDB::XREG_CF);
             addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
-            QList<XInfoDB::REG> listRegs2;
-            listRegs2.append(XInfoDB::REG_ZF);
-            listRegs2.append(XInfoDB::REG_OF);
-            listRegs2.append(XInfoDB::REG_CF);
+            QList<XInfoDB::XREG> listRegs2;
+            listRegs2.append(XInfoDB::XREG_ZF);
+            listRegs2.append(XInfoDB::XREG_OF);
+            listRegs2.append(XInfoDB::XREG_CF);
             addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
-            QList<XInfoDB::REG> listRegs3;
-            listRegs3.append(XInfoDB::REG_AF);
-            listRegs3.append(XInfoDB::REG_DF);
-            listRegs3.append(XInfoDB::REG_IF);
+            QList<XInfoDB::XREG> listRegs3;
+            listRegs3.append(XInfoDB::XREG_AF);
+            listRegs3.append(XInfoDB::XREG_DF);
+            listRegs3.append(XInfoDB::XREG_IF);
             addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
             nTop+=(3)*g_nCharHeight;
@@ -224,16 +224,16 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<XInfoDB::REG> listRegs1;
-            listRegs1.append(XInfoDB::REG_GS);
-            listRegs1.append(XInfoDB::REG_ES);
-            listRegs1.append(XInfoDB::REG_CS);
+            QList<XInfoDB::XREG> listRegs1;
+            listRegs1.append(XInfoDB::XREG_GS);
+            listRegs1.append(XInfoDB::XREG_ES);
+            listRegs1.append(XInfoDB::XREG_CS);
             addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
-            QList<XInfoDB::REG> listRegs2;
-            listRegs2.append(XInfoDB::REG_FS);
-            listRegs2.append(XInfoDB::REG_DS);
-            listRegs2.append(XInfoDB::REG_SS);
+            QList<XInfoDB::XREG> listRegs2;
+            listRegs2.append(XInfoDB::XREG_FS);
+            listRegs2.append(XInfoDB::XREG_DS);
+            listRegs2.append(XInfoDB::XREG_SS);
             addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0);
 
             nTop+=(3)*g_nCharHeight;
@@ -248,15 +248,15 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<XInfoDB::REG> listXmmFloat;
-            listXmmFloat.append(XInfoDB::REG_ST0);
-            listXmmFloat.append(XInfoDB::REG_ST1);
-            listXmmFloat.append(XInfoDB::REG_ST2);
-            listXmmFloat.append(XInfoDB::REG_ST3);
-            listXmmFloat.append(XInfoDB::REG_ST4);
-            listXmmFloat.append(XInfoDB::REG_ST5);
-            listXmmFloat.append(XInfoDB::REG_ST6);
-            listXmmFloat.append(XInfoDB::REG_ST7);
+            QList<XInfoDB::XREG> listXmmFloat;
+            listXmmFloat.append(XInfoDB::XREG_ST0);
+            listXmmFloat.append(XInfoDB::XREG_ST1);
+            listXmmFloat.append(XInfoDB::XREG_ST2);
+            listXmmFloat.append(XInfoDB::XREG_ST3);
+            listXmmFloat.append(XInfoDB::XREG_ST4);
+            listXmmFloat.append(XInfoDB::XREG_ST5);
+            listXmmFloat.append(XInfoDB::XREG_ST6);
+            listXmmFloat.append(XInfoDB::XREG_ST7);
 
             addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth);
 
@@ -276,13 +276,13 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<XInfoDB::REG> listDebugRegs;
-            listDebugRegs.append(XInfoDB::REG_DR0);
-            listDebugRegs.append(XInfoDB::REG_DR1);
-            listDebugRegs.append(XInfoDB::REG_DR2);
-            listDebugRegs.append(XInfoDB::REG_DR3);
-            listDebugRegs.append(XInfoDB::REG_DR6);
-            listDebugRegs.append(XInfoDB::REG_DR7);
+            QList<XInfoDB::XREG> listDebugRegs;
+            listDebugRegs.append(XInfoDB::XREG_DR0);
+            listDebugRegs.append(XInfoDB::XREG_DR1);
+            listDebugRegs.append(XInfoDB::XREG_DR2);
+            listDebugRegs.append(XInfoDB::XREG_DR3);
+            listDebugRegs.append(XInfoDB::XREG_DR6);
+            listDebugRegs.append(XInfoDB::XREG_DR7);
 
         #ifdef Q_PROCESSOR_X86_32
             addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
@@ -302,23 +302,23 @@ void XRegistersView::adjustView()
 
             bFirst=true;
 
-            QList<XInfoDB::REG> listXmmRegs;
-            listXmmRegs.append(XInfoDB::REG_XMM0);
-            listXmmRegs.append(XInfoDB::REG_XMM1);
-            listXmmRegs.append(XInfoDB::REG_XMM2);
-            listXmmRegs.append(XInfoDB::REG_XMM3);
-            listXmmRegs.append(XInfoDB::REG_XMM4);
-            listXmmRegs.append(XInfoDB::REG_XMM5);
-            listXmmRegs.append(XInfoDB::REG_XMM6);
-            listXmmRegs.append(XInfoDB::REG_XMM7);
-            listXmmRegs.append(XInfoDB::REG_XMM8);
-            listXmmRegs.append(XInfoDB::REG_XMM9);
-            listXmmRegs.append(XInfoDB::REG_XMM10);
-            listXmmRegs.append(XInfoDB::REG_XMM11);
-            listXmmRegs.append(XInfoDB::REG_XMM12);
-            listXmmRegs.append(XInfoDB::REG_XMM13);
-            listXmmRegs.append(XInfoDB::REG_XMM14);
-            listXmmRegs.append(XInfoDB::REG_XMM15);
+            QList<XInfoDB::XREG> listXmmRegs;
+            listXmmRegs.append(XInfoDB::XREG_XMM0);
+            listXmmRegs.append(XInfoDB::XREG_XMM1);
+            listXmmRegs.append(XInfoDB::XREG_XMM2);
+            listXmmRegs.append(XInfoDB::XREG_XMM3);
+            listXmmRegs.append(XInfoDB::XREG_XMM4);
+            listXmmRegs.append(XInfoDB::XREG_XMM5);
+            listXmmRegs.append(XInfoDB::XREG_XMM6);
+            listXmmRegs.append(XInfoDB::XREG_XMM7);
+            listXmmRegs.append(XInfoDB::XREG_XMM8);
+            listXmmRegs.append(XInfoDB::XREG_XMM9);
+            listXmmRegs.append(XInfoDB::XREG_XMM10);
+            listXmmRegs.append(XInfoDB::XREG_XMM11);
+            listXmmRegs.append(XInfoDB::XREG_XMM12);
+            listXmmRegs.append(XInfoDB::XREG_XMM13);
+            listXmmRegs.append(XInfoDB::XREG_XMM14);
+            listXmmRegs.append(XInfoDB::XREG_XMM15);
 
             addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
 
@@ -340,7 +340,7 @@ void XRegistersView::adjustView()
     setMinimumHeight(nMinHeight);
 }
 
-void XRegistersView::addRegion(XInfoDB::REG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
+void XRegistersView::addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
 {
     REGION region={};
 
@@ -355,7 +355,7 @@ void XRegistersView::addRegion(XInfoDB::REG reg,qint32 nLeft,qint32 nTop,qint32 
     g_listRegions.append(region);
 }
 
-void XRegistersView::addRegsList(QList<XInfoDB::REG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth)
+void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth)
 {
     qint32 nNumberOfRegs=pRegsList->count();
 
