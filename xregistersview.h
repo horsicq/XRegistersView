@@ -51,16 +51,20 @@ public:
     XRegistersView(QWidget *pParent=nullptr);
     void setOptions(XInfoDB::XREG_OPTIONS regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
-    void update(XInfoDB *pInfoDB);
+    void setXInfoDB(XInfoDB *pInfoDB);
+    void reload();
     void clear();
     virtual void adjustView() override;
 
 private:
     void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth);
     void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
+    XInfoDB::XREG pointToReg(QPoint pos);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
+    virtual void mousePressEvent(QMouseEvent *pEvent) override;
+    virtual void mouseReleaseEvent(QMouseEvent *pEvent) override;
 
 private slots:
     void _customContextMenu(const QPoint &pos);
@@ -79,7 +83,7 @@ protected:
     virtual void contextMenu(const QPoint &pos);
 
 private:
-    bool g_bActive;
+    bool g_bActive; // TODO remove
     XInfoDB *g_pInfoDB;
     QList<REGION> g_listRegions;
     qint32 g_nCharWidth;

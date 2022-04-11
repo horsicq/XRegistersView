@@ -59,10 +59,13 @@ XInfoDB::XREG_OPTIONS XRegistersView::getOptions()
     return g_regOptions;
 }
 
-void XRegistersView::update(XInfoDB *pInfoDB)
+void XRegistersView::setXInfoDB(XInfoDB *pInfoDB)
 {
     g_pInfoDB=pInfoDB;
+}
 
+void XRegistersView::reload()
+{
     g_bActive=true;
 
     adjustView();
@@ -102,22 +105,22 @@ void XRegistersView::adjustView()
 
         bool bFirst=false;
 
-        nTop+=g_nCharHeight;
-
         if(g_regOptions.bGeneral)
         {
             bFirst=true;
 
+            // TODO CHeck EAX EBX or EAX ECX
+
         #ifdef Q_PROCESSOR_X86_32
-            QList<XInfoDB::REG> listGeneralRegs;
-            listGeneralRegs.append("EAX");
-            listGeneralRegs.append("EBX");
-            listGeneralRegs.append("ECX");
-            listGeneralRegs.append("EDX");
-            listGeneralRegs.append("EBP");
-            listGeneralRegs.append("ESP");
-            listGeneralRegs.append("ESI");
-            listGeneralRegs.append("EDI");
+            QList<XInfoDB::XREG> listGeneralRegs;
+            listGeneralRegs.append(XInfoDB::XREG_EAX);
+            listGeneralRegs.append(XInfoDB::XREG_EBX);
+            listGeneralRegs.append(XInfoDB::XREG_ECX);
+            listGeneralRegs.append(XInfoDB::XREG_EDX);
+            listGeneralRegs.append(XInfoDB::XREG_EBP);
+            listGeneralRegs.append(XInfoDB::XREG_ESP);
+            listGeneralRegs.append(XInfoDB::XREG_ESI);
+            listGeneralRegs.append(XInfoDB::XREG_EDI);
 
             addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
 
@@ -158,7 +161,7 @@ void XRegistersView::adjustView()
             bFirst=true;
 
         #ifdef Q_PROCESSOR_X86_32
-            addRegion("EIP",
+            addRegion(XInfoDB::XREG_RIP,
                       nLeft,
                       nTop,
                       g_nCharWidth*3,
@@ -370,6 +373,31 @@ void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qi
     }
 }
 
+XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
+{
+    XInfoDB::XREG result=XInfoDB::XREG_UNKNOWN;
+
+    qint32 nNumberOfRegions=g_listRegions.count();
+
+    for(qint32 i=0;i<nNumberOfRegions;i++)
+    {
+        REGION region=g_listRegions.at(i);
+
+        if( (pos.x()>region.nLeft)&&
+            (pos.x()<region.nLeft+region.nTitleWidth+region.nValueWidth+region.nCommentWidth)&&
+            (pos.y()>region.nTop)&&
+            (pos.y()<region.nTop+region.nHeight)
+            )
+        {
+            result=region.reg;
+
+            break;
+        }
+    }
+
+    return result;
+}
+
 void XRegistersView::paintEvent(QPaintEvent *pEvent)
 {
     QPainter *pPainter=new QPainter(this->viewport());
@@ -387,7 +415,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
         qint32 nLeft=g_listRegions.at(i).nLeft;
 
         pPainter->setPen(QColor(Qt::gray));
-        pPainter->drawText(nLeft,nTop,sTitle); // TODO Text Optional
+        pPainter->drawText(nLeft,nTop+g_listRegions.at(i).nHeight,sTitle); // TODO Text Optional
 
         pPainter->restore();
 
@@ -399,13 +427,33 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
         }
 
         // TODO MMX
-        pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop,XBinary::xVariantToHex(g_pInfoDB->getCurrentReg(g_listRegions.at(i).reg))); // TODO Text Optional
+        pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop+g_listRegions.at(i).nHeight,XBinary::xVariantToHex(g_pInfoDB->getCurrentReg(g_listRegions.at(i).reg))); // TODO Text Optional
 
         pPainter->restore();
         // TODO Comment
     }
 
     delete pPainter;
+}
+
+void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
+{
+    // TODO
+    QString sReg=XInfoDB::regIdToString(pointToReg(pEvent->pos()));
+
+    qDebug("%s",sReg.toLatin1().data());
+
+    XShortcutstScrollArea::mousePressEvent(pEvent);
+}
+
+void XRegistersView::mouseReleaseEvent(QMouseEvent *pEvent)
+{
+    // TODO
+//    QString sReg=XInfoDB::regIdToString(pointToReg(pEvent->pos()));
+
+//    qDebug("%s",sReg.toLatin1().data());
+
+    XShortcutstScrollArea::mouseReleaseEvent(pEvent);
 }
 
 void XRegistersView::_customContextMenu(const QPoint &pos)
@@ -521,7 +569,6 @@ void XRegistersView::contextMenu(const QPoint &pos)
     actionXMM.setChecked(g_regOptions.bXMM);
     connect(&actionXMM,SIGNAL(triggered()),this,SLOT(actionViewXMM()));
     menuView.addAction(&actionXMM);
-
 
     contextMenu.addMenu(&menuView);
 
