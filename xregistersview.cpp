@@ -400,6 +400,8 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
 
 void XRegistersView::paintEvent(QPaintEvent *pEvent)
 {
+    Q_UNUSED(pEvent)
+
     QPainter *pPainter=new QPainter(this->viewport());
     pPainter->setPen(viewport()->palette().color(QPalette::WindowText));
     pPainter->setBackgroundMode(Qt::TransparentMode);
@@ -438,7 +440,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
 {
-    // TODO
+    // TODO Dialog
     QString sReg=XInfoDB::regIdToString(pointToReg(pEvent->pos()));
 
     qDebug("%s",sReg.toLatin1().data());
