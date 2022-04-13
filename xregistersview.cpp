@@ -398,6 +398,42 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
     return result;
 }
 
+void XRegistersView::showRegister(XInfoDB::XREG reg)
+{
+#ifdef Q_PROCESSOR_X86_32
+
+#endif
+#ifdef Q_PROCESSOR_X86_64
+    if( (reg==XInfoDB::XREG_RAX)||
+        (reg==XInfoDB::XREG_RBX)||
+        (reg==XInfoDB::XREG_RCX)||
+        (reg==XInfoDB::XREG_RDX)||
+        (reg==XInfoDB::XREG_RSI)||
+        (reg==XInfoDB::XREG_RDI)||
+        (reg==XInfoDB::XREG_RBP)||
+        (reg==XInfoDB::XREG_RSP)||
+        (reg==XInfoDB::XREG_R8)||
+        (reg==XInfoDB::XREG_R9)||
+        (reg==XInfoDB::XREG_R10)||
+        (reg==XInfoDB::XREG_R11)||
+        (reg==XInfoDB::XREG_R12)||
+        (reg==XInfoDB::XREG_R13)||
+        (reg==XInfoDB::XREG_R14)||
+        (reg==XInfoDB::XREG_R15)
+        )
+    {
+        DialogRegisterGeneral dialogReg(this);
+
+        dialogReg.setData(g_pInfoDB,reg);
+
+        if(dialogReg.exec()==QDialog::Accepted)
+        {
+            reload();
+        }
+    }
+#endif
+}
+
 void XRegistersView::paintEvent(QPaintEvent *pEvent)
 {
     Q_UNUSED(pEvent)
@@ -440,10 +476,16 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
 {
-    // TODO Dialog
-    QString sReg=XInfoDB::regIdToString(pointToReg(pEvent->pos()));
+    XInfoDB::XREG reg=pointToReg(pEvent->pos());
 
-    qDebug("%s",sReg.toLatin1().data());
+    if(reg!=XInfoDB::XREG_UNKNOWN)
+    {
+        showRegister(reg);
+    }
+    // TODO Dialog
+//    QString sReg=XInfoDB::regIdToString();
+
+//    qDebug("%s",sReg.toLatin1().data());
 
     XShortcutstScrollArea::mousePressEvent(pEvent);
 }

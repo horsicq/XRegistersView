@@ -30,7 +30,7 @@
 #include "xshortcutstscrollarea.h"
 #include "xformats.h"
 #include "xinfodb.h"
-#include "dialogregister64.h"
+#include "dialogregistergeneral.h"
 
 class XRegistersView : public XShortcutstScrollArea
 {
@@ -61,6 +61,7 @@ private:
     void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth);
     void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
     XInfoDB::XREG pointToReg(QPoint pos);
+    void showRegister(XInfoDB::XREG reg);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;

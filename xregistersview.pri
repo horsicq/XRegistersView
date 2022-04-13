@@ -2,11 +2,11 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 HEADERS += \
-    $$PWD/dialogregister64.h \
+    $$PWD/dialogregistergeneral.h \
     $$PWD/xregistersview.h
 
 SOURCES += \
-    $$PWD/dialogregister64.cpp \
+    $$PWD/dialogregistergeneral.cpp \
     $$PWD/xregistersview.cpp
 
 !contains(XCONFIG, xinfodb) {
@@ -15,4 +15,4 @@ SOURCES += \
 }
 
 FORMS += \
-    $$PWD/dialogregister64.ui
+    $$PWD/dialogregistergeneral.ui
