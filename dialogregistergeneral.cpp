@@ -101,6 +101,15 @@ void DialogRegisterGeneral::reload()
     ui->lineEditReg16_3->setValue(XBinary::getWordFromQword(g_nCurrentValue,1));
     ui->lineEditReg16_4->setValue(XBinary::getWordFromQword(g_nCurrentValue,0));
 
+    ui->lineEditReg8_1->setValue(XBinary::getByteFromQword(g_nCurrentValue,7));
+    ui->lineEditReg8_2->setValue(XBinary::getByteFromQword(g_nCurrentValue,6));
+    ui->lineEditReg8_3->setValue(XBinary::getByteFromQword(g_nCurrentValue,5));
+    ui->lineEditReg8_4->setValue(XBinary::getByteFromQword(g_nCurrentValue,4));
+    ui->lineEditReg8_5->setValue(XBinary::getByteFromQword(g_nCurrentValue,3));
+    ui->lineEditReg8_6->setValue(XBinary::getByteFromQword(g_nCurrentValue,2));
+    ui->lineEditReg8_7->setValue(XBinary::getByteFromQword(g_nCurrentValue,1));
+    ui->lineEditReg8_8->setValue(XBinary::getByteFromQword(g_nCurrentValue,0));
+
     ui->pushButtonOK->setEnabled(g_nInitValue!=g_nCurrentValue);
 }
 
