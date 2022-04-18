@@ -93,6 +93,9 @@ void DialogRegisterGeneral::reload()
     ui->lineEditReg64->setValue(g_nCurrentValue);
 #endif
 
+    ui->lineEditReg32_1->setValue(XBinary::getDwordFromQword(g_nCurrentValue,1));
+    ui->lineEditReg32_2->setValue(XBinary::getDwordFromQword(g_nCurrentValue,0));
+
     ui->pushButtonOK->setEnabled(g_nInitValue!=g_nCurrentValue);
 }
 
