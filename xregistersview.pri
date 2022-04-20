@@ -3,11 +3,13 @@ DEPENDPATH += $$PWD
 
 HEADERS += \
     $$PWD/dialogregistergeneral.h \
-    $$PWD/xregistersview.h
+    $$PWD/xregistersview.h \
+    $$PWD/xregistersviewoptionswidget.h
 
 SOURCES += \
     $$PWD/dialogregistergeneral.cpp \
-    $$PWD/xregistersview.cpp
+    $$PWD/xregistersview.cpp \
+    $$PWD/xregistersviewoptionswidget.cpp
 
 !contains(XCONFIG, xinfodb) {
     XCONFIG += xinfodb
@@ -15,4 +17,5 @@ SOURCES += \
 }
 
 FORMS += \
-    $$PWD/dialogregistergeneral.ui
+    $$PWD/dialogregistergeneral.ui \
+    $$PWD/xregistersviewoptionswidget.ui

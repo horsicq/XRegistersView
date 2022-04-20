@@ -85,12 +85,12 @@ protected:
     virtual void contextMenu(const QPoint &pos);
 
 private:
-    bool g_bActive; // TODO remove
     XInfoDB *g_pInfoDB;
     QList<REGION> g_listRegions;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
     XInfoDB::XREG_OPTIONS g_regOptions;
+    QFont g_fontText;
 };
 
 #endif // XREGISTERSVIEW_H

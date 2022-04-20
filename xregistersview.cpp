@@ -22,9 +22,9 @@
 
 XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent)
 {
-    g_bActive=false;
-
     XOptions::setMonoFont(this,10); // TODO options
+
+    g_fontText=font();
 
     g_nCharWidth=XOptions::getCharWidth(this);
     g_nCharHeight=XOptions::getCharHeight(this);
@@ -66,281 +66,282 @@ void XRegistersView::setXInfoDB(XInfoDB *pInfoDB)
 
 void XRegistersView::reload()
 {
-    g_bActive=true;
+    g_listRegions.clear();
 
-    adjustView();
+    qint32 nMinWidth=0;
+    qint32 nMinHeight=0;
+
+    qint32 nLeft=5;
+    qint32 nTop=0;
+
+    qint32 nValueWidthBit=g_nCharWidth*1;
+    qint32 nValueWidth32=g_nCharWidth*8;
+    qint32 nValueWidth64=g_nCharWidth*12;
+    qint32 nValueWidth128=g_nCharWidth*20; // Check
+    qint32 nCommentWidth=nValueWidth32;
+
+    bool bFirst=false;
+
+    if(g_regOptions.bGeneral)
+    {
+        bFirst=true;
+
+        // TODO Check EAX EBX or EAX ECX
+
+    #ifdef Q_PROCESSOR_X86_32
+        QList<XInfoDB::XREG> listGeneralRegs;
+        listGeneralRegs.append(XInfoDB::XREG_EAX);
+        listGeneralRegs.append(XInfoDB::XREG_EBX);
+        listGeneralRegs.append(XInfoDB::XREG_ECX);
+        listGeneralRegs.append(XInfoDB::XREG_EDX);
+        listGeneralRegs.append(XInfoDB::XREG_EBP);
+        listGeneralRegs.append(XInfoDB::XREG_ESP);
+        listGeneralRegs.append(XInfoDB::XREG_ESI);
+        listGeneralRegs.append(XInfoDB::XREG_EDI);
+
+        addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
+
+        nTop+=listGeneralRegs.count()*g_nCharHeight;
+    #endif
+    #ifdef Q_PROCESSOR_X86_64
+        QList<XInfoDB::XREG> listGeneralRegs;
+        listGeneralRegs.append(XInfoDB::XREG_RAX);
+        listGeneralRegs.append(XInfoDB::XREG_RBX);
+        listGeneralRegs.append(XInfoDB::XREG_RCX);
+        listGeneralRegs.append(XInfoDB::XREG_RDX);
+        listGeneralRegs.append(XInfoDB::XREG_RBP);
+        listGeneralRegs.append(XInfoDB::XREG_RSP);
+        listGeneralRegs.append(XInfoDB::XREG_RSI);
+        listGeneralRegs.append(XInfoDB::XREG_RDI);
+        listGeneralRegs.append(XInfoDB::XREG_R8);
+        listGeneralRegs.append(XInfoDB::XREG_R9);
+        listGeneralRegs.append(XInfoDB::XREG_R10);
+        listGeneralRegs.append(XInfoDB::XREG_R11);
+        listGeneralRegs.append(XInfoDB::XREG_R12);
+        listGeneralRegs.append(XInfoDB::XREG_R13);
+        listGeneralRegs.append(XInfoDB::XREG_R14);
+        listGeneralRegs.append(XInfoDB::XREG_R15);
+
+        addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
+
+        nTop+=listGeneralRegs.count()*g_nCharHeight;
+    #endif
+    }
+
+    if(g_regOptions.bIP)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+    #ifdef Q_PROCESSOR_X86_32
+        addRegion(XInfoDB::XREG_RIP,
+                  nLeft,
+                  nTop,
+                  g_nCharWidth*3,
+                  nValueWidth32,
+                  nCommentWidth);
+    #endif
+    #ifdef Q_PROCESSOR_X86_64
+        addRegion(XInfoDB::XREG_RIP,
+                  nLeft,
+                  nTop,
+                  g_nCharWidth*3,
+                  nValueWidth64,
+                  nCommentWidth);
+    #endif
+
+        nTop+=g_nCharHeight;
+    }
+
+    if(g_regOptions.bFlags)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        addRegion(XInfoDB::XREG_EFLAGS,
+                  nLeft,
+                  nTop,
+                  g_nCharWidth*6,
+                  nValueWidth32,
+                  nCommentWidth);
+        nTop+=g_nCharHeight;
+
+        QList<XInfoDB::XREG> listRegs1;
+        listRegs1.append(XInfoDB::XREG_ZF);
+        listRegs1.append(XInfoDB::XREG_OF);
+        listRegs1.append(XInfoDB::XREG_CF);
+        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+        QList<XInfoDB::XREG> listRegs2;
+        listRegs2.append(XInfoDB::XREG_ZF);
+        listRegs2.append(XInfoDB::XREG_OF);
+        listRegs2.append(XInfoDB::XREG_CF);
+        addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+        QList<XInfoDB::XREG> listRegs3;
+        listRegs3.append(XInfoDB::XREG_AF);
+        listRegs3.append(XInfoDB::XREG_DF);
+        listRegs3.append(XInfoDB::XREG_IF);
+        addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+        nTop+=(3)*g_nCharHeight;
+    }
+
+    if(g_regOptions.bSegments)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<XInfoDB::XREG> listRegs1;
+        listRegs1.append(XInfoDB::XREG_GS);
+        listRegs1.append(XInfoDB::XREG_ES);
+        listRegs1.append(XInfoDB::XREG_CS);
+        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+        QList<XInfoDB::XREG> listRegs2;
+        listRegs2.append(XInfoDB::XREG_FS);
+        listRegs2.append(XInfoDB::XREG_DS);
+        listRegs2.append(XInfoDB::XREG_SS);
+        addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0);
+
+        nTop+=(3)*g_nCharHeight;
+    }
+
+    if(g_regOptions.bFloat)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<XInfoDB::XREG> listXmmFloat;
+        listXmmFloat.append(XInfoDB::XREG_ST0);
+        listXmmFloat.append(XInfoDB::XREG_ST1);
+        listXmmFloat.append(XInfoDB::XREG_ST2);
+        listXmmFloat.append(XInfoDB::XREG_ST3);
+        listXmmFloat.append(XInfoDB::XREG_ST4);
+        listXmmFloat.append(XInfoDB::XREG_ST5);
+        listXmmFloat.append(XInfoDB::XREG_ST6);
+        listXmmFloat.append(XInfoDB::XREG_ST7);
+
+        addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth);
+
+        nTop+=listXmmFloat.count()*g_nCharHeight;
+
+        // TODO tagWord
+        // TODO StatusWord
+        // ControlWord
+    }
+
+    if(g_regOptions.bDebug)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<XInfoDB::XREG> listDebugRegs;
+        listDebugRegs.append(XInfoDB::XREG_DR0);
+        listDebugRegs.append(XInfoDB::XREG_DR1);
+        listDebugRegs.append(XInfoDB::XREG_DR2);
+        listDebugRegs.append(XInfoDB::XREG_DR3);
+        listDebugRegs.append(XInfoDB::XREG_DR6);
+        listDebugRegs.append(XInfoDB::XREG_DR7);
+
+    #ifdef Q_PROCESSOR_X86_32
+        addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
+    #endif
+    #ifdef Q_PROCESSOR_X86_64
+        addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
+    #endif
+        nTop+=listDebugRegs.count()*g_nCharHeight;
+    }
+
+    if(g_regOptions.bXMM)
+    {
+        if(bFirst)
+        {
+            nTop+=g_nCharHeight/2; // Empty
+        }
+
+        bFirst=true;
+
+        QList<XInfoDB::XREG> listXmmRegs;
+        listXmmRegs.append(XInfoDB::XREG_XMM0);
+        listXmmRegs.append(XInfoDB::XREG_XMM1);
+        listXmmRegs.append(XInfoDB::XREG_XMM2);
+        listXmmRegs.append(XInfoDB::XREG_XMM3);
+        listXmmRegs.append(XInfoDB::XREG_XMM4);
+        listXmmRegs.append(XInfoDB::XREG_XMM5);
+        listXmmRegs.append(XInfoDB::XREG_XMM6);
+        listXmmRegs.append(XInfoDB::XREG_XMM7);
+        listXmmRegs.append(XInfoDB::XREG_XMM8);
+        listXmmRegs.append(XInfoDB::XREG_XMM9);
+        listXmmRegs.append(XInfoDB::XREG_XMM10);
+        listXmmRegs.append(XInfoDB::XREG_XMM11);
+        listXmmRegs.append(XInfoDB::XREG_XMM12);
+        listXmmRegs.append(XInfoDB::XREG_XMM13);
+        listXmmRegs.append(XInfoDB::XREG_XMM14);
+        listXmmRegs.append(XInfoDB::XREG_XMM15);
+
+        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
+
+        nTop+=listXmmRegs.count()*g_nCharHeight;
+
+        // TODO MxCsr
+    }
+
+    qint32 nNumberOfRegions=g_listRegions.count();
+
+    for(qint32 i=0;i<nNumberOfRegions;i++)
+    {
+        nMinWidth=qMax(nMinWidth,g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth+g_listRegions.at(i).nCommentWidth);
+        nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight);
+    }
+
+    setMinimumWidth(nMinWidth);
+    setMinimumHeight(nMinHeight);
 
     viewport()->update();
 }
 
 void XRegistersView::clear()
 {
-    g_bActive=false;
+    g_listRegions.clear();
 #ifdef QT_DEBUG
     qDebug("void XRegistersView::clear()");
 #endif
-
-    adjustView();
 
     viewport()->update();
 }
 
 void XRegistersView::adjustView()
 {
-    g_listRegions.clear();
+    QFont _font;
+    QString sFont=getGlobalOptions()->getValue(XOptions::ID_REGISTERS_FONT).toString();
 
-    qint32 nMinWidth=0;
-    qint32 nMinHeight=0;
-
-    if(g_bActive)
+    if((sFont!="")&&_font.fromString(sFont))
     {
-        qint32 nLeft=5;
-        qint32 nTop=0;
-
-        qint32 nValueWidthBit=g_nCharWidth*1;
-        qint32 nValueWidth32=g_nCharWidth*8;
-        qint32 nValueWidth64=g_nCharWidth*12;
-        qint32 nValueWidth128=g_nCharWidth*20; // Check
-        qint32 nCommentWidth=nValueWidth32;
-
-        bool bFirst=false;
-
-        if(g_regOptions.bGeneral)
-        {
-            bFirst=true;
-
-            // TODO CHeck EAX EBX or EAX ECX
-
-        #ifdef Q_PROCESSOR_X86_32
-            QList<XInfoDB::XREG> listGeneralRegs;
-            listGeneralRegs.append(XInfoDB::XREG_EAX);
-            listGeneralRegs.append(XInfoDB::XREG_EBX);
-            listGeneralRegs.append(XInfoDB::XREG_ECX);
-            listGeneralRegs.append(XInfoDB::XREG_EDX);
-            listGeneralRegs.append(XInfoDB::XREG_EBP);
-            listGeneralRegs.append(XInfoDB::XREG_ESP);
-            listGeneralRegs.append(XInfoDB::XREG_ESI);
-            listGeneralRegs.append(XInfoDB::XREG_EDI);
-
-            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
-
-            nTop+=listGeneralRegs.count()*g_nCharHeight;
-        #endif
-        #ifdef Q_PROCESSOR_X86_64
-            QList<XInfoDB::XREG> listGeneralRegs;
-            listGeneralRegs.append(XInfoDB::XREG_RAX);
-            listGeneralRegs.append(XInfoDB::XREG_RBX);
-            listGeneralRegs.append(XInfoDB::XREG_RCX);
-            listGeneralRegs.append(XInfoDB::XREG_RDX);
-            listGeneralRegs.append(XInfoDB::XREG_RBP);
-            listGeneralRegs.append(XInfoDB::XREG_RSP);
-            listGeneralRegs.append(XInfoDB::XREG_RSI);
-            listGeneralRegs.append(XInfoDB::XREG_RDI);
-            listGeneralRegs.append(XInfoDB::XREG_R8);
-            listGeneralRegs.append(XInfoDB::XREG_R9);
-            listGeneralRegs.append(XInfoDB::XREG_R10);
-            listGeneralRegs.append(XInfoDB::XREG_R11);
-            listGeneralRegs.append(XInfoDB::XREG_R12);
-            listGeneralRegs.append(XInfoDB::XREG_R13);
-            listGeneralRegs.append(XInfoDB::XREG_R14);
-            listGeneralRegs.append(XInfoDB::XREG_R15);
-
-            addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
-
-            nTop+=listGeneralRegs.count()*g_nCharHeight;
-        #endif
-        }
-
-        if(g_regOptions.bIP)
-        {
-            if(bFirst)
-            {
-                nTop+=g_nCharHeight/2; // Empty
-            }
-
-            bFirst=true;
-
-        #ifdef Q_PROCESSOR_X86_32
-            addRegion(XInfoDB::XREG_RIP,
-                      nLeft,
-                      nTop,
-                      g_nCharWidth*3,
-                      nValueWidth32,
-                      nCommentWidth);
-        #endif
-        #ifdef Q_PROCESSOR_X86_64
-            addRegion(XInfoDB::XREG_RIP,
-                      nLeft,
-                      nTop,
-                      g_nCharWidth*3,
-                      nValueWidth64,
-                      nCommentWidth);
-        #endif
-
-            nTop+=g_nCharHeight;
-        }
-
-        if(g_regOptions.bFlags)
-        {
-            if(bFirst)
-            {
-                nTop+=g_nCharHeight/2; // Empty
-            }
-
-            bFirst=true;
-
-            addRegion(XInfoDB::XREG_EFLAGS,
-                      nLeft,
-                      nTop,
-                      g_nCharWidth*6,
-                      nValueWidth32,
-                      nCommentWidth);
-            nTop+=g_nCharHeight;
-
-            QList<XInfoDB::XREG> listRegs1;
-            listRegs1.append(XInfoDB::XREG_ZF);
-            listRegs1.append(XInfoDB::XREG_OF);
-            listRegs1.append(XInfoDB::XREG_CF);
-            addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-            QList<XInfoDB::XREG> listRegs2;
-            listRegs2.append(XInfoDB::XREG_ZF);
-            listRegs2.append(XInfoDB::XREG_OF);
-            listRegs2.append(XInfoDB::XREG_CF);
-            addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-            QList<XInfoDB::XREG> listRegs3;
-            listRegs3.append(XInfoDB::XREG_AF);
-            listRegs3.append(XInfoDB::XREG_DF);
-            listRegs3.append(XInfoDB::XREG_IF);
-            addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-            nTop+=(3)*g_nCharHeight;
-        }
-
-        if(g_regOptions.bSegments)
-        {
-            if(bFirst)
-            {
-                nTop+=g_nCharHeight/2; // Empty
-            }
-
-            bFirst=true;
-
-            QList<XInfoDB::XREG> listRegs1;
-            listRegs1.append(XInfoDB::XREG_GS);
-            listRegs1.append(XInfoDB::XREG_ES);
-            listRegs1.append(XInfoDB::XREG_CS);
-            addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-            QList<XInfoDB::XREG> listRegs2;
-            listRegs2.append(XInfoDB::XREG_FS);
-            listRegs2.append(XInfoDB::XREG_DS);
-            listRegs2.append(XInfoDB::XREG_SS);
-            addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0);
-
-            nTop+=(3)*g_nCharHeight;
-        }
-
-        if(g_regOptions.bFloat)
-        {
-            if(bFirst)
-            {
-                nTop+=g_nCharHeight/2; // Empty
-            }
-
-            bFirst=true;
-
-            QList<XInfoDB::XREG> listXmmFloat;
-            listXmmFloat.append(XInfoDB::XREG_ST0);
-            listXmmFloat.append(XInfoDB::XREG_ST1);
-            listXmmFloat.append(XInfoDB::XREG_ST2);
-            listXmmFloat.append(XInfoDB::XREG_ST3);
-            listXmmFloat.append(XInfoDB::XREG_ST4);
-            listXmmFloat.append(XInfoDB::XREG_ST5);
-            listXmmFloat.append(XInfoDB::XREG_ST6);
-            listXmmFloat.append(XInfoDB::XREG_ST7);
-
-            addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth);
-
-            nTop+=listXmmFloat.count()*g_nCharHeight;
-
-            // TODO tagWord
-            // TODO StatusWord
-            // ControlWord
-        }
-
-        if(g_regOptions.bDebug)
-        {
-            if(bFirst)
-            {
-                nTop+=g_nCharHeight/2; // Empty
-            }
-
-            bFirst=true;
-
-            QList<XInfoDB::XREG> listDebugRegs;
-            listDebugRegs.append(XInfoDB::XREG_DR0);
-            listDebugRegs.append(XInfoDB::XREG_DR1);
-            listDebugRegs.append(XInfoDB::XREG_DR2);
-            listDebugRegs.append(XInfoDB::XREG_DR3);
-            listDebugRegs.append(XInfoDB::XREG_DR6);
-            listDebugRegs.append(XInfoDB::XREG_DR7);
-
-        #ifdef Q_PROCESSOR_X86_32
-            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth);
-        #endif
-        #ifdef Q_PROCESSOR_X86_64
-            addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth);
-        #endif
-            nTop+=listDebugRegs.count()*g_nCharHeight;
-        }
-
-        if(g_regOptions.bXMM)
-        {
-            if(bFirst)
-            {
-                nTop+=g_nCharHeight/2; // Empty
-            }
-
-            bFirst=true;
-
-            QList<XInfoDB::XREG> listXmmRegs;
-            listXmmRegs.append(XInfoDB::XREG_XMM0);
-            listXmmRegs.append(XInfoDB::XREG_XMM1);
-            listXmmRegs.append(XInfoDB::XREG_XMM2);
-            listXmmRegs.append(XInfoDB::XREG_XMM3);
-            listXmmRegs.append(XInfoDB::XREG_XMM4);
-            listXmmRegs.append(XInfoDB::XREG_XMM5);
-            listXmmRegs.append(XInfoDB::XREG_XMM6);
-            listXmmRegs.append(XInfoDB::XREG_XMM7);
-            listXmmRegs.append(XInfoDB::XREG_XMM8);
-            listXmmRegs.append(XInfoDB::XREG_XMM9);
-            listXmmRegs.append(XInfoDB::XREG_XMM10);
-            listXmmRegs.append(XInfoDB::XREG_XMM11);
-            listXmmRegs.append(XInfoDB::XREG_XMM12);
-            listXmmRegs.append(XInfoDB::XREG_XMM13);
-            listXmmRegs.append(XInfoDB::XREG_XMM14);
-            listXmmRegs.append(XInfoDB::XREG_XMM15);
-
-            addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth);
-
-            nTop+=listXmmRegs.count()*g_nCharHeight;
-
-            // TODO MxCsr
-        }
-
-        qint32 nNumberOfRegions=g_listRegions.count();
-
-        for(qint32 i=0;i<nNumberOfRegions;i++)
-        {
-            nMinWidth=qMax(nMinWidth,g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth+g_listRegions.at(i).nCommentWidth);
-            nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight);
-        }
+        g_fontText=_font;
     }
 
-    setMinimumWidth(nMinWidth);
-    setMinimumHeight(nMinHeight);
+    reload();
 }
 
 void XRegistersView::addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth)
@@ -438,40 +439,44 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 {
     Q_UNUSED(pEvent)
 
-    QPainter *pPainter=new QPainter(this->viewport());
-    pPainter->setPen(viewport()->palette().color(QPalette::WindowText));
-    pPainter->setBackgroundMode(Qt::TransparentMode);
-
-    qint32 nNumberOfRegions=g_listRegions.count();
-
-    for(qint32 i=0;i<nNumberOfRegions;i++)
+    if(g_pInfoDB)
     {
-        pPainter->save();
-        QString sTitle=XInfoDB::regIdToString(g_listRegions.at(i).reg);
-        bool bChanged=g_pInfoDB->isRegChanged(g_listRegions.at(i).reg);
-        qint32 nTop=g_listRegions.at(i).nTop;
-        qint32 nLeft=g_listRegions.at(i).nLeft;
+        QPainter *pPainter=new QPainter(this->viewport());
+        pPainter->setFont(g_fontText);
+        pPainter->setPen(viewport()->palette().color(QPalette::WindowText));
+        pPainter->setBackgroundMode(Qt::TransparentMode);
 
-        pPainter->setPen(QColor(Qt::gray));
-        pPainter->drawText(nLeft,nTop+g_listRegions.at(i).nHeight,sTitle); // TODO Text Optional
+        qint32 nNumberOfRegions=g_listRegions.count();
 
-        pPainter->restore();
-
-        pPainter->save();
-
-        if(bChanged)
+        for(qint32 i=0;i<nNumberOfRegions;i++)
         {
-            pPainter->setPen(QColor(Qt::red));
+            pPainter->save();
+            QString sTitle=XInfoDB::regIdToString(g_listRegions.at(i).reg);
+            bool bChanged=g_pInfoDB->isRegChanged(g_listRegions.at(i).reg);
+            qint32 nTop=g_listRegions.at(i).nTop;
+            qint32 nLeft=g_listRegions.at(i).nLeft;
+
+            pPainter->setPen(QColor(Qt::gray));
+            pPainter->drawText(nLeft,nTop+g_listRegions.at(i).nHeight,sTitle); // TODO Text Optional
+
+            pPainter->restore();
+
+            pPainter->save();
+
+            if(bChanged)
+            {
+                pPainter->setPen(QColor(Qt::red));
+            }
+
+            // TODO MMX
+            pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop+g_listRegions.at(i).nHeight,XBinary::xVariantToHex(g_pInfoDB->getCurrentReg(g_listRegions.at(i).reg))); // TODO Text Optional
+
+            pPainter->restore();
+            // TODO Comment
         }
 
-        // TODO MMX
-        pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop+g_listRegions.at(i).nHeight,XBinary::xVariantToHex(g_pInfoDB->getCurrentReg(g_listRegions.at(i).reg))); // TODO Text Optional
-
-        pPainter->restore();
-        // TODO Comment
+        delete pPainter;
     }
-
-    delete pPainter;
 }
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
@@ -510,7 +515,6 @@ void XRegistersView::actionViewGeneral()
     g_regOptions.bGeneral=!(g_regOptions.bGeneral);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::actionViewIP()
@@ -518,7 +522,6 @@ void XRegistersView::actionViewIP()
     g_regOptions.bIP=!(g_regOptions.bIP);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::actionViewFlags()
@@ -526,7 +529,6 @@ void XRegistersView::actionViewFlags()
     g_regOptions.bFlags=!(g_regOptions.bFlags);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::actionViewSegments()
@@ -534,7 +536,6 @@ void XRegistersView::actionViewSegments()
     g_regOptions.bSegments=!(g_regOptions.bSegments);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::actionViewDebug()
@@ -542,7 +543,6 @@ void XRegistersView::actionViewDebug()
     g_regOptions.bDebug=!(g_regOptions.bDebug);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::actionViewFloat()
@@ -550,7 +550,6 @@ void XRegistersView::actionViewFloat()
     g_regOptions.bFloat=!(g_regOptions.bFloat);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::actionViewXMM()
@@ -558,7 +557,6 @@ void XRegistersView::actionViewXMM()
     g_regOptions.bXMM=!(g_regOptions.bXMM);
 
     adjustView();
-    viewport()->update();
 }
 
 void XRegistersView::registerShortcuts(bool bState)
