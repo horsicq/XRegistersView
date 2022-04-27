@@ -39,7 +39,7 @@ void XRegistersViewOptionsWidget::setOptions(XOptions *pOptions)
 {
     g_pOptions=pOptions;
 
-    g_pOptions->setLineEdit(ui->lineEditRegsFont,XOptions::ID_REGISTERS_FONT);
+    reload();
 }
 
 void XRegistersViewOptionsWidget::save()
@@ -58,6 +58,11 @@ void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions)
 #ifdef Q_OS_OSX
     pOptions->addID(XOptions::ID_REGISTERS_FONT,"Menlo,10,-1,5,50,0,0,0,0,0"); // TODO Check
 #endif
+}
+
+void XRegistersViewOptionsWidget::reload()
+{
+    g_pOptions->setLineEdit(ui->lineEditRegsFont,XOptions::ID_REGISTERS_FONT);
 }
 
 void XRegistersViewOptionsWidget::on_toolButtonRegsFont_clicked()
