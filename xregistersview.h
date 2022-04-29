@@ -45,6 +45,7 @@ class XRegistersView : public XShortcutstScrollArea
         qint32 nCommentWidth;
         qint32 nHeight;
         XInfoDB::XREG reg;
+        bool bSymbol;
     };
 
 public:
@@ -52,14 +53,14 @@ public:
     XRegistersView(QWidget *pParent=nullptr);
     void setOptions(XInfoDB::XREG_OPTIONS regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
-    void setXInfoDB(XInfoDB *pInfoDB);
+    void setXInfoDB(XInfoDB *pXInfoDB);
     void reload();
     void clear();
     virtual void adjustView() override;
 
 private:
-    void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth);
-    void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth);
+    void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, bool bSymbol);
+    void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth, bool bSymbol);
     XInfoDB::XREG pointToReg(QPoint pos);
     void showRegister(XInfoDB::XREG reg);
 
@@ -85,7 +86,7 @@ protected:
     virtual void contextMenu(const QPoint &pos);
 
 private:
-    XInfoDB *g_pInfoDB;
+    XInfoDB *g_pXInfoDB;
     QList<REGION> g_listRegions;
     qint32 g_nCharWidth;
     qint32 g_nCharHeight;
