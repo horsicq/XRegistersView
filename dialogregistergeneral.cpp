@@ -124,7 +124,7 @@ void DialogRegisterGeneral::on_pushButtonCancel_clicked()
     this->close();
 }
 
-void DialogRegisterGeneral::setTitle(QGroupBox *pGroupBox, XInfoDB::XREG reg)
+void DialogRegisterGeneral::setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg)
 {
     QString sTitle=XInfoDB::regIdToString(reg);
 
