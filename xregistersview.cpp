@@ -140,7 +140,7 @@ void XRegistersView::reload()
         bFirst=true;
 
     #ifdef Q_PROCESSOR_X86_32
-        addRegion(XInfoDB::XREG_RIP,
+        addRegion(XInfoDB::XREG_EIP,
                   nLeft,
                   nTop,
                   g_nCharWidth*3,
