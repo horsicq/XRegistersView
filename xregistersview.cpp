@@ -362,7 +362,7 @@ void XRegistersView::addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qin
     g_listRegions.append(region);
 }
 
-void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, bool bSymbol)
+void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,bool bSymbol)
 {
     qint32 nNumberOfRegs=pRegsList->count();
 
