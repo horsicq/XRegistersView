@@ -53,7 +53,7 @@ void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions)
     pOptions->addID(XOptions::ID_REGISTERS_FONT,"Courier,10,-1,5,50,0,0,0,0,0");
 #endif
 #ifdef Q_OS_LINUX
-    pOptions->addID(XOptions::ID_REGISTERS_FONT,"Monospace,10,-1,5,50,0,0,0,0,0");
+    pOptions->addID(XOptions::ID_REGISTERS_FONT,"DejaVu Sans Mono,10,-1,5,50,0,0,0,0,0");
 #endif
 #ifdef Q_OS_OSX
     pOptions->addID(XOptions::ID_REGISTERS_FONT,"Menlo,10,-1,5,50,0,0,0,0,0"); // TODO Check
