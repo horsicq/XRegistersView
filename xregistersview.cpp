@@ -101,7 +101,7 @@ void XRegistersView::reload()
         listGeneralRegs.append(XInfoDB::XREG_ESI);
         listGeneralRegs.append(XInfoDB::XREG_EDI);
 
-        addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth,true);
+        addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth,XInfoDB::RI_TYPE_GENERAL);
 
         nTop+=listGeneralRegs.count()*g_nCharHeight;
     #endif
@@ -124,7 +124,7 @@ void XRegistersView::reload()
         listGeneralRegs.append(XInfoDB::XREG_R14);
         listGeneralRegs.append(XInfoDB::XREG_R15);
 
-        addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth,true);
+        addRegsList(&listGeneralRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth,XInfoDB::RI_TYPE_GENERAL);
 
         nTop+=listGeneralRegs.count()*g_nCharHeight;
     #endif
@@ -145,7 +145,7 @@ void XRegistersView::reload()
                   nTop,
                   g_nCharWidth*3,
                   nValueWidth32,
-                  nCommentWidth,true);
+                  nCommentWidth,XInfoDB::RI_TYPE_ADDRESS);
     #endif
     #ifdef Q_PROCESSOR_X86_64
         addRegion(XInfoDB::XREG_RIP,
@@ -153,7 +153,7 @@ void XRegistersView::reload()
                   nTop,
                   g_nCharWidth*3,
                   nValueWidth64,
-                  nCommentWidth,true);
+                  nCommentWidth,XInfoDB::RI_TYPE_ADDRESS);
     #endif
 
         nTop+=g_nCharHeight;
@@ -173,26 +173,26 @@ void XRegistersView::reload()
                   nTop,
                   g_nCharWidth*6,
                   nValueWidth32,
-                  nCommentWidth,false);
+                  nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
         nTop+=g_nCharHeight;
 
         QList<XInfoDB::XREG> listRegs1;
         listRegs1.append(XInfoDB::XREG_ZF);
         listRegs1.append(XInfoDB::XREG_OF);
         listRegs1.append(XInfoDB::XREG_CF);
-        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,false);
+        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         QList<XInfoDB::XREG> listRegs2;
         listRegs2.append(XInfoDB::XREG_ZF);
         listRegs2.append(XInfoDB::XREG_OF);
         listRegs2.append(XInfoDB::XREG_CF);
-        addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0,false);
+        addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         QList<XInfoDB::XREG> listRegs3;
         listRegs3.append(XInfoDB::XREG_AF);
         listRegs3.append(XInfoDB::XREG_DF);
         listRegs3.append(XInfoDB::XREG_IF);
-        addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0,false);
+        addRegsList(&listRegs3,nLeft+g_nCharWidth*8,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         nTop+=(3)*g_nCharHeight;
     }
@@ -210,13 +210,13 @@ void XRegistersView::reload()
         listRegs1.append(XInfoDB::XREG_GS);
         listRegs1.append(XInfoDB::XREG_ES);
         listRegs1.append(XInfoDB::XREG_CS);
-        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,false);
+        addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         QList<XInfoDB::XREG> listRegs2;
         listRegs2.append(XInfoDB::XREG_FS);
         listRegs2.append(XInfoDB::XREG_DS);
         listRegs2.append(XInfoDB::XREG_SS);
-        addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0,false);
+        addRegsList(&listRegs2,nLeft+g_nCharWidth*6,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         nTop+=(3)*g_nCharHeight;
     }
@@ -240,7 +240,7 @@ void XRegistersView::reload()
         listXmmFloat.append(XInfoDB::XREG_ST6);
         listXmmFloat.append(XInfoDB::XREG_ST7);
 
-        addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth,false);
+        addRegsList(&listXmmFloat,nLeft,nTop,g_nCharWidth*3,nValueWidth128,nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
 
         nTop+=listXmmFloat.count()*g_nCharHeight;
 
@@ -267,10 +267,10 @@ void XRegistersView::reload()
         listDebugRegs.append(XInfoDB::XREG_DR7);
 
     #ifdef Q_PROCESSOR_X86_32
-        addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth,false);
+        addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth32,nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
     #endif
     #ifdef Q_PROCESSOR_X86_64
-        addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth,false);
+        addRegsList(&listDebugRegs,nLeft,nTop,g_nCharWidth*3,nValueWidth64,nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
     #endif
         nTop+=listDebugRegs.count()*g_nCharHeight;
     }
@@ -302,7 +302,7 @@ void XRegistersView::reload()
         listXmmRegs.append(XInfoDB::XREG_XMM14);
         listXmmRegs.append(XInfoDB::XREG_XMM15);
 
-        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth,false);
+        addRegsList(&listXmmRegs,nLeft,nTop,g_nCharWidth*5,nValueWidth128,nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
 
         nTop+=listXmmRegs.count()*g_nCharHeight;
 
@@ -346,7 +346,7 @@ void XRegistersView::adjustView()
     reload();
 }
 
-void XRegistersView::addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,bool bSymbol)
+void XRegistersView::addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType)
 {
     REGION region={};
 
@@ -357,12 +357,12 @@ void XRegistersView::addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32
     region.nValueWidth=nValueWidth;
     region.nCommentWidth=nCommentWidth;
     region.nHeight=g_nCharHeight;
-    region.bSymbol=bSymbol;
+    region.riType=riType;
 
     g_listRegions.append(region);
 }
 
-void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,bool bSymbol)
+void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType)
 {
     qint32 nNumberOfRegs=pRegsList->count();
 
@@ -374,7 +374,7 @@ void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qi
                   nTitleWidth,
                   nValueWidth,
                   nCommentWidth,
-                  bSymbol);
+                  riType);
     }
 }
 
@@ -388,8 +388,8 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
     {
         REGION region=g_listRegions.at(i);
 
-        if( (pos.x()>region.nLeft)&&
-            (pos.x()<region.nLeft+region.nTitleWidth+region.nValueWidth+region.nCommentWidth)&&
+        if( (pos.x()>region.nLeft+region.nTitleWidth)&&
+            (pos.x()<region.nLeft+region.nTitleWidth+region.nValueWidth)&&
             (pos.y()>region.nTop)&&
             (pos.y()<region.nTop+region.nHeight)
             )
@@ -481,12 +481,11 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
                 pPainter->restore();
             }
 
-            // TODO Comment
             QString sComment;
 
-            if(g_listRegions.at(i).bSymbol)
+            if(g_listRegions.at(i).riType!=XInfoDB::RI_TYPE_UNKNOWN)
             {
-                sComment=XInfoDB::recordInfoToString(g_pXInfoDB->getRecordInfoCache(XBinary::xVariantToQword(xvariant)),XInfoDB::RI_TYPE_GENERAL);
+                sComment=XInfoDB::recordInfoToString(g_pXInfoDB->getRecordInfoCache(XBinary::xVariantToQword(xvariant)),g_listRegions.at(i).riType);
             }
 
             if(sComment!="")
@@ -501,16 +500,19 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
 {
-    XInfoDB::XREG reg=pointToReg(pEvent->pos());
-
-    if(reg!=XInfoDB::XREG_UNKNOWN)
+    if(pEvent->button()==Qt::LeftButton)
     {
-        showRegister(reg);
-    }
-    // TODO Dialog
-//    QString sReg=XInfoDB::regIdToString();
+        XInfoDB::XREG reg=pointToReg(pEvent->pos());
 
-//    qDebug("%s",sReg.toLatin1().data());
+        if(reg!=XInfoDB::XREG_UNKNOWN)
+        {
+            showRegister(reg);
+        }
+        // TODO Dialog
+    //    QString sReg=XInfoDB::regIdToString();
+
+    //    qDebug("%s",sReg.toLatin1().data());
+    }
 
     XShortcutstScrollArea::mousePressEvent(pEvent);
 }
