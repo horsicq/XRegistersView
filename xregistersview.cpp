@@ -183,9 +183,9 @@ void XRegistersView::reload()
         addRegsList(&listRegs1,nLeft,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         QList<XInfoDB::XREG> listRegs2;
-        listRegs2.append(XInfoDB::XREG_ZF);
-        listRegs2.append(XInfoDB::XREG_OF);
-        listRegs2.append(XInfoDB::XREG_CF);
+        listRegs2.append(XInfoDB::XREG_PF);
+        listRegs2.append(XInfoDB::XREG_SF);
+        listRegs2.append(XInfoDB::XREG_TF);
         addRegsList(&listRegs2,nLeft+g_nCharWidth*4,nTop,g_nCharWidth*2,nValueWidthBit,0,XInfoDB::RI_TYPE_UNKNOWN);
 
         QList<XInfoDB::XREG> listRegs3;
