@@ -167,13 +167,22 @@ void XRegistersView::reload()
         }
 
         bFirst=true;
-
+    #ifdef Q_PROCESSOR_X86_32
         addRegion(XInfoDB::XREG_EFLAGS,
                   nLeft,
                   nTop,
                   g_nCharWidth*6,
                   nValueWidth32,
                   nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
+    #endif
+    #ifdef Q_PROCESSOR_X86_64
+        addRegion(XInfoDB::XREG_RFLAGS,
+                  nLeft,
+                  nTop,
+                  g_nCharWidth*6,
+                  nValueWidth64,
+                  nCommentWidth,XInfoDB::RI_TYPE_UNKNOWN);
+    #endif
         nTop+=g_nCharHeight;
 
         QList<XInfoDB::XREG> listRegs1;
