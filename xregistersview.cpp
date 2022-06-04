@@ -355,7 +355,7 @@ void XRegistersView::adjustView()
     reload();
 }
 
-void XRegistersView::addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType)
+void XRegistersView::addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XInfoDB::RI_TYPE riType)
 {
     REGION region={};
 
