@@ -44,6 +44,21 @@ private slots:
     void on_pushButtonOK_clicked();
     void on_pushButtonCancel_clicked();
     void setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg);
+    void on_lineEditReg64_textEdited(const QString &sString);
+    void on_lineEditReg32_1_textEdited(const QString &sString);
+    void on_lineEditReg32_2_textEdited(const QString &sString);
+    void on_lineEditReg16_1_textEdited(const QString &sString);
+    void on_lineEditReg16_2_textEdited(const QString &sString);
+    void on_lineEditReg16_3_textEdited(const QString &sString);
+    void on_lineEditReg16_4_textEdited(const QString &sString);
+    void on_lineEditReg8_1_textEdited(const QString &sString);
+    void on_lineEditReg8_2_textEdited(const QString &sString);
+    void on_lineEditReg8_3_textEdited(const QString &sString);
+    void on_lineEditReg8_4_textEdited(const QString &sString);
+    void on_lineEditReg8_5_textEdited(const QString &sString);
+    void on_lineEditReg8_6_textEdited(const QString &sString);
+    void on_lineEditReg8_7_textEdited(const QString &sString);
+    void on_lineEditReg8_8_textEdited(const QString &sString);
 
 private:
     Ui::DialogRegisterGeneral *ui;

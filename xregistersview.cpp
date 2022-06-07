@@ -480,7 +480,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
                 pPainter->setPen(QColor(Qt::red));
             }
 
-            XBinary::XVARIANT xvariant=g_pXInfoDB->getCurrentReg(g_listRegions.at(i).reg);
+            XBinary::XVARIANT xvariant=g_pXInfoDB->getCurrentRegCache(g_listRegions.at(i).reg);
 
             // TODO MMX
             pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop+g_listRegions.at(i).nHeight,XBinary::xVariantToHex(xvariant)); // TODO Text Optional

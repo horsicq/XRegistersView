@@ -67,14 +67,14 @@ void DialogRegisterGeneral::setData(XInfoDB *pXInfoDB,XInfoDB::XREG reg)
     g_reg=reg;
 
 #ifdef Q_PROCESSOR_X86_32
-    g_nInitValue=pXInfoDB->getCurrentReg(reg).var.v_uint32;
+    g_nInitValue=pXInfoDB->getCurrentRegCache(reg).var.v_uint32;
     setTitle(ui->groupBoxReg32_2,reg);
     setTitle(ui->groupBoxReg16_4,XInfoDB::getSubReg16(reg));
     setTitle(ui->groupBoxReg8_7,XInfoDB::getSubReg8H(reg));
     setTitle(ui->groupBoxReg8_8,XInfoDB::getSubReg8L(reg));
 #endif
 #ifdef Q_PROCESSOR_X86_64
-    g_nInitValue=pXInfoDB->getCurrentReg(reg).var.v_uint64;
+    g_nInitValue=pXInfoDB->getCurrentRegCache(reg).var.v_uint64;
     setTitle(ui->groupBoxReg64,reg);
     setTitle(ui->groupBoxReg32_2,XInfoDB::getSubReg32(reg));
     setTitle(ui->groupBoxReg16_4,XInfoDB::getSubReg16(reg));
@@ -132,4 +132,79 @@ void DialogRegisterGeneral::setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg)
     {
         pGroupBox->setTitle(sTitle);
     }
+}
+
+void DialogRegisterGeneral::on_lineEditReg64_textEdited(const QString &sString)
+{
+    qDebug("on_lineEditReg64_textEdited");
+}
+
+void DialogRegisterGeneral::on_lineEditReg32_1_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg32_2_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg16_1_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg16_2_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg16_3_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg16_4_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_1_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_2_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_3_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_4_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_5_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_6_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_7_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
+}
+
+void DialogRegisterGeneral::on_lineEditReg8_8_textEdited(const QString &sString)
+{
+    qDebug("XXXXXXXXXXX");
 }
