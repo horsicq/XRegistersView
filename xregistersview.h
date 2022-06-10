@@ -59,7 +59,7 @@ public:
     virtual void adjustView() override;
 
 private:
-    void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
+    void addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XInfoDB::RI_TYPE riType);
     void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
     XInfoDB::XREG pointToReg(QPoint pos);
     void showRegister(XInfoDB::XREG reg);
