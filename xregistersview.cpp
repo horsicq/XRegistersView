@@ -34,12 +34,13 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     g_regOptions={};
     g_regOptions.bGeneral=true;
     g_regOptions.bIP=true;
+#ifdef Q_PROCESSOR_X86
     g_regOptions.bFlags=true;
     g_regOptions.bSegments=true;
     g_regOptions.bDebug=true;
     g_regOptions.bFloat=true;
     g_regOptions.bXMM=true;
-
+#endif
 //    addColumn("",300); // TODO Width
 //    setVerticalLinesVisible(true);
 ////    setHorisontalLinesVisible(true);
@@ -158,7 +159,7 @@ void XRegistersView::reload()
 
         nTop+=g_nCharHeight;
     }
-
+#ifdef Q_PROCESSOR_X86
     if(g_regOptions.bFlags)
     {
         if(bFirst)
@@ -205,7 +206,8 @@ void XRegistersView::reload()
 
         nTop+=(3)*g_nCharHeight;
     }
-
+#endif
+#ifdef Q_PROCESSOR_X86
     if(g_regOptions.bSegments)
     {
         if(bFirst)
@@ -229,7 +231,8 @@ void XRegistersView::reload()
 
         nTop+=(3)*g_nCharHeight;
     }
-
+#endif
+#ifdef Q_PROCESSOR_X86
     if(g_regOptions.bFloat)
     {
         if(bFirst)
@@ -257,7 +260,8 @@ void XRegistersView::reload()
         // TODO StatusWord
         // ControlWord
     }
-
+#endif
+#ifdef Q_PROCESSOR_X86
     if(g_regOptions.bDebug)
     {
         if(bFirst)
@@ -283,7 +287,8 @@ void XRegistersView::reload()
     #endif
         nTop+=listDebugRegs.count()*g_nCharHeight;
     }
-
+#endif
+#ifdef Q_PROCESSOR_X86
     if(g_regOptions.bXMM)
     {
         if(bFirst)
@@ -317,7 +322,7 @@ void XRegistersView::reload()
 
         // TODO MxCsr
     }
-
+#endif
     qint32 nNumberOfRegions=g_listRegions.count();
 
     for(qint32 i=0;i<nNumberOfRegions;i++)
@@ -554,42 +559,46 @@ void XRegistersView::actionViewIP()
 
     adjustView();
 }
-
+#ifdef Q_PROCESSOR_X86
 void XRegistersView::actionViewFlags()
 {
     g_regOptions.bFlags=!(g_regOptions.bFlags);
 
     adjustView();
 }
-
+#endif
+#ifdef Q_PROCESSOR_X86
 void XRegistersView::actionViewSegments()
 {
     g_regOptions.bSegments=!(g_regOptions.bSegments);
 
     adjustView();
 }
-
+#endif
+#ifdef Q_PROCESSOR_X86
 void XRegistersView::actionViewDebug()
 {
     g_regOptions.bDebug=!(g_regOptions.bDebug);
 
     adjustView();
 }
-
+#endif
+#ifdef Q_PROCESSOR_X86
 void XRegistersView::actionViewFloat()
 {
     g_regOptions.bFloat=!(g_regOptions.bFloat);
 
     adjustView();
 }
-
+#endif
+#ifdef Q_PROCESSOR_X86
 void XRegistersView::actionViewXMM()
 {
     g_regOptions.bXMM=!(g_regOptions.bXMM);
 
     adjustView();
 }
-
+#endif
 void XRegistersView::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
@@ -613,6 +622,7 @@ void XRegistersView::contextMenu(const QPoint &pos)
     connect(&actionIP,SIGNAL(triggered()),this,SLOT(actionViewIP()));
     menuView.addAction(&actionIP);
 
+#ifdef Q_PROCESSOR_X86
     QAction actionFlags(QString("Flags"),this);
     actionFlags.setCheckable(true);
     actionFlags.setChecked(g_regOptions.bFlags);
@@ -642,6 +652,7 @@ void XRegistersView::contextMenu(const QPoint &pos)
     actionXMM.setChecked(g_regOptions.bXMM);
     connect(&actionXMM,SIGNAL(triggered()),this,SLOT(actionViewXMM()));
     menuView.addAction(&actionXMM);
+#endif
 
     contextMenu.addMenu(&menuView);
 

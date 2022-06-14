@@ -75,11 +75,13 @@ private slots:
 public slots:
     void actionViewGeneral();
     void actionViewIP();
+#ifdef Q_PROCESSOR_X86
     void actionViewFlags();
     void actionViewSegments();
     void actionViewDebug();
     void actionViewFloat();
     void actionViewXMM();
+#endif
 
 protected:
     virtual void registerShortcuts(bool bState) override;
