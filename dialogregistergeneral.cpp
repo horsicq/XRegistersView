@@ -27,6 +27,9 @@ DialogRegisterGeneral::DialogRegisterGeneral(QWidget *pParent) :
 {
     ui->setupUi(this);
 
+    // TODO DEC <-> HEX
+    // TODO Show Names Show Bits
+
     g_pXInfoDB=nullptr;
     g_reg=XInfoDB::XREG_UNKNOWN;
     g_nInitValue=0;
@@ -90,38 +93,56 @@ void DialogRegisterGeneral::setData(XInfoDB *pXInfoDB,XInfoDB::XREG reg)
 void DialogRegisterGeneral::reload()
 {
 #ifdef Q_PROCESSOR_X86_64
-    ui->lineEditReg64->setValue(g_nCurrentValue);
+    if(!(ui->lineEditReg64->isFocused()))       ui->lineEditReg64->setValue(g_nCurrentValue);
 #endif
 
-    ui->lineEditReg32_1->setValue(XBinary::getDwordFromQword(g_nCurrentValue,1));
-    ui->lineEditReg32_2->setValue(XBinary::getDwordFromQword(g_nCurrentValue,0));
+    if(!(ui->lineEditReg32_1->isFocused()))     ui->lineEditReg32_1->setValue(XBinary::getDwordFromQword(g_nCurrentValue,1));
+    if(!(ui->lineEditReg32_2->isFocused()))     ui->lineEditReg32_2->setValue(XBinary::getDwordFromQword(g_nCurrentValue,0));
 
-    ui->lineEditReg16_1->setValue(XBinary::getWordFromQword(g_nCurrentValue,3));
-    ui->lineEditReg16_2->setValue(XBinary::getWordFromQword(g_nCurrentValue,2));
-    ui->lineEditReg16_3->setValue(XBinary::getWordFromQword(g_nCurrentValue,1));
-    ui->lineEditReg16_4->setValue(XBinary::getWordFromQword(g_nCurrentValue,0));
+    if(!(ui->lineEditReg16_1->isFocused()))     ui->lineEditReg16_1->setValue(XBinary::getWordFromQword(g_nCurrentValue,3));
+    if(!(ui->lineEditReg16_2->isFocused()))     ui->lineEditReg16_2->setValue(XBinary::getWordFromQword(g_nCurrentValue,2));
+    if(!(ui->lineEditReg16_3->isFocused()))     ui->lineEditReg16_3->setValue(XBinary::getWordFromQword(g_nCurrentValue,1));
+    if(!(ui->lineEditReg16_4->isFocused()))     ui->lineEditReg16_4->setValue(XBinary::getWordFromQword(g_nCurrentValue,0));
 
-    ui->lineEditReg8_1->setValue(XBinary::getByteFromQword(g_nCurrentValue,7));
-    ui->lineEditReg8_2->setValue(XBinary::getByteFromQword(g_nCurrentValue,6));
-    ui->lineEditReg8_3->setValue(XBinary::getByteFromQword(g_nCurrentValue,5));
-    ui->lineEditReg8_4->setValue(XBinary::getByteFromQword(g_nCurrentValue,4));
-    ui->lineEditReg8_5->setValue(XBinary::getByteFromQword(g_nCurrentValue,3));
-    ui->lineEditReg8_6->setValue(XBinary::getByteFromQword(g_nCurrentValue,2));
-    ui->lineEditReg8_7->setValue(XBinary::getByteFromQword(g_nCurrentValue,1));
-    ui->lineEditReg8_8->setValue(XBinary::getByteFromQword(g_nCurrentValue,0));
+    if(!(ui->lineEditReg8_1->isFocused()))      ui->lineEditReg8_1->setValue(XBinary::getByteFromQword(g_nCurrentValue,7));
+    if(!(ui->lineEditReg8_2->isFocused()))      ui->lineEditReg8_2->setValue(XBinary::getByteFromQword(g_nCurrentValue,6));
+    if(!(ui->lineEditReg8_3->isFocused()))      ui->lineEditReg8_3->setValue(XBinary::getByteFromQword(g_nCurrentValue,5));
+    if(!(ui->lineEditReg8_4->isFocused()))      ui->lineEditReg8_4->setValue(XBinary::getByteFromQword(g_nCurrentValue,4));
+    if(!(ui->lineEditReg8_5->isFocused()))      ui->lineEditReg8_5->setValue(XBinary::getByteFromQword(g_nCurrentValue,3));
+    if(!(ui->lineEditReg8_6->isFocused()))      ui->lineEditReg8_6->setValue(XBinary::getByteFromQword(g_nCurrentValue,2));
+    if(!(ui->lineEditReg8_7->isFocused()))      ui->lineEditReg8_7->setValue(XBinary::getByteFromQword(g_nCurrentValue,1));
+    if(!(ui->lineEditReg8_8->isFocused()))      ui->lineEditReg8_8->setValue(XBinary::getByteFromQword(g_nCurrentValue,0));
 
     ui->pushButtonOK->setEnabled(g_nInitValue!=g_nCurrentValue);
 }
 
+XBinary::XVARIANT DialogRegisterGeneral::getCurrentValue()
+{
+    XBinary::XVARIANT result={};
+
+#ifdef Q_PROCESSOR_X86_32
+    result=XBinary::getXVariant((quint32)g_nCurrentValue);
+#endif
+#ifdef Q_PROCESSOR_X86_64
+    result=XBinary::getXVariant((quint64)g_nCurrentValue);
+#endif
+
+    return result;
+}
+
 void DialogRegisterGeneral::on_pushButtonOK_clicked()
 {
-    // TODO Save register
-    accept();
+    if(g_pXInfoDB->setCurrentReg(g_reg,getCurrentValue())) // TODO Save register
+    {
+        g_pXInfoDB->setCurrentRegCache(g_reg,getCurrentValue());
+
+        accept();
+    }
 }
 
 void DialogRegisterGeneral::on_pushButtonCancel_clicked()
 {
-    this->close();
+    reject();
 }
 
 void DialogRegisterGeneral::setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg)
@@ -136,75 +157,131 @@ void DialogRegisterGeneral::setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg)
 
 void DialogRegisterGeneral::on_lineEditReg64_textEdited(const QString &sString)
 {
-    qDebug("on_lineEditReg64_textEdited");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg32_1_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg32_2_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg16_1_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg16_2_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg16_3_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg16_4_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_1_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_2_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_3_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_4_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_5_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_6_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_7_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
 }
 
 void DialogRegisterGeneral::on_lineEditReg8_8_textEdited(const QString &sString)
 {
-    qDebug("XXXXXXXXXXX");
+    Q_UNUSED(sString)
+
+    adjust();
+}
+
+void DialogRegisterGeneral::adjust()
+{
+#ifdef Q_PROCESSOR_X86_64
+    if(ui->lineEditReg64->isFocused())          g_nCurrentValue=ui->lineEditReg64->getValue();
+#endif
+
+    if(ui->lineEditReg32_1->isFocused())        g_nCurrentValue=XBinary::setDwordToQword(g_nCurrentValue,ui->lineEditReg32_1->getValue(),1);
+    if(ui->lineEditReg32_2->isFocused())        g_nCurrentValue=XBinary::setDwordToQword(g_nCurrentValue,ui->lineEditReg32_2->getValue(),0);
+
+    if(ui->lineEditReg16_1->isFocused())        g_nCurrentValue=XBinary::setWordToQword(g_nCurrentValue,ui->lineEditReg16_1->getValue(),3);
+    if(ui->lineEditReg16_2->isFocused())        g_nCurrentValue=XBinary::setWordToQword(g_nCurrentValue,ui->lineEditReg16_2->getValue(),2);
+    if(ui->lineEditReg16_3->isFocused())        g_nCurrentValue=XBinary::setWordToQword(g_nCurrentValue,ui->lineEditReg16_3->getValue(),1);
+    if(ui->lineEditReg16_4->isFocused())        g_nCurrentValue=XBinary::setWordToQword(g_nCurrentValue,ui->lineEditReg16_4->getValue(),3);
+
+    if(ui->lineEditReg8_1->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_1->getValue(),7);
+    if(ui->lineEditReg8_2->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_2->getValue(),6);
+    if(ui->lineEditReg8_3->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_3->getValue(),5);
+    if(ui->lineEditReg8_4->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_4->getValue(),4);
+    if(ui->lineEditReg8_5->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_5->getValue(),3);
+    if(ui->lineEditReg8_6->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_6->getValue(),2);
+    if(ui->lineEditReg8_7->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_7->getValue(),1);
+    if(ui->lineEditReg8_8->isFocused())         g_nCurrentValue=XBinary::setByteToQword(g_nCurrentValue,ui->lineEditReg8_8->getValue(),0);
+
+    reload();
 }

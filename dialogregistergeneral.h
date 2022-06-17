@@ -40,6 +40,8 @@ public:
     void setData(XInfoDB *pXInfoDB,XInfoDB::XREG reg);
     void reload();
 
+    XBinary::XVARIANT getCurrentValue();
+
 private slots:
     void on_pushButtonOK_clicked();
     void on_pushButtonCancel_clicked();
@@ -59,6 +61,7 @@ private slots:
     void on_lineEditReg8_6_textEdited(const QString &sString);
     void on_lineEditReg8_7_textEdited(const QString &sString);
     void on_lineEditReg8_8_textEdited(const QString &sString);
+    void adjust();
 
 private:
     Ui::DialogRegisterGeneral *ui;
