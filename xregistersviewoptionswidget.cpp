@@ -28,6 +28,8 @@ XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) :
     ui->setupUi(this);
 
     g_pOptions=nullptr;
+
+    setProperty("GROUPID",XOptions::GROUPID_REGISTERS);
 }
 
 XRegistersViewOptionsWidget::~XRegistersViewOptionsWidget()
