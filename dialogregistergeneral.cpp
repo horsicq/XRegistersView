@@ -132,7 +132,7 @@ XBinary::XVARIANT DialogRegisterGeneral::getCurrentValue()
 
 void DialogRegisterGeneral::on_pushButtonOK_clicked()
 {
-    if(g_pXInfoDB->setCurrentReg(g_reg,getCurrentValue())) // TODO Save register
+    if(g_pXInfoDB->setCurrentReg(g_reg,getCurrentValue())) // TODO Save register TODO
     {
         g_pXInfoDB->setCurrentRegCache(g_reg,getCurrentValue());
 
