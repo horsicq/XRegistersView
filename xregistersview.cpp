@@ -69,6 +69,8 @@ void XRegistersView::reload()
 {
     g_listRegions.clear();
 
+    g_nCurrentRegionIndex=0;
+
     const QFontMetricsF fm(g_fontText);
 
     qint32 nMinWidth=0;
@@ -328,7 +330,7 @@ void XRegistersView::reload()
     for(qint32 i=0;i<nNumberOfRegions;i++)
     {
         nMinWidth=qMax(nMinWidth,g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth+g_listRegions.at(i).nCommentWidth);
-        nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight+g_nCharHeight);
+        nMinHeight=qMax(nMinHeight,g_listRegions.at(i).nTop+g_listRegions.at(i).nHeight);
     }
 
     setMinimumWidth(nMinWidth);
@@ -468,29 +470,56 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
         for(qint32 i=0;i<nNumberOfRegions;i++)
         {
-            pPainter->save();
+            QRect rectTitle;
+            rectTitle.setLeft(g_listRegions.at(i).nLeft);
+            rectTitle.setTop(g_listRegions.at(i).nTop);
+            rectTitle.setWidth(g_listRegions.at(i).nTitleWidth);
+            rectTitle.setHeight(g_listRegions.at(i).nHeight);
+
+            QRect rectValue;
+            rectValue.setLeft(g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth);
+            rectValue.setTop(g_listRegions.at(i).nTop);
+            rectValue.setWidth(g_listRegions.at(i).nValueWidth);
+            rectValue.setHeight(g_listRegions.at(i).nHeight);
+
+            QRect rectComment;
+            rectComment.setLeft(g_listRegions.at(i).nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth);
+            rectComment.setTop(g_listRegions.at(i).nTop);
+            rectComment.setWidth(g_listRegions.at(i).nCommentWidth);
+            rectComment.setHeight(g_listRegions.at(i).nHeight);
+
             QString sTitle=XInfoDB::regIdToString(g_listRegions.at(i).reg);
             bool bChanged=g_pXInfoDB->isRegChanged(g_listRegions.at(i).reg);
-            qint32 nTop=g_listRegions.at(i).nTop;
-            qint32 nLeft=g_listRegions.at(i).nLeft;
+            bool bSelected=(i==g_nCurrentRegionIndex);
+
+            pPainter->save();
 
             pPainter->setPen(QColor(Qt::gray));
-            pPainter->drawText(nLeft,nTop+g_listRegions.at(i).nHeight,sTitle); // TODO Text Optional
+            pPainter->drawText(rectTitle,sTitle); // TODO Text Optional
 
             pPainter->restore();
 
-            if(bChanged)
+            if(bChanged||bSelected)
             {
                 pPainter->save();
-                pPainter->setPen(QColor(Qt::red));
+
+                if(bChanged)
+                {
+                    pPainter->setPen(QColor(Qt::red));
+                }
+
+                if(bSelected)
+                {
+                    pPainter->fillRect(rectValue,viewport()->palette().color(QPalette::Highlight));
+                }
             }
 
             XBinary::XVARIANT xvariant=g_pXInfoDB->getCurrentRegCache(g_listRegions.at(i).reg);
 
             // TODO MMX
-            pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth,nTop+g_listRegions.at(i).nHeight,XBinary::xVariantToHex(xvariant)); // TODO Text Optional
+            pPainter->drawText(rectValue,XBinary::xVariantToHex(xvariant)); // TODO Text Optional
 
-            if(bChanged)
+            if(bChanged||bSelected)
             {
                 pPainter->restore();
             }
@@ -504,7 +533,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
             if(sComment!="")
             {
-                pPainter->drawText(nLeft+g_listRegions.at(i).nTitleWidth+g_listRegions.at(i).nValueWidth,nTop+g_listRegions.at(i).nHeight,sComment); // TODO Text Optional
+                pPainter->drawText(rectComment,sComment); // TODO Text Optional
             }
         }
 
@@ -514,6 +543,8 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
 {
+    // TODO Double click
+    // TODO Enter
     if(pEvent->button()==Qt::LeftButton)
     {
         XInfoDB::XREG reg=pointToReg(pEvent->pos());
@@ -539,6 +570,27 @@ void XRegistersView::mouseReleaseEvent(QMouseEvent *pEvent)
 //    qDebug("%s",sReg.toLatin1().data());
 
     XShortcutstScrollArea::mouseReleaseEvent(pEvent);
+}
+
+void XRegistersView::keyPressEvent(QKeyEvent *pEvent)
+{
+    // TODO
+    if(pEvent->matches(QKeySequence::MoveToNextChar))
+    {
+        qDebug("QKeySequence::MoveToNextChar");
+    }
+    else if(pEvent->matches(QKeySequence::MoveToPreviousChar))
+    {
+        qDebug("QKeySequence::MoveToPreviousChar");
+    }
+    else if(pEvent->matches(QKeySequence::MoveToNextLine))
+    {
+        qDebug("QKeySequence::MoveToNextLine");
+    }
+    else if(pEvent->matches(QKeySequence::MoveToPreviousLine))
+    {
+        qDebug("QKeySequence::MoveToPreviousLine");
+    }
 }
 
 void XRegistersView::_customContextMenu(const QPoint &pos)

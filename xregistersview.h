@@ -68,6 +68,7 @@ protected:
     virtual void paintEvent(QPaintEvent* pEvent) override;
     virtual void mousePressEvent(QMouseEvent *pEvent) override;
     virtual void mouseReleaseEvent(QMouseEvent *pEvent) override;
+    virtual void keyPressEvent(QKeyEvent *pEvent) override;
 
 private slots:
     void _customContextMenu(const QPoint &pos);
@@ -94,6 +95,7 @@ private:
     qint32 g_nCharHeight;
     XInfoDB::XREG_OPTIONS g_regOptions;
     QFont g_fontText;
+    qint32 g_nCurrentRegionIndex;
 };
 
 #endif // XREGISTERSVIEW_H
