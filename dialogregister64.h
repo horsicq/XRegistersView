@@ -21,13 +21,13 @@
 #ifndef DIALOGREGISTER64_H
 #define DIALOGREGISTER64_H
 
-#include <QDialog>
+#include "dialogregisterabstract.h"
 
 namespace Ui {
-class DialogRegister64;
+class DialogRegisterGeneral;
 }
 // https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/x64-architecture
-class DialogRegister64 : public QDialog
+class DialogRegister64 : public DialogRegisterAbstract
 {
     Q_OBJECT
 
@@ -35,8 +35,17 @@ public:
     explicit DialogRegister64(QWidget *pParent=nullptr);
     ~DialogRegister64();
 
+private slots:
+    void on_pushButtonOK_clicked();
+    void on_pushButtonCancel_clicked();
+
+protected:
+    virtual void initValue();
+    virtual void adjustValue();
+    virtual void setValue();
+
 private:
-    Ui::DialogRegister64 *ui;
+    Ui::DialogRegisterGeneral *ui;
 };
 
 #endif // DIALOGREGISTER64_H

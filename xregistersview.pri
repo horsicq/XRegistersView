@@ -2,12 +2,14 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 HEADERS += \
-    $$PWD/dialogregistergeneral.h \
+    $$PWD/dialogregister64.h \
+    $$PWD/dialogregisterabstract.h \
     $$PWD/xregistersview.h \
     $$PWD/xregistersviewoptionswidget.h
 
 SOURCES += \
-    $$PWD/dialogregistergeneral.cpp \
+    $$PWD/dialogregister64.cpp \
+    $$PWD/dialogregisterabstract.cpp \
     $$PWD/xregistersview.cpp \
     $$PWD/xregistersviewoptionswidget.cpp
 
@@ -17,5 +19,5 @@ SOURCES += \
 }
 
 FORMS += \
-    $$PWD/dialogregistergeneral.ui \
+    $$PWD/dialogregister64.ui \
     $$PWD/xregistersviewoptionswidget.ui

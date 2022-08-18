@@ -443,7 +443,7 @@ void XRegistersView::showRegister(XInfoDB::XREG reg)
         (reg==XInfoDB::XREG_R15)
         )
     {
-        DialogRegisterGeneral dialogReg(this);
+        DialogRegister64 dialogReg(this);
 
         dialogReg.setData(g_pXInfoDB,reg);
 

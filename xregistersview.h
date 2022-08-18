@@ -30,7 +30,7 @@
 #include "xshortcutstscrollarea.h"
 #include "xformats.h"
 #include "xinfodb.h"
-#include "dialogregistergeneral.h"
+#include "dialogregister64.h"
 
 class XRegistersView : public XShortcutstScrollArea
 {
