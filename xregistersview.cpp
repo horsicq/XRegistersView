@@ -658,6 +658,7 @@ void XRegistersView::registerShortcuts(bool bState)
 
 void XRegistersView::contextMenu(const QPoint &pos)
 {
+    // TODO isContextMenuEnable
     QMenu contextMenu(this);
 
     QMenu menuView(tr("View"),this);
