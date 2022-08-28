@@ -24,7 +24,7 @@
 #include "dialogregisterabstract.h"
 
 namespace Ui {
-class DialogRegisterGeneral;
+class DialogRegister64;
 }
 // https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/x64-architecture
 class DialogRegister64 : public DialogRegisterAbstract
@@ -45,7 +45,7 @@ protected:
     virtual void setValue();
 
 private:
-    Ui::DialogRegisterGeneral *ui;
+    Ui::DialogRegister64 *ui;
 };
 
 #endif // DIALOGREGISTER64_H

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogRegisterGeneral</class>
- <widget class="QDialog" name="DialogRegisterGeneral">
+ <class>DialogRegister64</class>
+ <widget class="QDialog" name="DialogRegister64">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>

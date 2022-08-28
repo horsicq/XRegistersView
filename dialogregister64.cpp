@@ -19,11 +19,11 @@
  * SOFTWARE.
  */
 #include "dialogregister64.h"
-#include "ui_dialogregistergeneral.h"
+#include "ui_dialogregister64.h"
 
 DialogRegister64::DialogRegister64(QWidget *pParent) :
     DialogRegisterAbstract(pParent),
-    ui(new Ui::DialogRegisterGeneral)
+    ui(new Ui::DialogRegister64)
 {
     ui->setupUi(this);
 
