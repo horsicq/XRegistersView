@@ -39,7 +39,7 @@ void DialogRegisterAbstract::setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg)
     }
 }
 
-void DialogRegisterAbstract::setData(XInfoDB *pXInfoDB, XInfoDB::XREG reg)
+void DialogRegisterAbstract::setData(XInfoDB *pXInfoDB,XInfoDB::XREG reg)
 {
     g_pXInfoDB=pXInfoDB;
     g_reg=reg;
