@@ -69,15 +69,6 @@ void XRegistersViewOptionsWidget::reload()
 
 void XRegistersViewOptionsWidget::on_toolButtonRegsFont_clicked()
 {
-    QFont _font;
-    _font.fromString(ui->lineEditRegsFont->text());
-
-    bool bOK=false;
-    _font=QFontDialog::getFont(&bOK,_font,this);
-
-    if(bOK)
-    {
-        ui->lineEditRegsFont->setText(_font.toString());
-    }
+    XOptions::handleFontButton(this,ui->lineEditRegsFont);
 }
 
