@@ -13,11 +13,11 @@ SOURCES += \
     $$PWD/xregistersview.cpp \
     $$PWD/xregistersviewoptionswidget.cpp
 
+FORMS += \
+    $$PWD/dialogregister64.ui \
+    $$PWD/xregistersviewoptionswidget.ui
+
 !contains(XCONFIG, xinfodb) {
     XCONFIG += xinfodb
     include($$PWD/../XInfoDB/xinfodb.pri)
 }
-
-FORMS += \
-    $$PWD/dialogregister64.ui \
-    $$PWD/xregistersviewoptionswidget.ui
