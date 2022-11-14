@@ -23,21 +23,20 @@
 
 #include <QMap>
 #include <QObject>
+#include <QPainter>
 #include <QRect>
 #include <QVariant>
 #include <QWidget>
-#include <QPainter>
-#include "xshortcutstscrollarea.h"
+
+#include "dialogregister64.h"
 #include "xformats.h"
 #include "xinfodb.h"
-#include "dialogregister64.h"
+#include "xshortcutstscrollarea.h"
 
-class XRegistersView : public XShortcutstScrollArea
-{
+class XRegistersView : public XShortcutstScrollArea {
     Q_OBJECT
 
-    struct REGION
-    {
+    struct REGION {
         qint32 nLeft;
         qint32 nTop;
         qint32 nTitleWidth;
@@ -49,8 +48,7 @@ class XRegistersView : public XShortcutstScrollArea
     };
 
 public:
-
-    XRegistersView(QWidget *pParent=nullptr);
+    XRegistersView(QWidget *pParent = nullptr);
     void setOptions(XInfoDB::XREG_OPTIONS regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
     void setXInfoDB(XInfoDB *pXInfoDB);
@@ -59,13 +57,13 @@ public:
     virtual void adjustView() override;
 
 private:
-    void addRegion(XInfoDB::XREG reg,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XInfoDB::RI_TYPE riType);
-    void addRegsList(QList<XInfoDB::XREG> *pRegsList,qint32 nLeft,qint32 nTop,qint32 nTitleWidth,qint32 nValueWidth,qint32 nCommentWidth,XInfoDB::RI_TYPE riType);
+    void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
+    void addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
     XInfoDB::XREG pointToReg(QPoint pos);
     void showRegister(XInfoDB::XREG reg);
 
 protected:
-    virtual void paintEvent(QPaintEvent* pEvent) override;
+    virtual void paintEvent(QPaintEvent *pEvent) override;
     virtual void mousePressEvent(QMouseEvent *pEvent) override;
     virtual void mouseReleaseEvent(QMouseEvent *pEvent) override;
     virtual void keyPressEvent(QKeyEvent *pEvent) override;
@@ -98,4 +96,4 @@ private:
     qint32 g_nCurrentRegionIndex;
 };
 
-#endif // XREGISTERSVIEW_H
+#endif  // XREGISTERSVIEW_H

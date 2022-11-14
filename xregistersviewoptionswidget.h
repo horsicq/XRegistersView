@@ -22,18 +22,18 @@
 #define XREGISTERSVIEWOPTIONSWIDGET_H
 
 #include <QFontDialog>
+
 #include "xoptions.h"
 
 namespace Ui {
 class XRegistersViewOptionsWidget;
 }
 
-class XRegistersViewOptionsWidget : public QWidget
-{
+class XRegistersViewOptionsWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit XRegistersViewOptionsWidget(QWidget *pParent=nullptr);
+    explicit XRegistersViewOptionsWidget(QWidget *pParent = nullptr);
     ~XRegistersViewOptionsWidget();
 
     void setOptions(XOptions *pOptions);
@@ -52,4 +52,4 @@ private:
     XOptions *g_pOptions;
 };
 
-#endif // XREGISTERSVIEWOPTIONSWIDGET_H
+#endif  // XREGISTERSVIEWOPTIONSWIDGET_H

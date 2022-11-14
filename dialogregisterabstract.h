@@ -23,16 +23,16 @@
 
 #include <QDialog>
 #include <QGroupBox>
+
 #include "xinfodb.h"
 
-class DialogRegisterAbstract : public QDialog
-{
+class DialogRegisterAbstract : public QDialog {
     Q_OBJECT
 public:
-    explicit DialogRegisterAbstract(QWidget *pParent=nullptr);
+    explicit DialogRegisterAbstract(QWidget *pParent = nullptr);
 
-    void setTitle(QGroupBox *pGroupBox,XInfoDB::XREG reg);
-    void setData(XInfoDB *pXInfoDB,XInfoDB::XREG reg);
+    void setTitle(QGroupBox *pGroupBox, XInfoDB::XREG reg);
+    void setData(XInfoDB *pXInfoDB, XInfoDB::XREG reg);
     void setInitVariant(XBinary::XVARIANT variant);
     XBinary::XVARIANT getInitVariant();
     void setCurrentVariant(XBinary::XVARIANT variant);
@@ -44,9 +44,9 @@ protected slots:
     void _on_line_textEdited(const QString &sString);
 
 protected:
-    virtual void initValue()=0;
-    virtual void adjustValue()=0;
-    virtual void setValue()=0;
+    virtual void initValue() = 0;
+    virtual void adjustValue() = 0;
+    virtual void setValue() = 0;
 
 private:
     XInfoDB *g_pXInfoDB;
@@ -55,4 +55,4 @@ private:
     XBinary::XVARIANT g_currentVariant;
 };
 
-#endif // DIALOGREGISTERABSTRACT_H
+#endif  // DIALOGREGISTERABSTRACT_H

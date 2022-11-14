@@ -19,56 +19,47 @@
  * SOFTWARE.
  */
 #include "xregistersviewoptionswidget.h"
+
 #include "ui_xregistersviewoptionswidget.h"
 
-XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) :
-    QWidget(pParent),
-    ui(new Ui::XRegistersViewOptionsWidget)
-{
+XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) : QWidget(pParent), ui(new Ui::XRegistersViewOptionsWidget) {
     ui->setupUi(this);
 
-    g_pOptions=nullptr;
+    g_pOptions = nullptr;
 
-    setProperty("GROUPID",XOptions::GROUPID_REGISTERS);
+    setProperty("GROUPID", XOptions::GROUPID_REGISTERS);
 }
 
-XRegistersViewOptionsWidget::~XRegistersViewOptionsWidget()
-{
+XRegistersViewOptionsWidget::~XRegistersViewOptionsWidget() {
     delete ui;
 }
 
-void XRegistersViewOptionsWidget::setOptions(XOptions *pOptions)
-{
-    g_pOptions=pOptions;
+void XRegistersViewOptionsWidget::setOptions(XOptions *pOptions) {
+    g_pOptions = pOptions;
 
     reload();
 }
 
-void XRegistersViewOptionsWidget::save()
-{
-    g_pOptions->getLineEdit(ui->lineEditRegsFont,XOptions::ID_REGISTERS_FONT);
+void XRegistersViewOptionsWidget::save() {
+    g_pOptions->getLineEdit(ui->lineEditRegsFont, XOptions::ID_REGISTERS_FONT);
 }
 
-void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions)
-{
+void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions) {
 #ifdef Q_OS_WIN
-    pOptions->addID(XOptions::ID_REGISTERS_FONT,"Courier,10,-1,5,50,0,0,0,0,0");
+    pOptions->addID(XOptions::ID_REGISTERS_FONT, "Courier,10,-1,5,50,0,0,0,0,0");
 #endif
 #ifdef Q_OS_LINUX
-    pOptions->addID(XOptions::ID_REGISTERS_FONT,"DejaVu Sans Mono,10,-1,5,50,0,0,0,0,0");
+    pOptions->addID(XOptions::ID_REGISTERS_FONT, "DejaVu Sans Mono,10,-1,5,50,0,0,0,0,0");
 #endif
 #ifdef Q_OS_MACOS
-    pOptions->addID(XOptions::ID_REGISTERS_FONT,"Menlo,10,-1,5,50,0,0,0,0,0"); // TODO Check
+    pOptions->addID(XOptions::ID_REGISTERS_FONT, "Menlo,10,-1,5,50,0,0,0,0,0");  // TODO Check
 #endif
 }
 
-void XRegistersViewOptionsWidget::reload()
-{
-    g_pOptions->setLineEdit(ui->lineEditRegsFont,XOptions::ID_REGISTERS_FONT);
+void XRegistersViewOptionsWidget::reload() {
+    g_pOptions->setLineEdit(ui->lineEditRegsFont, XOptions::ID_REGISTERS_FONT);
 }
 
-void XRegistersViewOptionsWidget::on_toolButtonRegsFont_clicked()
-{
-    XOptions::handleFontButton(this,ui->lineEditRegsFont);
+void XRegistersViewOptionsWidget::on_toolButtonRegsFont_clicked() {
+    XOptions::handleFontButton(this, ui->lineEditRegsFont);
 }
-

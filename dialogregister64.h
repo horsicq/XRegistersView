@@ -27,12 +27,11 @@ namespace Ui {
 class DialogRegister64;
 }
 // https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/x64-architecture
-class DialogRegister64 : public DialogRegisterAbstract
-{
+class DialogRegister64 : public DialogRegisterAbstract {
     Q_OBJECT
 
 public:
-    explicit DialogRegister64(QWidget *pParent=nullptr);
+    explicit DialogRegister64(QWidget *pParent = nullptr);
     ~DialogRegister64();
 
 private slots:
@@ -48,4 +47,4 @@ private:
     Ui::DialogRegister64 *ui;
 };
 
-#endif // DIALOGREGISTER64_H
+#endif  // DIALOGREGISTER64_H
