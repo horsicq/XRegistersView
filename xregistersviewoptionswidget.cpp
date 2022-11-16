@@ -22,7 +22,8 @@
 
 #include "ui_xregistersviewoptionswidget.h"
 
-XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) : QWidget(pParent), ui(new Ui::XRegistersViewOptionsWidget) {
+XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) : QWidget(pParent), ui(new Ui::XRegistersViewOptionsWidget)
+{
     ui->setupUi(this);
 
     g_pOptions = nullptr;
@@ -30,21 +31,25 @@ XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) : QWi
     setProperty("GROUPID", XOptions::GROUPID_REGISTERS);
 }
 
-XRegistersViewOptionsWidget::~XRegistersViewOptionsWidget() {
+XRegistersViewOptionsWidget::~XRegistersViewOptionsWidget()
+{
     delete ui;
 }
 
-void XRegistersViewOptionsWidget::setOptions(XOptions *pOptions) {
+void XRegistersViewOptionsWidget::setOptions(XOptions *pOptions)
+{
     g_pOptions = pOptions;
 
     reload();
 }
 
-void XRegistersViewOptionsWidget::save() {
+void XRegistersViewOptionsWidget::save()
+{
     g_pOptions->getLineEdit(ui->lineEditRegsFont, XOptions::ID_REGISTERS_FONT);
 }
 
-void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions) {
+void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions)
+{
 #ifdef Q_OS_WIN
     pOptions->addID(XOptions::ID_REGISTERS_FONT, "Courier,10,-1,5,50,0,0,0,0,0");
 #endif
@@ -56,10 +61,12 @@ void XRegistersViewOptionsWidget::setDefaultValues(XOptions *pOptions) {
 #endif
 }
 
-void XRegistersViewOptionsWidget::reload() {
+void XRegistersViewOptionsWidget::reload()
+{
     g_pOptions->setLineEdit(ui->lineEditRegsFont, XOptions::ID_REGISTERS_FONT);
 }
 
-void XRegistersViewOptionsWidget::on_toolButtonRegsFont_clicked() {
+void XRegistersViewOptionsWidget::on_toolButtonRegsFont_clicked()
+{
     XOptions::handleFontButton(this, ui->lineEditRegsFont);
 }

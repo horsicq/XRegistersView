@@ -20,7 +20,8 @@
  */
 #include "xregistersview.h"
 
-XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent) {
+XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent)
+{
     XOptions::setMonoFont(this, 10);  // TODO options
 
     g_fontText = font();
@@ -49,19 +50,23 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(_customContextMenu(QPoint)));
 }
 
-void XRegistersView::setOptions(XInfoDB::XREG_OPTIONS regOptions) {
+void XRegistersView::setOptions(XInfoDB::XREG_OPTIONS regOptions)
+{
     g_regOptions = regOptions;
 }
 
-XInfoDB::XREG_OPTIONS XRegistersView::getOptions() {
+XInfoDB::XREG_OPTIONS XRegistersView::getOptions()
+{
     return g_regOptions;
 }
 
-void XRegistersView::setXInfoDB(XInfoDB *pXInfoDB) {
+void XRegistersView::setXInfoDB(XInfoDB *pXInfoDB)
+{
     g_pXInfoDB = pXInfoDB;
 }
 
-void XRegistersView::reload() {
+void XRegistersView::reload()
+{
     g_listRegions.clear();
 
     g_nCurrentRegionIndex = 0;
@@ -300,7 +305,8 @@ void XRegistersView::reload() {
     viewport()->update();
 }
 
-void XRegistersView::clear() {
+void XRegistersView::clear()
+{
     g_listRegions.clear();
 #ifdef QT_DEBUG
     qDebug("void XRegistersView::clear()");
@@ -309,7 +315,8 @@ void XRegistersView::clear() {
     viewport()->update();
 }
 
-void XRegistersView::adjustView() {
+void XRegistersView::adjustView()
+{
     QFont _font;
     QString sFont = getGlobalOptions()->getValue(XOptions::ID_REGISTERS_FONT).toString();
 
@@ -320,7 +327,8 @@ void XRegistersView::adjustView() {
     reload();
 }
 
-void XRegistersView::addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType) {
+void XRegistersView::addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType)
+{
     REGION region = {};
 
     region.reg = reg;
@@ -335,8 +343,8 @@ void XRegistersView::addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qin
     g_listRegions.append(region);
 }
 
-void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth,
-                                 XInfoDB::RI_TYPE riType) {
+void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType)
+{
     qint32 nNumberOfRegs = pRegsList->count();
 
     for (qint32 i = 0; i < nNumberOfRegs; i++) {
@@ -344,7 +352,8 @@ void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, 
     }
 }
 
-XInfoDB::XREG XRegistersView::pointToReg(QPoint pos) {
+XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
+{
     XInfoDB::XREG result = XInfoDB::XREG_UNKNOWN;
 
     qint32 nNumberOfRegions = g_listRegions.count();
@@ -363,7 +372,8 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos) {
     return result;
 }
 
-void XRegistersView::showRegister(XInfoDB::XREG reg) {
+void XRegistersView::showRegister(XInfoDB::XREG reg)
+{
 #ifdef Q_PROCESSOR_X86_32
 
 #endif
@@ -383,7 +393,8 @@ void XRegistersView::showRegister(XInfoDB::XREG reg) {
 #endif
 }
 
-void XRegistersView::paintEvent(QPaintEvent *pEvent) {
+void XRegistersView::paintEvent(QPaintEvent *pEvent)
+{
     Q_UNUSED(pEvent)
 
     if (g_pXInfoDB) {
@@ -460,7 +471,8 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent) {
     }
 }
 
-void XRegistersView::mousePressEvent(QMouseEvent *pEvent) {
+void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
+{
     // TODO Double click
     // TODO Enter
     if (pEvent->button() == Qt::LeftButton) {
@@ -478,7 +490,8 @@ void XRegistersView::mousePressEvent(QMouseEvent *pEvent) {
     XShortcutstScrollArea::mousePressEvent(pEvent);
 }
 
-void XRegistersView::mouseReleaseEvent(QMouseEvent *pEvent) {
+void XRegistersView::mouseReleaseEvent(QMouseEvent *pEvent)
+{
     // TODO
     //    QString sReg=XInfoDB::regIdToString(pointToReg(pEvent->pos()));
 
@@ -487,7 +500,8 @@ void XRegistersView::mouseReleaseEvent(QMouseEvent *pEvent) {
     XShortcutstScrollArea::mouseReleaseEvent(pEvent);
 }
 
-void XRegistersView::keyPressEvent(QKeyEvent *pEvent) {
+void XRegistersView::keyPressEvent(QKeyEvent *pEvent)
+{
     // TODO
     if (pEvent->matches(QKeySequence::MoveToNextChar)) {
         qDebug("QKeySequence::MoveToNextChar");
@@ -500,61 +514,71 @@ void XRegistersView::keyPressEvent(QKeyEvent *pEvent) {
     }
 }
 
-void XRegistersView::_customContextMenu(const QPoint &pos) {
+void XRegistersView::_customContextMenu(const QPoint &pos)
+{
     contextMenu(pos);
 }
 
-void XRegistersView::actionViewGeneral() {
+void XRegistersView::actionViewGeneral()
+{
     g_regOptions.bGeneral = !(g_regOptions.bGeneral);
 
     adjustView();
 }
 
-void XRegistersView::actionViewIP() {
+void XRegistersView::actionViewIP()
+{
     g_regOptions.bIP = !(g_regOptions.bIP);
 
     adjustView();
 }
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewFlags() {
+void XRegistersView::actionViewFlags()
+{
     g_regOptions.bFlags = !(g_regOptions.bFlags);
 
     adjustView();
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewSegments() {
+void XRegistersView::actionViewSegments()
+{
     g_regOptions.bSegments = !(g_regOptions.bSegments);
 
     adjustView();
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewDebug() {
+void XRegistersView::actionViewDebug()
+{
     g_regOptions.bDebug = !(g_regOptions.bDebug);
 
     adjustView();
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewFloat() {
+void XRegistersView::actionViewFloat()
+{
     g_regOptions.bFloat = !(g_regOptions.bFloat);
 
     adjustView();
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewXMM() {
+void XRegistersView::actionViewXMM()
+{
     g_regOptions.bXMM = !(g_regOptions.bXMM);
 
     adjustView();
 }
 #endif
-void XRegistersView::registerShortcuts(bool bState) {
+void XRegistersView::registerShortcuts(bool bState)
+{
     Q_UNUSED(bState)
 }
 
-void XRegistersView::contextMenu(const QPoint &pos) {
+void XRegistersView::contextMenu(const QPoint &pos)
+{
     // TODO isContextMenuEnable
     QMenu contextMenu(this);
 

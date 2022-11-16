@@ -22,7 +22,8 @@
 
 #include "ui_dialogregister64.h"
 
-DialogRegister64::DialogRegister64(QWidget *pParent) : DialogRegisterAbstract(pParent), ui(new Ui::DialogRegister64) {
+DialogRegister64::DialogRegister64(QWidget *pParent) : DialogRegisterAbstract(pParent), ui(new Ui::DialogRegister64)
+{
     ui->setupUi(this);
 
     // TODO DEC <-> HEX
@@ -47,11 +48,13 @@ DialogRegister64::DialogRegister64(QWidget *pParent) : DialogRegisterAbstract(pP
     ui->groupBoxReg8_8->setTitle("7-0");
 }
 
-DialogRegister64::~DialogRegister64() {
+DialogRegister64::~DialogRegister64()
+{
     delete ui;
 }
 
-void DialogRegister64::on_pushButtonOK_clicked() {
+void DialogRegister64::on_pushButtonOK_clicked()
+{
     if (getXInfoDB()->setCurrentReg(getReg(), getCurrentVariant()))  // TODO Save register TODO
     {
         getXInfoDB()->setCurrentRegCache(getReg(), getCurrentVariant());
@@ -60,11 +63,13 @@ void DialogRegister64::on_pushButtonOK_clicked() {
     }
 }
 
-void DialogRegister64::on_pushButtonCancel_clicked() {
+void DialogRegister64::on_pushButtonCancel_clicked()
+{
     reject();
 }
 
-void DialogRegister64::initValue() {
+void DialogRegister64::initValue()
+{
     setInitVariant(getXInfoDB()->getCurrentRegCache(getReg()));
     setCurrentVariant(getInitVariant());
 
@@ -93,7 +98,8 @@ void DialogRegister64::initValue() {
     connect(ui->lineEditReg8_8, SIGNAL(textEdited(QString)), this, SLOT(_on_line_textEdited(QString)));
 }
 
-void DialogRegister64::adjustValue() {
+void DialogRegister64::adjustValue()
+{
     quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
 
     if (!(ui->lineEditReg64->isFocused())) ui->lineEditReg64->setValue(nCurrentValue);
@@ -118,7 +124,8 @@ void DialogRegister64::adjustValue() {
     ui->pushButtonOK->setEnabled(!XBinary::isXVariantEqual(getInitVariant(), getCurrentVariant()));
 }
 
-void DialogRegister64::setValue() {
+void DialogRegister64::setValue()
+{
     quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
 
     if (ui->lineEditReg64->isFocused()) nCurrentValue = ui->lineEditReg64->getValue();

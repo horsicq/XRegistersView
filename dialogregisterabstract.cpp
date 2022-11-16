@@ -20,14 +20,16 @@
  */
 #include "dialogregisterabstract.h"
 
-DialogRegisterAbstract::DialogRegisterAbstract(QWidget *pParent) : QDialog(pParent) {
+DialogRegisterAbstract::DialogRegisterAbstract(QWidget *pParent) : QDialog(pParent)
+{
     g_pXInfoDB = nullptr;
     g_reg = XInfoDB::XREG_UNKNOWN;
     g_initVariant = {};
     g_currentVariant = {};
 }
 
-void DialogRegisterAbstract::setTitle(QGroupBox *pGroupBox, XInfoDB::XREG reg) {
+void DialogRegisterAbstract::setTitle(QGroupBox *pGroupBox, XInfoDB::XREG reg)
+{
     QString sTitle = XInfoDB::regIdToString(reg);
 
     if (sTitle != "") {
@@ -35,7 +37,8 @@ void DialogRegisterAbstract::setTitle(QGroupBox *pGroupBox, XInfoDB::XREG reg) {
     }
 }
 
-void DialogRegisterAbstract::setData(XInfoDB *pXInfoDB, XInfoDB::XREG reg) {
+void DialogRegisterAbstract::setData(XInfoDB *pXInfoDB, XInfoDB::XREG reg)
+{
     g_pXInfoDB = pXInfoDB;
     g_reg = reg;
 
@@ -43,31 +46,38 @@ void DialogRegisterAbstract::setData(XInfoDB *pXInfoDB, XInfoDB::XREG reg) {
     adjustValue();
 }
 
-void DialogRegisterAbstract::setInitVariant(XBinary::XVARIANT variant) {
+void DialogRegisterAbstract::setInitVariant(XBinary::XVARIANT variant)
+{
     g_initVariant = variant;
 }
 
-XBinary::XVARIANT DialogRegisterAbstract::getInitVariant() {
+XBinary::XVARIANT DialogRegisterAbstract::getInitVariant()
+{
     return g_initVariant;
 }
 
-void DialogRegisterAbstract::setCurrentVariant(XBinary::XVARIANT variant) {
+void DialogRegisterAbstract::setCurrentVariant(XBinary::XVARIANT variant)
+{
     g_currentVariant = variant;
 }
 
-XBinary::XVARIANT DialogRegisterAbstract::getCurrentVariant() {
+XBinary::XVARIANT DialogRegisterAbstract::getCurrentVariant()
+{
     return g_currentVariant;
 }
 
-XInfoDB *DialogRegisterAbstract::getXInfoDB() {
+XInfoDB *DialogRegisterAbstract::getXInfoDB()
+{
     return g_pXInfoDB;
 }
 
-XInfoDB::XREG DialogRegisterAbstract::getReg() {
+XInfoDB::XREG DialogRegisterAbstract::getReg()
+{
     return g_reg;
 }
 
-void DialogRegisterAbstract::_on_line_textEdited(const QString &sString) {
+void DialogRegisterAbstract::_on_line_textEdited(const QString &sString)
+{
     Q_UNUSED(sString)
 
     setValue();
