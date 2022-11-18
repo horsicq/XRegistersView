@@ -22,7 +22,8 @@
 
 #include "ui_xregistersviewoptionswidget.h"
 
-XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent) : QWidget(pParent), ui(new Ui::XRegistersViewOptionsWidget)
+XRegistersViewOptionsWidget::XRegistersViewOptionsWidget(QWidget *pParent)
+    : QWidget(pParent), ui(new Ui::XRegistersViewOptionsWidget)
 {
     ui->setupUi(this);
 

@@ -20,7 +20,8 @@
  */
 #include "dialogregisterabstract.h"
 
-DialogRegisterAbstract::DialogRegisterAbstract(QWidget *pParent) : QDialog(pParent)
+DialogRegisterAbstract::DialogRegisterAbstract(QWidget *pParent)
+    : QDialog(pParent)
 {
     g_pXInfoDB = nullptr;
     g_reg = XInfoDB::XREG_UNKNOWN;

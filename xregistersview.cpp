@@ -20,7 +20,8 @@
  */
 #include "xregistersview.h"
 
-XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent)
+XRegistersView::XRegistersView(QWidget *pParent)
+    : XShortcutstScrollArea(pParent)
 {
     XOptions::setMonoFont(this, 10);  // TODO options
 
