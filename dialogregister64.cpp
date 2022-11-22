@@ -22,8 +22,7 @@
 
 #include "ui_dialogregister64.h"
 
-DialogRegister64::DialogRegister64(QWidget *pParent)
-    : DialogRegisterAbstract(pParent), ui(new Ui::DialogRegister64)
+DialogRegister64::DialogRegister64(QWidget *pParent) : DialogRegisterAbstract(pParent), ui(new Ui::DialogRegister64)
 {
     ui->setupUi(this);
 
