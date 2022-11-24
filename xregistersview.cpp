@@ -378,9 +378,10 @@ void XRegistersView::showRegister(XInfoDB::XREG reg)
 
 #endif
 #ifdef Q_PROCESSOR_X86_64
-    if ((reg == XInfoDB::XREG_RAX) || (reg == XInfoDB::XREG_RBX) || (reg == XInfoDB::XREG_RCX) || (reg == XInfoDB::XREG_RDX) || (reg == XInfoDB::XREG_RSI) || (reg == XInfoDB::XREG_RDI) ||
-        (reg == XInfoDB::XREG_RBP) || (reg == XInfoDB::XREG_RSP) || (reg == XInfoDB::XREG_R8) || (reg == XInfoDB::XREG_R9) || (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) ||
-        (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) || (reg == XInfoDB::XREG_R15)) {
+    if ((reg == XInfoDB::XREG_RAX) || (reg == XInfoDB::XREG_RBX) || (reg == XInfoDB::XREG_RCX) || (reg == XInfoDB::XREG_RDX) || (reg == XInfoDB::XREG_RSI) ||
+        (reg == XInfoDB::XREG_RDI) || (reg == XInfoDB::XREG_RBP) || (reg == XInfoDB::XREG_RSP) || (reg == XInfoDB::XREG_R8) || (reg == XInfoDB::XREG_R9) ||
+        (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) || (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) ||
+        (reg == XInfoDB::XREG_R15)) {
         DialogRegister64 dialogReg(this);
 
         dialogReg.setData(g_pXInfoDB, reg);
