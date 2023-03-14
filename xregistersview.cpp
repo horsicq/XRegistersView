@@ -376,7 +376,10 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
 void XRegistersView::showRegister(XInfoDB::XREG reg)
 {
 #ifdef Q_PROCESSOR_X86_32
-
+    if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
+        (reg == XInfoDB::XREG_EDI) || (reg == XInfoDB::XREG_EBP) || (reg == XInfoDB::XREG_ESP)) {
+        // TODO
+    }
 #endif
 #ifdef Q_PROCESSOR_X86_64
     if ((reg == XInfoDB::XREG_RAX) || (reg == XInfoDB::XREG_RBX) || (reg == XInfoDB::XREG_RCX) || (reg == XInfoDB::XREG_RDX) || (reg == XInfoDB::XREG_RSI) ||
