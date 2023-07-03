@@ -81,6 +81,7 @@ void XRegistersView::reload()
 
     qint32 nValueWidthBit = fm.boundingRect("0  ").width();
     qint32 nValueWidth32 = fm.boundingRect("00000000  ").width();
+    nValueWidth32++; // TODO remove
     qint32 nValueWidth64 = fm.boundingRect("0000000000000000  ").width();
     qint32 nValueWidth128 = g_nCharWidth * 20;  // Check
     qint32 nCommentWidth = g_nCharWidth * 40;   // TODO Check
