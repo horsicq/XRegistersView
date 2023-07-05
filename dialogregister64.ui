@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxReg64">
      <property name="title">
-      <string/>
+      <string notr="true">XXXX</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -55,7 +55,7 @@
         <item>
          <widget class="QGroupBox" name="groupBoxReg32_1">
           <property name="title">
-           <string/>
+           <string notr="true">XXXX</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -87,7 +87,7 @@
              <item>
               <widget class="QGroupBox" name="groupBoxReg16_1">
                <property name="title">
-                <string/>
+                <string notr="true">XXXX</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -119,7 +119,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_1">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -149,7 +149,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_2">
                     <property name="title">
-                     <string/>
+                     <string>XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -184,7 +184,7 @@
              <item>
               <widget class="QGroupBox" name="groupBoxReg16_2">
                <property name="title">
-                <string/>
+                <string notr="true">XXXX</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -216,7 +216,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_3">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -246,7 +246,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_4">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -286,7 +286,7 @@
         <item>
          <widget class="QGroupBox" name="groupBoxReg32_2">
           <property name="title">
-           <string/>
+           <string notr="true">XXXX</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -318,7 +318,7 @@
              <item>
               <widget class="QGroupBox" name="groupBoxReg16_3">
                <property name="title">
-                <string/>
+                <string notr="true">XXXX</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -350,7 +350,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_5">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -380,7 +380,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_6">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -415,7 +415,7 @@
              <item>
               <widget class="QGroupBox" name="groupBoxReg16_4">
                <property name="title">
-                <string/>
+                <string notr="true">XXXX</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -447,7 +447,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_7">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
@@ -477,7 +477,7 @@
                   <item>
                    <widget class="QGroupBox" name="groupBoxReg8_8">
                     <property name="title">
-                     <string/>
+                     <string notr="true">XXXX</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignCenter</set>
