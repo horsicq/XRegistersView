@@ -55,8 +55,7 @@ DialogRegister64::~DialogRegister64()
 
 void DialogRegister64::on_pushButtonOK_clicked()
 {
-    if (getXInfoDB()->setCurrentReg(getReg(), getCurrentVariant()))  // TODO Save register TODO
-    {
+    if (getXInfoDB()->setCurrentReg(getReg(), getCurrentVariant())) {
         getXInfoDB()->setCurrentRegCache(getReg(), getCurrentVariant());
 
         accept();
