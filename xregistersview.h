@@ -28,6 +28,7 @@
 #include <QVariant>
 #include <QWidget>
 
+#include "dialogregister32.h"
 #include "dialogregister64.h"
 #include "xinfodb.h"
 #include "xshortcutstscrollarea.h"
