@@ -27,8 +27,7 @@ namespace Ui {
 class DialogRegister16;
 }
 
-class DialogRegister16 : public DialogRegisterAbstract
-{
+class DialogRegister16 : public DialogRegisterAbstract {
     Q_OBJECT
 
 public:
@@ -48,4 +47,4 @@ private:
     Ui::DialogRegister16 *ui;
 };
 
-#endif // DIALOGREGISTER16_H
+#endif  // DIALOGREGISTER16_H

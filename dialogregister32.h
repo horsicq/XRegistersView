@@ -43,9 +43,8 @@ protected:
     virtual void adjustValue();
     virtual void setValue();
 
-
 private:
     Ui::DialogRegister32 *ui;
 };
 
-#endif // DIALOGREGISTER32_H
+#endif  // DIALOGREGISTER32_H

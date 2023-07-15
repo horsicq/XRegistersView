@@ -21,9 +21,7 @@
 #include "dialogregister16.h"
 #include "ui_dialogregister16.h"
 
-DialogRegister16::DialogRegister16(QWidget *pParent) :
-    DialogRegisterAbstract(pParent),
-    ui(new Ui::DialogRegister16)
+DialogRegister16::DialogRegister16(QWidget *pParent) : DialogRegisterAbstract(pParent), ui(new Ui::DialogRegister16)
 {
     ui->setupUi(this);
 
