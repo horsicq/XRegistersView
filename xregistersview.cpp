@@ -80,6 +80,7 @@ void XRegistersView::reload()
     qint32 nTop = 0;
 
     qint32 nValueWidthBit = fm.boundingRect("0  ").width();
+    qint32 nValueWidth16 = fm.boundingRect("0000  ").width();
     qint32 nValueWidth32 = fm.boundingRect("00000000  ").width();
     nValueWidth32++;  // TODO remove
     qint32 nValueWidth64 = fm.boundingRect("0000000000000000  ").width();
@@ -197,13 +198,13 @@ void XRegistersView::reload()
         listRegs1.append(XInfoDB::XREG_GS);
         listRegs1.append(XInfoDB::XREG_ES);
         listRegs1.append(XInfoDB::XREG_CS);
-        addRegsList(&listRegs1, nLeft, nTop, g_nCharWidth * 2, nValueWidthBit, 0, XInfoDB::RI_TYPE_UNKNOWN);
+        addRegsList(&listRegs1, nLeft, nTop, g_nCharWidth * 2, nValueWidth16, 0, XInfoDB::RI_TYPE_UNKNOWN);
 
         QList<XInfoDB::XREG> listRegs2;
         listRegs2.append(XInfoDB::XREG_FS);
         listRegs2.append(XInfoDB::XREG_DS);
         listRegs2.append(XInfoDB::XREG_SS);
-        addRegsList(&listRegs2, nLeft + g_nCharWidth * 6, nTop, g_nCharWidth * 2, nValueWidthBit, 0, XInfoDB::RI_TYPE_UNKNOWN);
+        addRegsList(&listRegs2, nLeft + g_nCharWidth * 6, nTop, g_nCharWidth * 2, nValueWidth16, 0, XInfoDB::RI_TYPE_UNKNOWN);
 
         nTop += (3) * g_nCharHeight;
     }
@@ -456,7 +457,9 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
                 }
             }
 
-            XBinary::XVARIANT xvariant = g_pXInfoDB->getCurrentRegCache(g_listRegions.at(i).reg);
+            XInfoDB::XREG reg = g_listRegions.at(i).reg;
+
+            XBinary::XVARIANT xvariant = g_pXInfoDB->getCurrentRegCache(reg);
 
             // TODO MMX
             pPainter->drawText(rectValue, XBinary::xVariantToHex(xvariant));  // TODO Text Optional
