@@ -377,6 +377,7 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
 
 void XRegistersView::showRegister(XInfoDB::XREG reg)
 {
+#ifdef Q_PROCESSOR_X86
 #ifdef Q_PROCESSOR_X86_32
     if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
         (reg == XInfoDB::XREG_EDI) || (reg == XInfoDB::XREG_EBP) || (reg == XInfoDB::XREG_ESP)) {
@@ -394,6 +395,16 @@ void XRegistersView::showRegister(XInfoDB::XREG reg)
         (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) || (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) ||
         (reg == XInfoDB::XREG_R15)) {
         DialogRegister64 dialogReg(this);
+        dialogReg.setData(g_pXInfoDB, reg);
+
+        if (dialogReg.exec() == QDialog::Accepted) {
+            reload();
+        }
+    }
+#endif
+    if ((reg == XInfoDB::XREG_CS) || (reg == XInfoDB::XREG_DS) || (reg == XInfoDB::XREG_ES) || (reg == XInfoDB::XREG_FS) || (reg == XInfoDB::XREG_GS) ||
+        (reg == XInfoDB::XREG_SS)) {
+        DialogRegister16 dialogReg(this);
         dialogReg.setData(g_pXInfoDB, reg);
 
         if (dialogReg.exec() == QDialog::Accepted) {
