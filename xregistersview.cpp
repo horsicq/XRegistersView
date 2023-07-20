@@ -326,6 +326,8 @@ void XRegistersView::adjustView()
         g_fontText = _font;
     }
 
+    g_nCurrentRegionIndex = 0;
+
     reload();
 }
 
@@ -355,8 +357,9 @@ void XRegistersView::addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, 
     }
 }
 
-XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
+XInfoDB::XREG XRegistersView::pointToReg(QPoint pos, qint32 *pIndex)
 {
+    *pIndex = -1;
     XInfoDB::XREG result = XInfoDB::XREG_UNKNOWN;
 
     qint32 nNumberOfRegions = g_listRegions.count();
@@ -366,6 +369,7 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
 
         if ((pos.x() > region.nLeft + region.nTitleWidth) && (pos.x() < region.nLeft + region.nTitleWidth + region.nValueWidth) && (pos.y() > region.nTop) &&
             (pos.y() < region.nTop + region.nHeight)) {
+            *pIndex = i;
             result = region.reg;
 
             break;
@@ -375,7 +379,7 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos)
     return result;
 }
 
-void XRegistersView::showRegister(XInfoDB::XREG reg)
+void XRegistersView::handleRegister(XInfoDB::XREG reg)
 {
 #ifdef Q_PROCESSOR_X86
 #ifdef Q_PROCESSOR_X86_32
@@ -402,16 +406,128 @@ void XRegistersView::showRegister(XInfoDB::XREG reg)
         }
     }
 #endif
-    if ((reg == XInfoDB::XREG_CS) || (reg == XInfoDB::XREG_DS) || (reg == XInfoDB::XREG_ES) || (reg == XInfoDB::XREG_FS) || (reg == XInfoDB::XREG_GS) ||
-        (reg == XInfoDB::XREG_SS)) {
-        DialogRegister16 dialogReg(this);
-        dialogReg.setData(g_pXInfoDB, reg);
+//    if ((reg == XInfoDB::XREG_CS) || (reg == XInfoDB::XREG_DS) || (reg == XInfoDB::XREG_ES) || (reg == XInfoDB::XREG_FS) || (reg == XInfoDB::XREG_GS) ||
+//        (reg == XInfoDB::XREG_SS)) {
+//        DialogRegister16 dialogReg(this);
+//        dialogReg.setData(g_pXInfoDB, reg);
 
-        if (dialogReg.exec() == QDialog::Accepted) {
+//        if (dialogReg.exec() == QDialog::Accepted) {
+//            reload();
+//        }
+//    }
+
+    if ((reg == XInfoDB::XREG_CF) || (reg == XInfoDB::XREG_PF) || (reg == XInfoDB::XREG_AF) || (reg == XInfoDB::XREG_ZF) || (reg == XInfoDB::XREG_SF) ||
+            (reg == XInfoDB::XREG_TF) || (reg == XInfoDB::XREG_IF) || (reg == XInfoDB::XREG_DF) || (reg == XInfoDB::XREG_OF)) {
+
+        XBinary::XVARIANT var = g_pXInfoDB->getCurrentRegCache(reg);
+
+        var.var.v_bool = !(var.var.v_bool);
+
+        if (g_pXInfoDB->setCurrentReg(reg, var)) {
+            g_pXInfoDB->setCurrentRegCache(reg, var);
+
             reload();
         }
     }
 #endif
+}
+
+qint32 XRegistersView::handleNavi(qint32 nCurrentRegionIndex, QKeySequence::StandardKey key)
+{
+    qint32 nResult = nCurrentRegionIndex;
+
+    qint32 nNumberOfRegions = g_listRegions.count();
+
+    if (nCurrentRegionIndex < nNumberOfRegions) {
+        bool bFound = false;
+
+        if (!bFound) {
+            qint32 nCurrentValue = -1;
+            for (qint32 i = 0; i < nNumberOfRegions; i++) {
+                if ((i != nCurrentRegionIndex) && (g_listRegions.at(i).nTop == g_listRegions.at(nCurrentRegionIndex).nTop)) {
+                    if (key == QKeySequence::MoveToNextChar) {
+                        if (g_listRegions.at(i).nLeft > g_listRegions.at(nCurrentRegionIndex).nLeft) {
+                            if ((nCurrentValue == -1) || (g_listRegions.at(i).nLeft < nCurrentValue)) {
+                                nCurrentValue = g_listRegions.at(i).nLeft;
+                                nResult = i;
+                                bFound = true;
+                            }
+                        }
+                    } else if (key == QKeySequence::MoveToPreviousChar) {
+                        if (g_listRegions.at(i).nLeft < g_listRegions.at(nCurrentRegionIndex).nLeft) {
+                            if ((nCurrentValue == -1) || (g_listRegions.at(i).nLeft > nCurrentValue)) {
+                                nCurrentValue = g_listRegions.at(i).nLeft;
+                                nResult = i;
+                                bFound = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!bFound) {
+            if (key == QKeySequence::MoveToNextChar) {
+                key = QKeySequence::MoveToNextLine;
+            }
+
+            if (key == QKeySequence::MoveToPreviousChar) {
+                key = QKeySequence::MoveToPreviousLine;
+            }
+        }
+
+        if (!bFound) {
+            qint32 nCurrentValue = -1;
+            for (qint32 i = 0; i < nNumberOfRegions; i++) {
+                if ((i != nCurrentRegionIndex) && (g_listRegions.at(i).nLeft == g_listRegions.at(nCurrentRegionIndex).nLeft)) {
+                    if (key == QKeySequence::MoveToNextLine) {
+                        if (g_listRegions.at(i).nTop > g_listRegions.at(nCurrentRegionIndex).nTop) {
+                            if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop < nCurrentValue)) {
+                                nCurrentValue = g_listRegions.at(i).nTop;
+                                nResult = i;
+                                bFound = true;
+                            }
+                        }
+                    } else if (key == QKeySequence::MoveToPreviousLine) {
+                        if (g_listRegions.at(i).nTop < g_listRegions.at(nCurrentRegionIndex).nTop) {
+                            if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop > nCurrentValue)) {
+                                nCurrentValue = g_listRegions.at(i).nTop;
+                                nResult = i;
+                                bFound = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!bFound) {
+            qint32 nCurrentValue = -1;
+            for (qint32 i = 0; i < nNumberOfRegions; i++) {
+                if (i != nCurrentRegionIndex) {
+                    if (key == QKeySequence::MoveToNextLine) {
+                        if (g_listRegions.at(i).nTop > g_listRegions.at(nCurrentRegionIndex).nTop) {
+                            if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop < nCurrentValue)) {
+                                nCurrentValue = g_listRegions.at(i).nTop;
+                                nResult = i;
+                                bFound = true;
+                            }
+                        }
+                    } else if (key == QKeySequence::MoveToPreviousLine) {
+                        if (g_listRegions.at(i).nTop < g_listRegions.at(nCurrentRegionIndex).nTop) {
+                            if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop > nCurrentValue)) {
+                                nCurrentValue = g_listRegions.at(i).nTop;
+                                nResult = i;
+                                bFound = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return nResult;
 }
 
 void XRegistersView::paintEvent(QPaintEvent *pEvent)
@@ -499,11 +615,14 @@ void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
     // TODO Double click
     // TODO Enter
     if (pEvent->button() == Qt::LeftButton) {
-        XInfoDB::XREG reg = pointToReg(pEvent->pos());
+        qint32 nIndex = -1;
+        XInfoDB::XREG reg = pointToReg(pEvent->pos(), &nIndex);
 
-        if (reg != XInfoDB::XREG_UNKNOWN) {
-            showRegister(reg);
+        if (nIndex != -1) {
+            g_nCurrentRegionIndex = nIndex;
+            viewport()->update();
         }
+
         // TODO Dialog
         //    QString sReg=XInfoDB::regIdToString();
 
@@ -527,14 +646,25 @@ void XRegistersView::keyPressEvent(QKeyEvent *pEvent)
 {
     // TODO
     if (pEvent->matches(QKeySequence::MoveToNextChar)) {
-        qDebug("QKeySequence::MoveToNextChar");
+        g_nCurrentRegionIndex = handleNavi(g_nCurrentRegionIndex, QKeySequence::MoveToNextChar);
+        viewport()->update();
     } else if (pEvent->matches(QKeySequence::MoveToPreviousChar)) {
-        qDebug("QKeySequence::MoveToPreviousChar");
+        g_nCurrentRegionIndex = handleNavi(g_nCurrentRegionIndex, QKeySequence::MoveToPreviousChar);
+        viewport()->update();
     } else if (pEvent->matches(QKeySequence::MoveToNextLine)) {
-        qDebug("QKeySequence::MoveToNextLine");
+        g_nCurrentRegionIndex = handleNavi(g_nCurrentRegionIndex, QKeySequence::MoveToNextLine);
+        viewport()->update();
     } else if (pEvent->matches(QKeySequence::MoveToPreviousLine)) {
-        qDebug("QKeySequence::MoveToPreviousLine");
+        g_nCurrentRegionIndex = handleNavi(g_nCurrentRegionIndex, QKeySequence::MoveToPreviousLine);
+        viewport()->update();
+    } else if (pEvent->key() == Qt::Key_Return) {
+        XInfoDB::XREG reg = g_listRegions.at(g_nCurrentRegionIndex).reg;
+        if (reg != XInfoDB::XREG_UNKNOWN) {
+            handleRegister(reg);
+        }
     }
+
+    qDebug("Kex: %X", pEvent->key());
 }
 
 void XRegistersView::_customContextMenu(const QPoint &pos)
