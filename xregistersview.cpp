@@ -415,20 +415,27 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
 //            reload();
 //        }
 //    }
-
+#ifdef Q_PROCESSOR_X86
     if ((reg == XInfoDB::XREG_CF) || (reg == XInfoDB::XREG_PF) || (reg == XInfoDB::XREG_AF) || (reg == XInfoDB::XREG_ZF) || (reg == XInfoDB::XREG_SF) ||
             (reg == XInfoDB::XREG_TF) || (reg == XInfoDB::XREG_IF) || (reg == XInfoDB::XREG_DF) || (reg == XInfoDB::XREG_OF)) {
+#ifdef Q_PROCESSOR_X86_32
+        XInfoDB::XREG _reg =XInfoDB::XREG_EFLAGS;
+#endif
+#ifdef Q_PROCESSOR_X86_64
+        XInfoDB::XREG _reg =XInfoDB::XREG_RFLAGS;
+#endif
+        XBinary::XVARIANT _var = g_pXInfoDB->getCurrentRegCache(_reg);
+        XBinary::XVARIANT var = XInfoDB::getFlagFromReg(_var, reg);
 
-        XBinary::XVARIANT var = g_pXInfoDB->getCurrentRegCache(reg);
+        _var = XInfoDB::setFlagToReg(_var, reg, !(var.var.v_bool));
 
-        var.var.v_bool = !(var.var.v_bool);
-
-        if (g_pXInfoDB->setCurrentReg(reg, var)) {
-            g_pXInfoDB->setCurrentRegCache(reg, var);
+        if (g_pXInfoDB->setCurrentReg(_reg, _var)) {
+            g_pXInfoDB->setCurrentRegCache(_reg, _var);
 
             reload();
         }
     }
+#endif
 #endif
 }
 
@@ -612,21 +619,14 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
 {
-    // TODO Double click
-    // TODO Enter
     if (pEvent->button() == Qt::LeftButton) {
         qint32 nIndex = -1;
-        XInfoDB::XREG reg = pointToReg(pEvent->pos(), &nIndex);
+        pointToReg(pEvent->pos(), &nIndex);
 
         if (nIndex != -1) {
             g_nCurrentRegionIndex = nIndex;
             viewport()->update();
         }
-
-        // TODO Dialog
-        //    QString sReg=XInfoDB::regIdToString();
-
-        //    qDebug("%s",sReg.toLatin1().data());
     }
 
     XShortcutstScrollArea::mousePressEvent(pEvent);
@@ -663,8 +663,24 @@ void XRegistersView::keyPressEvent(QKeyEvent *pEvent)
             handleRegister(reg);
         }
     }
+}
 
-    qDebug("Kex: %X", pEvent->key());
+void XRegistersView::mouseDoubleClickEvent(QMouseEvent *pEvent)
+{
+    if (pEvent->button() == Qt::LeftButton) {
+        qint32 nIndex = -1;
+        XInfoDB::XREG reg = pointToReg(pEvent->pos(), &nIndex);
+
+        if (nIndex != -1) {
+            g_nCurrentRegionIndex = nIndex;
+
+            if (reg != XInfoDB::XREG_UNKNOWN) {
+                handleRegister(reg);
+            }
+        }
+    }
+
+    XShortcutstScrollArea::mousePressEvent(pEvent);
 }
 
 void XRegistersView::_customContextMenu(const QPoint &pos)

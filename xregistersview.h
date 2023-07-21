@@ -69,6 +69,7 @@ protected:
     virtual void mousePressEvent(QMouseEvent *pEvent) override;
     virtual void mouseReleaseEvent(QMouseEvent *pEvent) override;
     virtual void keyPressEvent(QKeyEvent *pEvent) override;
+    virtual void mouseDoubleClickEvent(QMouseEvent *pEvent) override;
 
 private slots:
     void _customContextMenu(const QPoint &pos);
