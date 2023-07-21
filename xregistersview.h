@@ -53,6 +53,7 @@ public:
     void setOptions(XInfoDB::XREG_OPTIONS regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
     void setXInfoDB(XInfoDB *pXInfoDB);
+    XInfoDB::XREG pointToReg(QPoint pos, qint32 *pIndex);
     void reload();
     void clear();
     virtual void adjustView() override;
@@ -60,7 +61,6 @@ public:
 private:
     void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
     void addRegsList(QList<XInfoDB::XREG> *pRegsList, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
-    XInfoDB::XREG pointToReg(QPoint pos, qint32 *pIndex);
     void handleRegister(XInfoDB::XREG reg);
     qint32 handleNavi(qint32 nCurrentRegionIndex, QKeySequence::StandardKey key);
 
@@ -75,15 +75,16 @@ private slots:
     void _customContextMenu(const QPoint &pos);
 
 public slots:
-    void actionViewGeneral();
-    void actionViewIP();
+    void _actionViewGeneral();
+    void _actionViewIP();
 #ifdef Q_PROCESSOR_X86
-    void actionViewFlags();
-    void actionViewSegments();
-    void actionViewDebug();
-    void actionViewFloat();
-    void actionViewXMM();
+    void _actionViewFlags();
+    void _actionViewSegments();
+    void _actionViewDebug();
+    void _actionViewFloat();
+    void _actionViewXMM();
 #endif
+    void _actionEdit();
 
 protected:
     virtual void registerShortcuts(bool bState) override;

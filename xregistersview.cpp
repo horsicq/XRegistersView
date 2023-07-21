@@ -517,7 +517,7 @@ qint32 XRegistersView::handleNavi(qint32 nCurrentRegionIndex, QKeySequence::Stan
                             if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop < nCurrentValue)) {
                                 nCurrentValue = g_listRegions.at(i).nTop;
                                 nResult = i;
-                                bFound = true;
+//                                bFound = true;
                             }
                         }
                     } else if (key == QKeySequence::MoveToPreviousLine) {
@@ -525,7 +525,7 @@ qint32 XRegistersView::handleNavi(qint32 nCurrentRegionIndex, QKeySequence::Stan
                             if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop > nCurrentValue)) {
                                 nCurrentValue = g_listRegions.at(i).nTop;
                                 nResult = i;
-                                bFound = true;
+//                                bFound = true;
                             }
                         }
                     }
@@ -657,11 +657,6 @@ void XRegistersView::keyPressEvent(QKeyEvent *pEvent)
     } else if (pEvent->matches(QKeySequence::MoveToPreviousLine)) {
         g_nCurrentRegionIndex = handleNavi(g_nCurrentRegionIndex, QKeySequence::MoveToPreviousLine);
         viewport()->update();
-    } else if (pEvent->key() == Qt::Key_Return) {
-        XInfoDB::XREG reg = g_listRegions.at(g_nCurrentRegionIndex).reg;
-        if (reg != XInfoDB::XREG_UNKNOWN) {
-            handleRegister(reg);
-        }
     }
 }
 
@@ -688,21 +683,21 @@ void XRegistersView::_customContextMenu(const QPoint &pos)
     contextMenu(pos);
 }
 
-void XRegistersView::actionViewGeneral()
+void XRegistersView::_actionViewGeneral()
 {
     g_regOptions.bGeneral = !(g_regOptions.bGeneral);
 
     adjustView();
 }
 
-void XRegistersView::actionViewIP()
+void XRegistersView::_actionViewIP()
 {
     g_regOptions.bIP = !(g_regOptions.bIP);
 
     adjustView();
 }
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewFlags()
+void XRegistersView::_actionViewFlags()
 {
     g_regOptions.bFlags = !(g_regOptions.bFlags);
 
@@ -710,7 +705,7 @@ void XRegistersView::actionViewFlags()
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewSegments()
+void XRegistersView::_actionViewSegments()
 {
     g_regOptions.bSegments = !(g_regOptions.bSegments);
 
@@ -718,7 +713,7 @@ void XRegistersView::actionViewSegments()
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewDebug()
+void XRegistersView::_actionViewDebug()
 {
     g_regOptions.bDebug = !(g_regOptions.bDebug);
 
@@ -726,7 +721,7 @@ void XRegistersView::actionViewDebug()
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewFloat()
+void XRegistersView::_actionViewFloat()
 {
     g_regOptions.bFloat = !(g_regOptions.bFloat);
 
@@ -734,13 +729,23 @@ void XRegistersView::actionViewFloat()
 }
 #endif
 #ifdef Q_PROCESSOR_X86
-void XRegistersView::actionViewXMM()
+void XRegistersView::_actionViewXMM()
 {
     g_regOptions.bXMM = !(g_regOptions.bXMM);
 
     adjustView();
 }
 #endif
+void XRegistersView::_actionEdit()
+{
+    if ((g_nCurrentRegionIndex >= 0) && (g_nCurrentRegionIndex < g_listRegions.count())) {
+        XInfoDB::XREG reg = g_listRegions.at(g_nCurrentRegionIndex).reg;
+        if (reg != XInfoDB::XREG_UNKNOWN) {
+            handleRegister(reg);
+        }
+    }
+}
+
 void XRegistersView::registerShortcuts(bool bState)
 {
     Q_UNUSED(bState)
@@ -748,52 +753,52 @@ void XRegistersView::registerShortcuts(bool bState)
 
 void XRegistersView::contextMenu(const QPoint &pos)
 {
-    // TODO isContextMenuEnable
+    // TODO isContextMenuEnable // TODO Check mb remove
     QMenu contextMenu(this);
 
     QMenu menuView(tr("View"), this);
 
     QAction actionGeneral(QString("General"), this);
     actionGeneral.setCheckable(true);
-    actionGeneral.setChecked(g_regOptions.bGeneral);
-    connect(&actionGeneral, SIGNAL(triggered()), this, SLOT(actionViewGeneral()));
+    actionGeneral.setChecked(getOptions().bGeneral);
+    connect(&actionGeneral, SIGNAL(triggered()), this, SLOT(_actionViewGeneral()));
     menuView.addAction(&actionGeneral);
 
     QAction actionIP(QString("IP"), this);
     actionIP.setCheckable(true);
-    actionIP.setChecked(g_regOptions.bIP);
-    connect(&actionIP, SIGNAL(triggered()), this, SLOT(actionViewIP()));
+    actionIP.setChecked(getOptions().bIP);
+    connect(&actionIP, SIGNAL(triggered()), this, SLOT(_actionViewIP()));
     menuView.addAction(&actionIP);
 
 #ifdef Q_PROCESSOR_X86
     QAction actionFlags(QString("Flags"), this);
     actionFlags.setCheckable(true);
-    actionFlags.setChecked(g_regOptions.bFlags);
-    connect(&actionFlags, SIGNAL(triggered()), this, SLOT(actionViewFlags()));
+    actionFlags.setChecked(getOptions().bFlags);
+    connect(&actionFlags, SIGNAL(triggered()), this, SLOT(_actionViewFlags()));
     menuView.addAction(&actionFlags);
 
     QAction actionSegments(QString("Segments"), this);
     actionSegments.setCheckable(true);
-    actionSegments.setChecked(g_regOptions.bSegments);
-    connect(&actionSegments, SIGNAL(triggered()), this, SLOT(actionViewSegments()));
+    actionSegments.setChecked(getOptions().bSegments);
+    connect(&actionSegments, SIGNAL(triggered()), this, SLOT(_actionViewSegments()));
     menuView.addAction(&actionSegments);
 
     QAction actionDebug(QString("Debug"), this);
     actionDebug.setCheckable(true);
-    actionDebug.setChecked(g_regOptions.bDebug);
-    connect(&actionDebug, SIGNAL(triggered()), this, SLOT(actionViewDebug()));
+    actionDebug.setChecked(getOptions().bDebug);
+    connect(&actionDebug, SIGNAL(triggered()), this, SLOT(_actionViewDebug()));
     menuView.addAction(&actionDebug);
 
     QAction actionFloat(QString("Float"), this);
     actionFloat.setCheckable(true);
-    actionFloat.setChecked(g_regOptions.bFloat);
-    connect(&actionFloat, SIGNAL(triggered()), this, SLOT(actionViewFloat()));
+    actionFloat.setChecked(getOptions().bFloat);
+    connect(&actionFloat, SIGNAL(triggered()), this, SLOT(_actionViewFloat()));
     menuView.addAction(&actionFloat);
 
     QAction actionXMM(QString("XMM"), this);
     actionXMM.setCheckable(true);
-    actionXMM.setChecked(g_regOptions.bXMM);
-    connect(&actionXMM, SIGNAL(triggered()), this, SLOT(actionViewXMM()));
+    actionXMM.setChecked(getOptions().bXMM);
+    connect(&actionXMM, SIGNAL(triggered()), this, SLOT(_actionViewXMM()));
     menuView.addAction(&actionXMM);
 #endif
 
