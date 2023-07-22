@@ -417,12 +417,12 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
 //    }
 #ifdef Q_PROCESSOR_X86
     if ((reg == XInfoDB::XREG_CF) || (reg == XInfoDB::XREG_PF) || (reg == XInfoDB::XREG_AF) || (reg == XInfoDB::XREG_ZF) || (reg == XInfoDB::XREG_SF) ||
-            (reg == XInfoDB::XREG_TF) || (reg == XInfoDB::XREG_IF) || (reg == XInfoDB::XREG_DF) || (reg == XInfoDB::XREG_OF)) {
+        (reg == XInfoDB::XREG_TF) || (reg == XInfoDB::XREG_IF) || (reg == XInfoDB::XREG_DF) || (reg == XInfoDB::XREG_OF)) {
 #ifdef Q_PROCESSOR_X86_32
-        XInfoDB::XREG _reg =XInfoDB::XREG_EFLAGS;
+        XInfoDB::XREG _reg = XInfoDB::XREG_EFLAGS;
 #endif
 #ifdef Q_PROCESSOR_X86_64
-        XInfoDB::XREG _reg =XInfoDB::XREG_RFLAGS;
+        XInfoDB::XREG _reg = XInfoDB::XREG_RFLAGS;
 #endif
         XBinary::XVARIANT _var = g_pXInfoDB->getCurrentRegCache(_reg);
         XBinary::XVARIANT var = XInfoDB::getFlagFromReg(_var, reg);
@@ -517,7 +517,7 @@ qint32 XRegistersView::handleNavi(qint32 nCurrentRegionIndex, QKeySequence::Stan
                             if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop < nCurrentValue)) {
                                 nCurrentValue = g_listRegions.at(i).nTop;
                                 nResult = i;
-//                                bFound = true;
+                                //                                bFound = true;
                             }
                         }
                     } else if (key == QKeySequence::MoveToPreviousLine) {
@@ -525,7 +525,7 @@ qint32 XRegistersView::handleNavi(qint32 nCurrentRegionIndex, QKeySequence::Stan
                             if ((nCurrentValue == -1) || (g_listRegions.at(i).nTop > nCurrentValue)) {
                                 nCurrentValue = g_listRegions.at(i).nTop;
                                 nResult = i;
-//                                bFound = true;
+                                //                                bFound = true;
                             }
                         }
                     }
