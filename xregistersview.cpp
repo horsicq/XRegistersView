@@ -65,6 +65,11 @@ void XRegistersView::setXInfoDB(XInfoDB *pXInfoDB)
     g_pXInfoDB = pXInfoDB;
 }
 
+XInfoDB *XRegistersView::getXinfoDB()
+{
+    return g_pXInfoDB;
+}
+
 void XRegistersView::reload()
 {
     g_listRegions.clear();

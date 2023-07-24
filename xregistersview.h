@@ -53,6 +53,7 @@ public:
     void setOptions(XInfoDB::XREG_OPTIONS regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
     void setXInfoDB(XInfoDB *pXInfoDB);
+    XInfoDB *getXinfoDB();
     XInfoDB::XREG pointToReg(QPoint pos, qint32 *pIndex);
     void reload();
     void clear();
