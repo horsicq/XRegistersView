@@ -592,7 +592,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
                 }
 
                 if (bSelected) {
-                    pPainter->fillRect(rectValue, viewport()->palette().color(QPalette::Highlight));
+                    pPainter->fillRect(rectValue, getColor(TCLOLOR_SELECTED));
                 }
             }
 
