@@ -50,7 +50,7 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(_customContextMenu(QPoint)));
 }
 
-void XRegistersView::setOptions(XInfoDB::XREG_OPTIONS regOptions)
+void XRegistersView::setOptions(const XInfoDB::XREG_OPTIONS &regOptions)
 {
     g_regOptions = regOptions;
 }

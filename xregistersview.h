@@ -50,7 +50,7 @@ class XRegistersView : public XShortcutstScrollArea {
 
 public:
     XRegistersView(QWidget *pParent = nullptr);
-    void setOptions(XInfoDB::XREG_OPTIONS regOptions);
+    void setOptions(const XInfoDB::XREG_OPTIONS &regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
     void setXInfoDB(XInfoDB *pXInfoDB);
     XInfoDB *getXinfoDB();
