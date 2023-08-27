@@ -102,7 +102,7 @@ void XRegistersView::reload()
 
             // TODO Check EAX EBX or EAX ECX
 
-    #ifdef Q_PROCESSOR_X86_32
+#ifdef Q_PROCESSOR_X86_32
             QList<XInfoDB::XREG> listGeneralRegs;
             listGeneralRegs.append(XInfoDB::XREG_EAX);
             listGeneralRegs.append(XInfoDB::XREG_EBX);
@@ -116,8 +116,8 @@ void XRegistersView::reload()
             addRegsList(&listGeneralRegs, nLeft, nTop, g_nCharWidth * 3, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_GENERAL);
 
             nTop += listGeneralRegs.count() * g_nCharHeight;
-    #endif
-    #ifdef Q_PROCESSOR_X86_64
+#endif
+#ifdef Q_PROCESSOR_X86_64
             QList<XInfoDB::XREG> listGeneralRegs;
             listGeneralRegs.append(XInfoDB::XREG_RAX);
             listGeneralRegs.append(XInfoDB::XREG_RBX);
@@ -139,7 +139,7 @@ void XRegistersView::reload()
             addRegsList(&listGeneralRegs, nLeft, nTop, g_nCharWidth * 3, nValueWidth64, nCommentWidth, XInfoDB::RI_TYPE_GENERAL);
 
             nTop += listGeneralRegs.count() * g_nCharHeight;
-    #endif
+#endif
         }
 
         if (g_regOptions.bIP) {
@@ -149,28 +149,28 @@ void XRegistersView::reload()
 
             bFirst = true;
 
-    #ifdef Q_PROCESSOR_X86_32
+#ifdef Q_PROCESSOR_X86_32
             addRegion(XInfoDB::XREG_EIP, nLeft, nTop, g_nCharWidth * 3, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_ADDRESS);
-    #endif
-    #ifdef Q_PROCESSOR_X86_64
+#endif
+#ifdef Q_PROCESSOR_X86_64
             addRegion(XInfoDB::XREG_RIP, nLeft, nTop, g_nCharWidth * 3, nValueWidth64, nCommentWidth, XInfoDB::RI_TYPE_ADDRESS);
-    #endif
+#endif
 
             nTop += g_nCharHeight;
         }
-    #ifdef Q_PROCESSOR_X86
+#ifdef Q_PROCESSOR_X86
         if (g_regOptions.bFlags) {
             if (bFirst) {
                 nTop += g_nCharHeight / 2;  // Empty
             }
 
             bFirst = true;
-    #ifdef Q_PROCESSOR_X86_32
+#ifdef Q_PROCESSOR_X86_32
             addRegion(XInfoDB::XREG_EFLAGS, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
-    #endif
-    #ifdef Q_PROCESSOR_X86_64
+#endif
+#ifdef Q_PROCESSOR_X86_64
             addRegion(XInfoDB::XREG_RFLAGS, nLeft, nTop, g_nCharWidth * 6, nValueWidth64, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
-    #endif
+#endif
             nTop += g_nCharHeight;
 
             QList<XInfoDB::XREG> listRegs1;
@@ -193,8 +193,8 @@ void XRegistersView::reload()
 
             nTop += (3) * g_nCharHeight;
         }
-    #endif
-    #ifdef Q_PROCESSOR_X86
+#endif
+#ifdef Q_PROCESSOR_X86
         if (g_regOptions.bSegments) {
             if (bFirst) {
                 nTop += g_nCharHeight / 2;  // Empty
@@ -216,8 +216,8 @@ void XRegistersView::reload()
 
             nTop += (3) * g_nCharHeight;
         }
-    #endif
-    #ifdef Q_PROCESSOR_X86
+#endif
+#ifdef Q_PROCESSOR_X86
         if (g_regOptions.bFloat) {
             if (bFirst) {
                 nTop += g_nCharHeight / 2;  // Empty
@@ -243,8 +243,8 @@ void XRegistersView::reload()
             // TODO StatusWord
             // ControlWord
         }
-    #endif
-    #ifdef Q_PROCESSOR_X86
+#endif
+#ifdef Q_PROCESSOR_X86
         if (g_regOptions.bDebug) {
             if (bFirst) {
                 nTop += g_nCharHeight / 2;  // Empty
@@ -260,16 +260,16 @@ void XRegistersView::reload()
             listDebugRegs.append(XInfoDB::XREG_DR6);
             listDebugRegs.append(XInfoDB::XREG_DR7);
 
-    #ifdef Q_PROCESSOR_X86_32
+#ifdef Q_PROCESSOR_X86_32
             addRegsList(&listDebugRegs, nLeft, nTop, g_nCharWidth * 3, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
-    #endif
-    #ifdef Q_PROCESSOR_X86_64
+#endif
+#ifdef Q_PROCESSOR_X86_64
             addRegsList(&listDebugRegs, nLeft, nTop, g_nCharWidth * 3, nValueWidth64, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
-    #endif
+#endif
             nTop += listDebugRegs.count() * g_nCharHeight;
         }
-    #endif
-    #ifdef Q_PROCESSOR_X86
+#endif
+#ifdef Q_PROCESSOR_X86
         if (g_regOptions.bXMM) {
             if (bFirst) {
                 nTop += g_nCharHeight / 2;  // Empty
@@ -301,11 +301,12 @@ void XRegistersView::reload()
 
             // TODO MxCsr
         }
-    #endif
+#endif
         qint32 nNumberOfRegions = g_listRegions.count();
 
         for (qint32 i = 0; i < nNumberOfRegions; i++) {
-            nMinWidth = qMax(nMinWidth, g_listRegions.at(i).nLeft + g_listRegions.at(i).nTitleWidth + g_listRegions.at(i).nValueWidth + g_listRegions.at(i).nCommentWidth);
+            nMinWidth =
+                qMax(nMinWidth, g_listRegions.at(i).nLeft + g_listRegions.at(i).nTitleWidth + g_listRegions.at(i).nValueWidth + g_listRegions.at(i).nCommentWidth);
             nMinHeight = qMax(nMinHeight, g_listRegions.at(i).nTop + g_listRegions.at(i).nHeight);
         }
 
