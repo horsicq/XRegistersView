@@ -50,6 +50,7 @@ class XRegistersView : public XShortcutstScrollArea {
 
 public:
     XRegistersView(QWidget *pParent = nullptr);
+
     void setOptions(const XInfoDB::XREG_OPTIONS &regOptions);
     XInfoDB::XREG_OPTIONS getOptions();
     void setXInfoDB(XInfoDB *pXInfoDB);
@@ -86,6 +87,7 @@ public slots:
     void _actionViewXMM();
 #endif
     void _actionEdit();
+    void _actionClear();
 
 protected:
     virtual void registerShortcuts(bool bState) override;

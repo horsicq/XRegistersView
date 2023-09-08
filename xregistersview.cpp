@@ -31,6 +31,8 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
 
     g_pXInfoDB = nullptr;
 
+    g_nCurrentRegionIndex = 0;
+
     g_regOptions = {};
     g_regOptions.bGeneral = true;
     g_regOptions.bIP = true;
@@ -76,9 +78,6 @@ void XRegistersView::reload()
 {
     if (isActive()) {
         g_listRegions.clear();
-
-        g_nCurrentRegionIndex = 0;
-
         const QFontMetricsF fm(g_fontText);
 
         qint32 nMinWidth = 0;
@@ -753,6 +752,23 @@ void XRegistersView::_actionEdit()
         XInfoDB::XREG reg = g_listRegions.at(g_nCurrentRegionIndex).reg;
         if (reg != XInfoDB::XREG_UNKNOWN) {
             handleRegister(reg);
+        }
+    }
+}
+
+void XRegistersView::_actionClear()
+{
+    if ((g_nCurrentRegionIndex >= 0) && (g_nCurrentRegionIndex < g_listRegions.count())) {
+        XInfoDB::XREG reg = g_listRegions.at(g_nCurrentRegionIndex).reg;
+        if (reg != XInfoDB::XREG_UNKNOWN) {
+            XBinary::XVARIANT var = g_pXInfoDB->getCurrentRegCache(reg);
+
+            XBinary::clearXVariant(&var);
+
+            if (g_pXInfoDB->setCurrentReg(reg, var)) {
+                g_pXInfoDB->setCurrentRegCache(reg, var);
+                reload();
+            }
         }
     }
 }
