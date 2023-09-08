@@ -135,7 +135,7 @@ void DialogRegister64::setValue()
     if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_1->getValue(), 3);
     if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_2->getValue(), 2);
     if (ui->lineEditReg16_3->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_3->getValue(), 1);
-    if (ui->lineEditReg16_4->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_4->getValue(), 3);
+    if (ui->lineEditReg16_4->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_4->getValue(), 0);
 
     if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_1->getValue(), 7);
     if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_2->getValue(), 6);
