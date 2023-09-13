@@ -85,6 +85,7 @@ public slots:
     void _actionViewDebug();
     void _actionViewFloat();
     void _actionViewXMM();
+    void _actionViewYMM();
 #endif
     void _actionEdit();
     void _actionClear();

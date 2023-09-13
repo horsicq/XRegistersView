@@ -42,6 +42,7 @@ XRegistersView::XRegistersView(QWidget *pParent) : XShortcutstScrollArea(pParent
     g_regOptions.bDebug = true;
     g_regOptions.bFloat = true;
     g_regOptions.bXMM = true;
+    g_regOptions.bYMM = true;
 #endif
     //    addColumn("",300); // TODO Width
     //    setVerticalLinesVisible(true);
@@ -92,6 +93,7 @@ void XRegistersView::reload()
         nValueWidth32++;  // TODO remove
         qint32 nValueWidth64 = fm.boundingRect("0000000000000000  ").width();
         qint32 nValueWidth128 = g_nCharWidth * 20;  // Check
+        qint32 nValueWidth256 = g_nCharWidth * 40;  // Check
         qint32 nCommentWidth = g_nCharWidth * 40;   // TODO Check
 
         bool bFirst = false;
@@ -299,6 +301,36 @@ void XRegistersView::reload()
             nTop += listXmmRegs.count() * g_nCharHeight;
 
             // TODO MxCsr
+        }
+
+        if (g_regOptions.bYMM) {
+            if (bFirst) {
+                nTop += g_nCharHeight / 2;  // Empty
+            }
+
+            bFirst = true;
+
+            QList<XInfoDB::XREG> listYmmRegs;
+            listYmmRegs.append(XInfoDB::XREG_YMM0);
+            listYmmRegs.append(XInfoDB::XREG_YMM1);
+            listYmmRegs.append(XInfoDB::XREG_YMM2);
+            listYmmRegs.append(XInfoDB::XREG_YMM3);
+            listYmmRegs.append(XInfoDB::XREG_YMM4);
+            listYmmRegs.append(XInfoDB::XREG_YMM5);
+            listYmmRegs.append(XInfoDB::XREG_YMM6);
+            listYmmRegs.append(XInfoDB::XREG_YMM7);
+            listYmmRegs.append(XInfoDB::XREG_YMM8);
+            listYmmRegs.append(XInfoDB::XREG_YMM9);
+            listYmmRegs.append(XInfoDB::XREG_YMM10);
+            listYmmRegs.append(XInfoDB::XREG_YMM11);
+            listYmmRegs.append(XInfoDB::XREG_YMM12);
+            listYmmRegs.append(XInfoDB::XREG_YMM13);
+            listYmmRegs.append(XInfoDB::XREG_YMM14);
+            listYmmRegs.append(XInfoDB::XREG_YMM15);
+
+            addRegsList(&listYmmRegs, nLeft, nTop, g_nCharWidth * 5, nValueWidth256, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+
+            nTop += listYmmRegs.count() * g_nCharHeight;
         }
 #endif
         qint32 nNumberOfRegions = g_listRegions.count();
@@ -742,6 +774,14 @@ void XRegistersView::_actionViewFloat()
 void XRegistersView::_actionViewXMM()
 {
     g_regOptions.bXMM = !(g_regOptions.bXMM);
+
+    adjustView();
+}
+#endif
+#ifdef Q_PROCESSOR_X86
+void XRegistersView::_actionViewYMM()
+{
+    g_regOptions.bYMM = !(g_regOptions.bYMM);
 
     adjustView();
 }
