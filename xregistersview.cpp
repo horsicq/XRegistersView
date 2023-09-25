@@ -287,6 +287,7 @@ void XRegistersView::reload()
             listXmmRegs.append(XInfoDB::XREG_XMM5);
             listXmmRegs.append(XInfoDB::XREG_XMM6);
             listXmmRegs.append(XInfoDB::XREG_XMM7);
+#ifdef Q_PROCESSOR_X86_64
             listXmmRegs.append(XInfoDB::XREG_XMM8);
             listXmmRegs.append(XInfoDB::XREG_XMM9);
             listXmmRegs.append(XInfoDB::XREG_XMM10);
@@ -295,7 +296,7 @@ void XRegistersView::reload()
             listXmmRegs.append(XInfoDB::XREG_XMM13);
             listXmmRegs.append(XInfoDB::XREG_XMM14);
             listXmmRegs.append(XInfoDB::XREG_XMM15);
-
+#endif
             addRegsList(&listXmmRegs, nLeft, nTop, g_nCharWidth * 5, nValueWidth128, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
 
             nTop += listXmmRegs.count() * g_nCharHeight;
