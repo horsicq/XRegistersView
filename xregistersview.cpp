@@ -175,21 +175,21 @@ void XRegistersView::reload()
             nTop += g_nCharHeight;
 
             QList<XInfoDB::XREG> listRegs1;
-            listRegs1.append(XInfoDB::XREG_ZF);
-            listRegs1.append(XInfoDB::XREG_OF);
-            listRegs1.append(XInfoDB::XREG_CF);
+            listRegs1.append(XInfoDB::XREG_FLAGS_ZF);
+            listRegs1.append(XInfoDB::XREG_FLAGS_OF);
+            listRegs1.append(XInfoDB::XREG_FLAGS_CF);
             addRegsList(&listRegs1, nLeft, nTop, g_nCharWidth * 2, nValueWidthBit, 0, XInfoDB::RI_TYPE_UNKNOWN);
 
             QList<XInfoDB::XREG> listRegs2;
-            listRegs2.append(XInfoDB::XREG_PF);
-            listRegs2.append(XInfoDB::XREG_SF);
-            listRegs2.append(XInfoDB::XREG_TF);
+            listRegs2.append(XInfoDB::XREG_FLAGS_PF);
+            listRegs2.append(XInfoDB::XREG_FLAGS_SF);
+            listRegs2.append(XInfoDB::XREG_FLAGS_TF);
             addRegsList(&listRegs2, nLeft + g_nCharWidth * 4, nTop, g_nCharWidth * 2, nValueWidthBit, 0, XInfoDB::RI_TYPE_UNKNOWN);
 
             QList<XInfoDB::XREG> listRegs3;
-            listRegs3.append(XInfoDB::XREG_AF);
-            listRegs3.append(XInfoDB::XREG_DF);
-            listRegs3.append(XInfoDB::XREG_IF);
+            listRegs3.append(XInfoDB::XREG_FLAGS_AF);
+            listRegs3.append(XInfoDB::XREG_FLAGS_DF);
+            listRegs3.append(XInfoDB::XREG_FLAGS_IF);
             addRegsList(&listRegs3, nLeft + g_nCharWidth * 8, nTop, g_nCharWidth * 2, nValueWidthBit, 0, XInfoDB::RI_TYPE_UNKNOWN);
 
             nTop += (3) * g_nCharHeight;
@@ -226,19 +226,31 @@ void XRegistersView::reload()
 
             bFirst = true;
 
-            QList<XInfoDB::XREG> listXmmFloat;
-            listXmmFloat.append(XInfoDB::XREG_ST0);
-            listXmmFloat.append(XInfoDB::XREG_ST1);
-            listXmmFloat.append(XInfoDB::XREG_ST2);
-            listXmmFloat.append(XInfoDB::XREG_ST3);
-            listXmmFloat.append(XInfoDB::XREG_ST4);
-            listXmmFloat.append(XInfoDB::XREG_ST5);
-            listXmmFloat.append(XInfoDB::XREG_ST6);
-            listXmmFloat.append(XInfoDB::XREG_ST7);
+            QList<XInfoDB::XREG> listControl;
+            listControl.append(XInfoDB::XREG_FPCR);
+            listControl.append(XInfoDB::XREG_FPSR);
+            listControl.append(XInfoDB::XREG_FPTAG);
+            listControl.append(XInfoDB::XREG_FPIOFF);
+            listControl.append(XInfoDB::XREG_FPISEL);
+            listControl.append(XInfoDB::XREG_FPDOFF);
+            listControl.append(XInfoDB::XREG_FPDSEL);
 
-            addRegsList(&listXmmFloat, nLeft, nTop, g_nCharWidth * 3, nValueWidth128, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+            addRegsList(&listControl, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+            nTop += listControl.count() * g_nCharHeight;
 
-            nTop += listXmmFloat.count() * g_nCharHeight;
+            QList<XInfoDB::XREG> listFloat;
+            listFloat.append(XInfoDB::XREG_ST0);
+            listFloat.append(XInfoDB::XREG_ST1);
+            listFloat.append(XInfoDB::XREG_ST2);
+            listFloat.append(XInfoDB::XREG_ST3);
+            listFloat.append(XInfoDB::XREG_ST4);
+            listFloat.append(XInfoDB::XREG_ST5);
+            listFloat.append(XInfoDB::XREG_ST6);
+            listFloat.append(XInfoDB::XREG_ST7);
+
+            addRegsList(&listFloat, nLeft, nTop, g_nCharWidth * 3, nValueWidth128, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+
+            nTop += listFloat.count() * g_nCharHeight;
 
             // TODO tagWord
             // TODO StatusWord
@@ -277,6 +289,14 @@ void XRegistersView::reload()
             }
 
             bFirst = true;
+
+            addRegion(XInfoDB::XREG_MXCSR, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+
+            nTop += g_nCharHeight;
+
+            addRegion(XInfoDB::XREG_MXCSR_MASK, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+
+            nTop += g_nCharHeight;
 
             QList<XInfoDB::XREG> listXmmRegs;
             listXmmRegs.append(XInfoDB::XREG_XMM0);
@@ -459,8 +479,8 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
 //        }
 //    }
 #ifdef Q_PROCESSOR_X86
-    if ((reg == XInfoDB::XREG_CF) || (reg == XInfoDB::XREG_PF) || (reg == XInfoDB::XREG_AF) || (reg == XInfoDB::XREG_ZF) || (reg == XInfoDB::XREG_SF) ||
-        (reg == XInfoDB::XREG_TF) || (reg == XInfoDB::XREG_IF) || (reg == XInfoDB::XREG_DF) || (reg == XInfoDB::XREG_OF)) {
+    if ((reg == XInfoDB::XREG_FLAGS_CF) || (reg == XInfoDB::XREG_FLAGS_PF) || (reg == XInfoDB::XREG_FLAGS_AF) || (reg == XInfoDB::XREG_FLAGS_ZF) || (reg == XInfoDB::XREG_FLAGS_SF) ||
+        (reg == XInfoDB::XREG_FLAGS_TF) || (reg == XInfoDB::XREG_FLAGS_IF) || (reg == XInfoDB::XREG_FLAGS_DF) || (reg == XInfoDB::XREG_FLAGS_OF)) {
 #ifdef Q_PROCESSOR_X86_32
         XInfoDB::XREG _reg = XInfoDB::XREG_EFLAGS;
 #endif
