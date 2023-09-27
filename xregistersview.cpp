@@ -290,11 +290,11 @@ void XRegistersView::reload()
 
             bFirst = true;
 
-            addRegion(XInfoDB::XREG_MXCSR, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+            addRegion(XInfoDB::XREG_MXCSR, nLeft, nTop, g_nCharWidth * 5, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
 
             nTop += g_nCharHeight;
 
-            addRegion(XInfoDB::XREG_MXCSR_MASK, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
+            addRegion(XInfoDB::XREG_MXCSR_MASK, nLeft, nTop, g_nCharWidth * 10, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
 
             nTop += g_nCharHeight;
 
