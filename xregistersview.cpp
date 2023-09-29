@@ -479,8 +479,9 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
 //        }
 //    }
 #ifdef Q_PROCESSOR_X86
-    if ((reg == XInfoDB::XREG_FLAGS_CF) || (reg == XInfoDB::XREG_FLAGS_PF) || (reg == XInfoDB::XREG_FLAGS_AF) || (reg == XInfoDB::XREG_FLAGS_ZF) || (reg == XInfoDB::XREG_FLAGS_SF) ||
-        (reg == XInfoDB::XREG_FLAGS_TF) || (reg == XInfoDB::XREG_FLAGS_IF) || (reg == XInfoDB::XREG_FLAGS_DF) || (reg == XInfoDB::XREG_FLAGS_OF)) {
+    if ((reg == XInfoDB::XREG_FLAGS_CF) || (reg == XInfoDB::XREG_FLAGS_PF) || (reg == XInfoDB::XREG_FLAGS_AF) || (reg == XInfoDB::XREG_FLAGS_ZF) ||
+        (reg == XInfoDB::XREG_FLAGS_SF) || (reg == XInfoDB::XREG_FLAGS_TF) || (reg == XInfoDB::XREG_FLAGS_IF) || (reg == XInfoDB::XREG_FLAGS_DF) ||
+        (reg == XInfoDB::XREG_FLAGS_OF)) {
 #ifdef Q_PROCESSOR_X86_32
         XInfoDB::XREG _reg = XInfoDB::XREG_EFLAGS;
 #endif
