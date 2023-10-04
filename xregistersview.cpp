@@ -478,7 +478,6 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
 //            reload();
 //        }
 //    }
-#ifdef Q_PROCESSOR_X86
     if ((reg == XInfoDB::XREG_FLAGS_CF) || (reg == XInfoDB::XREG_FLAGS_PF) || (reg == XInfoDB::XREG_FLAGS_AF) || (reg == XInfoDB::XREG_FLAGS_ZF) ||
         (reg == XInfoDB::XREG_FLAGS_SF) || (reg == XInfoDB::XREG_FLAGS_TF) || (reg == XInfoDB::XREG_FLAGS_IF) || (reg == XInfoDB::XREG_FLAGS_DF) ||
         (reg == XInfoDB::XREG_FLAGS_OF)) {
@@ -499,8 +498,64 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
             reload();
         }
     }
+
+    if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) ||
+        (reg == XInfoDB::XREG_DR6) || (reg == XInfoDB::XREG_DR7)) {
+#ifdef QT_DEBUG
+        qDebug("DEBUG registers");
+#endif
+    }
+#endif
+}
+
+bool XRegistersView::isClearEnable(XInfoDB::XREG reg)
+{
+    bool bResult = false;
+#ifdef Q_PROCESSOR_X86
+#ifdef Q_PROCESSOR_X86_32
+    if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
+        (reg == XInfoDB::XREG_EDI) || (reg == XInfoDB::XREG_EBP) || (reg == XInfoDB::XREG_ESP)) {
+
+        bResult = true;
+    }
+#endif
+#ifdef Q_PROCESSOR_X86_64
+    if ((reg == XInfoDB::XREG_RAX) || (reg == XInfoDB::XREG_RBX) || (reg == XInfoDB::XREG_RCX) || (reg == XInfoDB::XREG_RDX) || (reg == XInfoDB::XREG_RSI) ||
+        (reg == XInfoDB::XREG_RDI) || (reg == XInfoDB::XREG_RBP) || (reg == XInfoDB::XREG_RSP) || (reg == XInfoDB::XREG_R8) || (reg == XInfoDB::XREG_R9) ||
+        (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) || (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) ||
+        (reg == XInfoDB::XREG_R15)) {
+
+        bResult = true;
+    }
 #endif
 #endif
+
+    return bResult;
+}
+
+bool XRegistersView::isEditEnable(XInfoDB::XREG reg)
+{
+    bool bResult = false;
+#ifdef Q_PROCESSOR_X86
+#ifdef Q_PROCESSOR_X86_32
+    if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
+        (reg == XInfoDB::XREG_EDI) || (reg == XInfoDB::XREG_EBP) || (reg == XInfoDB::XREG_ESP)) {
+
+        bResult = true;
+    }
+#endif
+#ifdef Q_PROCESSOR_X86_64
+    if ((reg == XInfoDB::XREG_RAX) || (reg == XInfoDB::XREG_RBX) || (reg == XInfoDB::XREG_RCX) || (reg == XInfoDB::XREG_RDX) || (reg == XInfoDB::XREG_RSI) ||
+        (reg == XInfoDB::XREG_RDI) || (reg == XInfoDB::XREG_RBP) || (reg == XInfoDB::XREG_RSP) || (reg == XInfoDB::XREG_R8) || (reg == XInfoDB::XREG_R9) ||
+        (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) || (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) ||
+        (reg == XInfoDB::XREG_R15)) {
+
+        bResult = true;
+    }
+#endif
+#endif
+
+    return bResult;
 }
 
 qint32 XRegistersView::handleNavi(qint32 nCurrentRegionIndex, QKeySequence::StandardKey key)
@@ -683,7 +738,7 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
 void XRegistersView::mousePressEvent(QMouseEvent *pEvent)
 {
-    if (pEvent->button() == Qt::LeftButton) {
+    if ((pEvent->button() == Qt::LeftButton) || (pEvent->button() == Qt::RightButton)) {
         qint32 nIndex = -1;
         pointToReg(pEvent->pos(), &nIndex);
 

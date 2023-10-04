@@ -34,6 +34,7 @@
 #include "xinfodb.h"
 #include "xshortcutstscrollarea.h"
 
+// TODO replace DEBUG regs
 class XRegistersView : public XShortcutstScrollArea {
     Q_OBJECT
 
@@ -59,6 +60,8 @@ public:
     void reload();
     void clear();
     virtual void adjustView() override;
+    bool isClearEnable(XInfoDB::XREG reg);
+    bool isEditEnable(XInfoDB::XREG reg);
 
 private:
     void addRegion(XInfoDB::XREG reg, qint32 nLeft, qint32 nTop, qint32 nTitleWidth, qint32 nValueWidth, qint32 nCommentWidth, XInfoDB::RI_TYPE riType);
