@@ -92,8 +92,8 @@ void XRegistersView::reload()
         qint32 nValueWidth32 = fm.boundingRect("00000000  ").width();
         nValueWidth32++;  // TODO remove
         qint32 nValueWidth64 = fm.boundingRect("0000000000000000  ").width();
-        qint32 nValueWidth128 = g_nCharWidth * 20;  // Check
-        qint32 nValueWidth256 = g_nCharWidth * 40;  // Check
+        qint32 nValueWidth128 = fm.boundingRect("00000000000000000000000000000000  ").width();
+        qint32 nValueWidth256 = fm.boundingRect("0000000000000000000000000000000000000000000000000000000000000000  ").width();
         qint32 nCommentWidth = g_nCharWidth * 40;   // TODO Check
 
         bool bFirst = false;
@@ -230,10 +230,10 @@ void XRegistersView::reload()
             listControl.append(XInfoDB::XREG_FPCR);
             listControl.append(XInfoDB::XREG_FPSR);
             listControl.append(XInfoDB::XREG_FPTAG);
-            listControl.append(XInfoDB::XREG_FPIOFF);
-            listControl.append(XInfoDB::XREG_FPISEL);
-            listControl.append(XInfoDB::XREG_FPDOFF);
-            listControl.append(XInfoDB::XREG_FPDSEL);
+//            listControl.append(XInfoDB::XREG_FPIOFF);
+//            listControl.append(XInfoDB::XREG_FPISEL);
+//            listControl.append(XInfoDB::XREG_FPDOFF);
+//            listControl.append(XInfoDB::XREG_FPDSEL);
 
             addRegsList(&listControl, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
             nTop += listControl.count() * g_nCharHeight;
