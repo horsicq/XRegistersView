@@ -94,7 +94,7 @@ void XRegistersView::reload()
         qint32 nValueWidth64 = fm.boundingRect("0000000000000000  ").width();
         qint32 nValueWidth128 = fm.boundingRect("00000000000000000000000000000000  ").width();
         qint32 nValueWidth256 = fm.boundingRect("0000000000000000000000000000000000000000000000000000000000000000  ").width();
-        qint32 nCommentWidth = g_nCharWidth * 40;   // TODO Check
+        qint32 nCommentWidth = g_nCharWidth * 40;  // TODO Check
 
         bool bFirst = false;
 
@@ -230,10 +230,10 @@ void XRegistersView::reload()
             listControl.append(XInfoDB::XREG_FPCR);
             listControl.append(XInfoDB::XREG_FPSR);
             listControl.append(XInfoDB::XREG_FPTAG);
-//            listControl.append(XInfoDB::XREG_FPIOFF);
-//            listControl.append(XInfoDB::XREG_FPISEL);
-//            listControl.append(XInfoDB::XREG_FPDOFF);
-//            listControl.append(XInfoDB::XREG_FPDSEL);
+            //            listControl.append(XInfoDB::XREG_FPIOFF);
+            //            listControl.append(XInfoDB::XREG_FPISEL);
+            //            listControl.append(XInfoDB::XREG_FPDOFF);
+            //            listControl.append(XInfoDB::XREG_FPDSEL);
 
             addRegsList(&listControl, nLeft, nTop, g_nCharWidth * 6, nValueWidth32, nCommentWidth, XInfoDB::RI_TYPE_UNKNOWN);
             nTop += listControl.count() * g_nCharHeight;
@@ -469,15 +469,15 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
         }
     }
 #endif
-//    if ((reg == XInfoDB::XREG_CS) || (reg == XInfoDB::XREG_DS) || (reg == XInfoDB::XREG_ES) || (reg == XInfoDB::XREG_FS) || (reg == XInfoDB::XREG_GS) ||
-//        (reg == XInfoDB::XREG_SS)) {
-//        DialogRegister16 dialogReg(this);
-//        dialogReg.setData(g_pXInfoDB, reg);
+    //    if ((reg == XInfoDB::XREG_CS) || (reg == XInfoDB::XREG_DS) || (reg == XInfoDB::XREG_ES) || (reg == XInfoDB::XREG_FS) || (reg == XInfoDB::XREG_GS) ||
+    //        (reg == XInfoDB::XREG_SS)) {
+    //        DialogRegister16 dialogReg(this);
+    //        dialogReg.setData(g_pXInfoDB, reg);
 
-//        if (dialogReg.exec() == QDialog::Accepted) {
-//            reload();
-//        }
-//    }
+    //        if (dialogReg.exec() == QDialog::Accepted) {
+    //            reload();
+    //        }
+    //    }
     if ((reg == XInfoDB::XREG_FLAGS_CF) || (reg == XInfoDB::XREG_FLAGS_PF) || (reg == XInfoDB::XREG_FLAGS_AF) || (reg == XInfoDB::XREG_FLAGS_ZF) ||
         (reg == XInfoDB::XREG_FLAGS_SF) || (reg == XInfoDB::XREG_FLAGS_TF) || (reg == XInfoDB::XREG_FLAGS_IF) || (reg == XInfoDB::XREG_FLAGS_DF) ||
         (reg == XInfoDB::XREG_FLAGS_OF)) {
@@ -499,8 +499,8 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
         }
     }
 
-    if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) ||
-        (reg == XInfoDB::XREG_DR6) || (reg == XInfoDB::XREG_DR7)) {
+    if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) ||
+        (reg == XInfoDB::XREG_DR7)) {
 #ifdef QT_DEBUG
         qDebug("DEBUG registers");
 #endif
@@ -515,7 +515,6 @@ bool XRegistersView::isClearEnable(XInfoDB::XREG reg)
 #ifdef Q_PROCESSOR_X86_32
     if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
         (reg == XInfoDB::XREG_EDI) || (reg == XInfoDB::XREG_EBP) || (reg == XInfoDB::XREG_ESP)) {
-
         bResult = true;
     }
 #endif
@@ -524,7 +523,6 @@ bool XRegistersView::isClearEnable(XInfoDB::XREG reg)
         (reg == XInfoDB::XREG_RDI) || (reg == XInfoDB::XREG_RBP) || (reg == XInfoDB::XREG_RSP) || (reg == XInfoDB::XREG_R8) || (reg == XInfoDB::XREG_R9) ||
         (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) || (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) ||
         (reg == XInfoDB::XREG_R15)) {
-
         bResult = true;
     }
 #endif
@@ -540,7 +538,6 @@ bool XRegistersView::isEditEnable(XInfoDB::XREG reg)
 #ifdef Q_PROCESSOR_X86_32
     if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
         (reg == XInfoDB::XREG_EDI) || (reg == XInfoDB::XREG_EBP) || (reg == XInfoDB::XREG_ESP)) {
-
         bResult = true;
     }
 #endif
@@ -549,7 +546,6 @@ bool XRegistersView::isEditEnable(XInfoDB::XREG reg)
         (reg == XInfoDB::XREG_RDI) || (reg == XInfoDB::XREG_RBP) || (reg == XInfoDB::XREG_RSP) || (reg == XInfoDB::XREG_R8) || (reg == XInfoDB::XREG_R9) ||
         (reg == XInfoDB::XREG_R10) || (reg == XInfoDB::XREG_R11) || (reg == XInfoDB::XREG_R12) || (reg == XInfoDB::XREG_R13) || (reg == XInfoDB::XREG_R14) ||
         (reg == XInfoDB::XREG_R15)) {
-
         bResult = true;
     }
 #endif
