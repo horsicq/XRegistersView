@@ -28,6 +28,7 @@
 
 class DialogRegisterAbstract : public QDialog {
     Q_OBJECT
+
 public:
     explicit DialogRegisterAbstract(QWidget *pParent = nullptr);
 

@@ -444,6 +444,7 @@ XInfoDB::XREG XRegistersView::pointToReg(QPoint pos, qint32 *pIndex)
 
 void XRegistersView::handleRegister(XInfoDB::XREG reg)
 {
+    bool bSuccess = false;
 #ifdef Q_PROCESSOR_X86
 #ifdef Q_PROCESSOR_X86_32
     if ((reg == XInfoDB::XREG_EAX) || (reg == XInfoDB::XREG_EBX) || (reg == XInfoDB::XREG_ECX) || (reg == XInfoDB::XREG_EDX) || (reg == XInfoDB::XREG_ESI) ||
@@ -454,6 +455,8 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
         if (dialogReg.exec() == QDialog::Accepted) {
             reload();
         }
+
+        bSuccess = true;
     }
 #endif
 #ifdef Q_PROCESSOR_X86_64
@@ -466,6 +469,21 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
 
         if (dialogReg.exec() == QDialog::Accepted) {
             reload();
+        }
+
+        bSuccess = true;
+    }
+
+    if (!bSuccess) {
+        if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) || (reg == XInfoDB::XREG_DR7)) {
+            DialogDebug_x86 dialogReg(this);
+            dialogReg.setData(g_pXInfoDB);
+
+            if (dialogReg.exec() == QDialog::Accepted) {
+                reload();
+            }
+
+            bSuccess = true;
         }
     }
 #endif
@@ -549,6 +567,12 @@ bool XRegistersView::isEditEnable(XInfoDB::XREG reg)
         bResult = true;
     }
 #endif
+
+    if (!bResult) {
+        if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) || (reg == XInfoDB::XREG_DR7)) {
+            bResult = true;
+        }
+    }
 #endif
 
     return bResult;
@@ -859,6 +883,18 @@ void XRegistersView::_actionViewYMM()
     adjustView();
 }
 #endif
+void XRegistersView::_actionCopy()
+{
+    if ((g_nCurrentRegionIndex >= 0) && (g_nCurrentRegionIndex < g_listRegions.count())) {
+        XInfoDB::XREG reg = g_listRegions.at(g_nCurrentRegionIndex).reg;
+        if (reg != XInfoDB::XREG_UNKNOWN) {
+            XBinary::XVARIANT var = g_pXInfoDB->getCurrentRegCache(reg);
+            QString sValue = XBinary::xVariantToHex(var);
+
+            QApplication::clipboard()->setText(sValue);
+        }
+    }
+}
 void XRegistersView::_actionEdit()
 {
     if ((g_nCurrentRegionIndex >= 0) && (g_nCurrentRegionIndex < g_listRegions.count())) {

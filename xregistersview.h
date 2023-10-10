@@ -31,6 +31,9 @@
 #include "dialogregister16.h"
 #include "dialogregister32.h"
 #include "dialogregister64.h"
+#ifdef Q_PROCESSOR_X86
+#include "dialogdebug_x86.h"
+#endif
 #include "xinfodb.h"
 #include "xshortcutstscrollarea.h"
 
@@ -90,6 +93,7 @@ public slots:
     void _actionViewXMM();
     void _actionViewYMM();
 #endif
+    void _actionCopy();
     void _actionEdit();
     void _actionClear();
 
