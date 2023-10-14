@@ -21,9 +21,7 @@
 #include "dialogdebug_x86.h"
 #include "ui_dialogdebug_x86.h"
 
-DialogDebug_x86::DialogDebug_x86(QWidget *pParent) :
-    QDialog(pParent),
-    ui(new Ui::DialogDebug_x86)
+DialogDebug_x86::DialogDebug_x86(QWidget *pParent) : QDialog(pParent), ui(new Ui::DialogDebug_x86)
 {
     ui->setupUi(this);
 }

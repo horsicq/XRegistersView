@@ -29,8 +29,7 @@ namespace Ui {
 class DialogDebug_x86;
 }
 
-class DialogDebug_x86 : public QDialog
-{
+class DialogDebug_x86 : public QDialog {
     Q_OBJECT
 
 public:
@@ -44,4 +43,4 @@ private:
     XInfoDB *g_pXInfoDB;
 };
 
-#endif // DIALOGDEBUG_X86_H
+#endif  // DIALOGDEBUG_X86_H

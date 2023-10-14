@@ -475,7 +475,8 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
     }
 
     if (!bSuccess) {
-        if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) || (reg == XInfoDB::XREG_DR7)) {
+        if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) ||
+            (reg == XInfoDB::XREG_DR7)) {
             DialogDebug_x86 dialogReg(this);
             dialogReg.setData(g_pXInfoDB);
 
@@ -569,7 +570,8 @@ bool XRegistersView::isEditEnable(XInfoDB::XREG reg)
 #endif
 
     if (!bResult) {
-        if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) || (reg == XInfoDB::XREG_DR7)) {
+        if ((reg == XInfoDB::XREG_DR0) || (reg == XInfoDB::XREG_DR1) || (reg == XInfoDB::XREG_DR2) || (reg == XInfoDB::XREG_DR3) || (reg == XInfoDB::XREG_DR6) ||
+            (reg == XInfoDB::XREG_DR7)) {
             bResult = true;
         }
     }
