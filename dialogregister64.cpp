@@ -127,24 +127,24 @@ void DialogRegister64::setValue()
 {
     quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
 
-    if (ui->lineEditReg64->isFocused()) nCurrentValue = ui->lineEditReg64->getValue();
+    if (ui->lineEditReg64->isFocused()) nCurrentValue = ui->lineEditReg64->getIntValue();
 
-    if (ui->lineEditReg32_1->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_1->getValue(), 1);
-    if (ui->lineEditReg32_2->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_2->getValue(), 0);
+    if (ui->lineEditReg32_1->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_1->getIntValue(), 1);
+    if (ui->lineEditReg32_2->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_2->getIntValue(), 0);
 
-    if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_1->getValue(), 3);
-    if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_2->getValue(), 2);
-    if (ui->lineEditReg16_3->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_3->getValue(), 1);
-    if (ui->lineEditReg16_4->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_4->getValue(), 0);
+    if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_1->getIntValue(), 3);
+    if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_2->getIntValue(), 2);
+    if (ui->lineEditReg16_3->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_3->getIntValue(), 1);
+    if (ui->lineEditReg16_4->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_4->getIntValue(), 0);
 
-    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_1->getValue(), 7);
-    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_2->getValue(), 6);
-    if (ui->lineEditReg8_3->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_3->getValue(), 5);
-    if (ui->lineEditReg8_4->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_4->getValue(), 4);
-    if (ui->lineEditReg8_5->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_5->getValue(), 3);
-    if (ui->lineEditReg8_6->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_6->getValue(), 2);
-    if (ui->lineEditReg8_7->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_7->getValue(), 1);
-    if (ui->lineEditReg8_8->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_8->getValue(), 0);
+    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_1->getIntValue(), 7);
+    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_2->getIntValue(), 6);
+    if (ui->lineEditReg8_3->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_3->getIntValue(), 5);
+    if (ui->lineEditReg8_4->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_4->getIntValue(), 4);
+    if (ui->lineEditReg8_5->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_5->getIntValue(), 3);
+    if (ui->lineEditReg8_6->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_6->getIntValue(), 2);
+    if (ui->lineEditReg8_7->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_7->getIntValue(), 1);
+    if (ui->lineEditReg8_8->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_8->getIntValue(), 0);
 
     setCurrentVariant(XBinary::getXVariant(nCurrentValue));
 }

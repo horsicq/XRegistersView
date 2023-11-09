@@ -99,15 +99,15 @@ void DialogRegister32::setValue()
 {
     quint32 nCurrentValue = getCurrentVariant().var.v_uint32;
 
-    if (ui->lineEditReg32->isFocused()) nCurrentValue = ui->lineEditReg32->getValue();
+    if (ui->lineEditReg32->isFocused()) nCurrentValue = ui->lineEditReg32->getIntValue();
 
-    if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToDword(nCurrentValue, ui->lineEditReg16_1->getValue(), 1);
-    if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToDword(nCurrentValue, ui->lineEditReg16_2->getValue(), 0);
+    if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToDword(nCurrentValue, ui->lineEditReg16_1->getIntValue(), 1);
+    if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToDword(nCurrentValue, ui->lineEditReg16_2->getIntValue(), 0);
 
-    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_1->getValue(), 3);
-    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_2->getValue(), 2);
-    if (ui->lineEditReg8_3->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_3->getValue(), 1);
-    if (ui->lineEditReg8_4->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_4->getValue(), 0);
+    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_1->getIntValue(), 3);
+    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_2->getIntValue(), 2);
+    if (ui->lineEditReg8_3->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_3->getIntValue(), 1);
+    if (ui->lineEditReg8_4->isFocused()) nCurrentValue = XBinary::setByteToDword(nCurrentValue, ui->lineEditReg8_4->getIntValue(), 0);
 
     setCurrentVariant(XBinary::getXVariant(nCurrentValue));
 }

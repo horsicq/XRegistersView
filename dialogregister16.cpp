@@ -86,10 +86,10 @@ void DialogRegister16::setValue()
 {
     quint32 nCurrentValue = getCurrentVariant().var.v_uint32;
 
-    if (ui->lineEditReg16->isFocused()) nCurrentValue = ui->lineEditReg16->getValue();
+    if (ui->lineEditReg16->isFocused()) nCurrentValue = ui->lineEditReg16->getIntValue();
 
-    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_1->getValue(), 1);
-    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_2->getValue(), 0);
+    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_1->getIntValue(), 1);
+    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_2->getIntValue(), 0);
 
     setCurrentVariant(XBinary::getXVariant(nCurrentValue));
 }
