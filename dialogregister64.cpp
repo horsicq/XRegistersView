@@ -101,24 +101,24 @@ void DialogRegister64::adjustValue()
 {
     quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
 
-    if (!(ui->lineEditReg64->isFocused())) ui->lineEditReg64->setValue(nCurrentValue);
+    if (!(ui->lineEditReg64->isFocused())) ui->lineEditReg64->setValue_uint64(nCurrentValue);
 
-    if (!(ui->lineEditReg32_1->isFocused())) ui->lineEditReg32_1->setValue(XBinary::getDwordFromQword(nCurrentValue, 1));
-    if (!(ui->lineEditReg32_2->isFocused())) ui->lineEditReg32_2->setValue(XBinary::getDwordFromQword(nCurrentValue, 0));
+    if (!(ui->lineEditReg32_1->isFocused())) ui->lineEditReg32_1->setValue_uint32(XBinary::getDwordFromQword(nCurrentValue, 1));
+    if (!(ui->lineEditReg32_2->isFocused())) ui->lineEditReg32_2->setValue_uint32(XBinary::getDwordFromQword(nCurrentValue, 0));
 
-    if (!(ui->lineEditReg16_1->isFocused())) ui->lineEditReg16_1->setValue(XBinary::getWordFromQword(nCurrentValue, 3));
-    if (!(ui->lineEditReg16_2->isFocused())) ui->lineEditReg16_2->setValue(XBinary::getWordFromQword(nCurrentValue, 2));
-    if (!(ui->lineEditReg16_3->isFocused())) ui->lineEditReg16_3->setValue(XBinary::getWordFromQword(nCurrentValue, 1));
-    if (!(ui->lineEditReg16_4->isFocused())) ui->lineEditReg16_4->setValue(XBinary::getWordFromQword(nCurrentValue, 0));
+    if (!(ui->lineEditReg16_1->isFocused())) ui->lineEditReg16_1->setValue_uint16(XBinary::getWordFromQword(nCurrentValue, 3));
+    if (!(ui->lineEditReg16_2->isFocused())) ui->lineEditReg16_2->setValue_uint16(XBinary::getWordFromQword(nCurrentValue, 2));
+    if (!(ui->lineEditReg16_3->isFocused())) ui->lineEditReg16_3->setValue_uint16(XBinary::getWordFromQword(nCurrentValue, 1));
+    if (!(ui->lineEditReg16_4->isFocused())) ui->lineEditReg16_4->setValue_uint16(XBinary::getWordFromQword(nCurrentValue, 0));
 
-    if (!(ui->lineEditReg8_1->isFocused())) ui->lineEditReg8_1->setValue(XBinary::getByteFromQword(nCurrentValue, 7));
-    if (!(ui->lineEditReg8_2->isFocused())) ui->lineEditReg8_2->setValue(XBinary::getByteFromQword(nCurrentValue, 6));
-    if (!(ui->lineEditReg8_3->isFocused())) ui->lineEditReg8_3->setValue(XBinary::getByteFromQword(nCurrentValue, 5));
-    if (!(ui->lineEditReg8_4->isFocused())) ui->lineEditReg8_4->setValue(XBinary::getByteFromQword(nCurrentValue, 4));
-    if (!(ui->lineEditReg8_5->isFocused())) ui->lineEditReg8_5->setValue(XBinary::getByteFromQword(nCurrentValue, 3));
-    if (!(ui->lineEditReg8_6->isFocused())) ui->lineEditReg8_6->setValue(XBinary::getByteFromQword(nCurrentValue, 2));
-    if (!(ui->lineEditReg8_7->isFocused())) ui->lineEditReg8_7->setValue(XBinary::getByteFromQword(nCurrentValue, 1));
-    if (!(ui->lineEditReg8_8->isFocused())) ui->lineEditReg8_8->setValue(XBinary::getByteFromQword(nCurrentValue, 0));
+    if (!(ui->lineEditReg8_1->isFocused())) ui->lineEditReg8_1->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 7));
+    if (!(ui->lineEditReg8_2->isFocused())) ui->lineEditReg8_2->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 6));
+    if (!(ui->lineEditReg8_3->isFocused())) ui->lineEditReg8_3->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 5));
+    if (!(ui->lineEditReg8_4->isFocused())) ui->lineEditReg8_4->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 4));
+    if (!(ui->lineEditReg8_5->isFocused())) ui->lineEditReg8_5->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 3));
+    if (!(ui->lineEditReg8_6->isFocused())) ui->lineEditReg8_6->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 2));
+    if (!(ui->lineEditReg8_7->isFocused())) ui->lineEditReg8_7->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 1));
+    if (!(ui->lineEditReg8_8->isFocused())) ui->lineEditReg8_8->setValue_uint8(XBinary::getByteFromQword(nCurrentValue, 0));
 
     ui->pushButtonOK->setEnabled(!XBinary::isXVariantEqual(getInitVariant(), getCurrentVariant()));
 }
@@ -127,24 +127,24 @@ void DialogRegister64::setValue()
 {
     quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
 
-    if (ui->lineEditReg64->isFocused()) nCurrentValue = ui->lineEditReg64->getIntValue();
+    if (ui->lineEditReg64->isFocused()) nCurrentValue = ui->lineEditReg64->_getValue().toULongLong();
 
-    if (ui->lineEditReg32_1->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_1->getIntValue(), 1);
-    if (ui->lineEditReg32_2->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_2->getIntValue(), 0);
+    if (ui->lineEditReg32_1->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_1->_getValue().toULongLong(), 1);
+    if (ui->lineEditReg32_2->isFocused()) nCurrentValue = XBinary::setDwordToQword(nCurrentValue, ui->lineEditReg32_2->_getValue().toULongLong(), 0);
 
-    if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_1->getIntValue(), 3);
-    if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_2->getIntValue(), 2);
-    if (ui->lineEditReg16_3->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_3->getIntValue(), 1);
-    if (ui->lineEditReg16_4->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_4->getIntValue(), 0);
+    if (ui->lineEditReg16_1->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_1->_getValue().toULongLong(), 3);
+    if (ui->lineEditReg16_2->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_2->_getValue().toULongLong(), 2);
+    if (ui->lineEditReg16_3->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_3->_getValue().toULongLong(), 1);
+    if (ui->lineEditReg16_4->isFocused()) nCurrentValue = XBinary::setWordToQword(nCurrentValue, ui->lineEditReg16_4->_getValue().toULongLong(), 0);
 
-    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_1->getIntValue(), 7);
-    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_2->getIntValue(), 6);
-    if (ui->lineEditReg8_3->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_3->getIntValue(), 5);
-    if (ui->lineEditReg8_4->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_4->getIntValue(), 4);
-    if (ui->lineEditReg8_5->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_5->getIntValue(), 3);
-    if (ui->lineEditReg8_6->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_6->getIntValue(), 2);
-    if (ui->lineEditReg8_7->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_7->getIntValue(), 1);
-    if (ui->lineEditReg8_8->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_8->getIntValue(), 0);
+    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_1->_getValue().toULongLong(), 7);
+    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_2->_getValue().toULongLong(), 6);
+    if (ui->lineEditReg8_3->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_3->_getValue().toULongLong(), 5);
+    if (ui->lineEditReg8_4->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_4->_getValue().toULongLong(), 4);
+    if (ui->lineEditReg8_5->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_5->_getValue().toULongLong(), 3);
+    if (ui->lineEditReg8_6->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_6->_getValue().toULongLong(), 2);
+    if (ui->lineEditReg8_7->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_7->_getValue().toULongLong(), 1);
+    if (ui->lineEditReg8_8->isFocused()) nCurrentValue = XBinary::setByteToQword(nCurrentValue, ui->lineEditReg8_8->_getValue().toULongLong(), 0);
 
     setCurrentVariant(XBinary::getXVariant(nCurrentValue));
 }

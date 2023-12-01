@@ -74,10 +74,10 @@ void DialogRegister16::adjustValue()
 {
     quint32 nCurrentValue = getCurrentVariant().var.v_uint32;
 
-    if (!(ui->lineEditReg16->isFocused())) ui->lineEditReg16->setValue(nCurrentValue);
+    if (!(ui->lineEditReg16->isFocused())) ui->lineEditReg16->setValue_uint32(nCurrentValue);
 
-    if (!(ui->lineEditReg8_1->isFocused())) ui->lineEditReg8_1->setValue(XBinary::getByteFromWord(nCurrentValue, 1));
-    if (!(ui->lineEditReg8_2->isFocused())) ui->lineEditReg8_2->setValue(XBinary::getByteFromWord(nCurrentValue, 0));
+    if (!(ui->lineEditReg8_1->isFocused())) ui->lineEditReg8_1->setValue_uint8(XBinary::getByteFromWord(nCurrentValue, 1));
+    if (!(ui->lineEditReg8_2->isFocused())) ui->lineEditReg8_2->setValue_uint8(XBinary::getByteFromWord(nCurrentValue, 0));
 
     ui->pushButtonOK->setEnabled(!XBinary::isXVariantEqual(getInitVariant(), getCurrentVariant()));
 }
@@ -86,10 +86,10 @@ void DialogRegister16::setValue()
 {
     quint32 nCurrentValue = getCurrentVariant().var.v_uint32;
 
-    if (ui->lineEditReg16->isFocused()) nCurrentValue = ui->lineEditReg16->getIntValue();
+    if (ui->lineEditReg16->isFocused()) nCurrentValue = ui->lineEditReg16->_getValue().toULongLong();
 
-    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_1->getIntValue(), 1);
-    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_2->getIntValue(), 0);
+    if (ui->lineEditReg8_1->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_1->_getValue().toULongLong(), 1);
+    if (ui->lineEditReg8_2->isFocused()) nCurrentValue = XBinary::setByteToWord(nCurrentValue, ui->lineEditReg8_2->_getValue().toULongLong(), 0);
 
     setCurrentVariant(XBinary::getXVariant(nCurrentValue));
 }
