@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>598</width>
-    <height>241</height>
+    <width>606</width>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,16 +33,16 @@
        <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>2</number>
       </property>
       <item>
        <widget class="XLineEditHEX" name="lineEditReg64"/>
@@ -65,16 +65,16 @@
             <number>0</number>
            </property>
            <property name="leftMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="rightMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <item>
             <widget class="XLineEditHEX" name="lineEditReg32_1"/>
@@ -97,16 +97,16 @@
                  <number>0</number>
                 </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="rightMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <item>
                  <widget class="XLineEditHEX" name="lineEditReg16_1"/>
@@ -129,16 +129,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_1"/>
@@ -159,16 +159,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_2"/>
@@ -194,16 +194,16 @@
                  <number>0</number>
                 </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="rightMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <item>
                  <widget class="XLineEditHEX" name="lineEditReg16_2"/>
@@ -226,16 +226,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_3"/>
@@ -256,16 +256,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_4"/>
@@ -296,16 +296,16 @@
             <number>0</number>
            </property>
            <property name="leftMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="topMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="rightMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <property name="bottomMargin">
-            <number>0</number>
+            <number>2</number>
            </property>
            <item>
             <widget class="XLineEditHEX" name="lineEditReg32_2"/>
@@ -328,16 +328,16 @@
                  <number>0</number>
                 </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="rightMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <item>
                  <widget class="XLineEditHEX" name="lineEditReg16_3"/>
@@ -360,16 +360,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_5"/>
@@ -390,16 +390,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_6"/>
@@ -425,16 +425,16 @@
                  <number>0</number>
                 </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="rightMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <item>
                  <widget class="XLineEditHEX" name="lineEditReg16_4"/>
@@ -457,16 +457,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_7"/>
@@ -487,16 +487,16 @@
                       <number>0</number>
                      </property>
                      <property name="leftMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="topMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="rightMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <property name="bottomMargin">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="XLineEditHEX" name="lineEditReg8_8"/>
