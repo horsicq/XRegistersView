@@ -745,9 +745,9 @@ void XRegistersView::paintEvent(QPaintEvent *pEvent)
 
             QString sComment;
 
-            if (g_listRegions.at(i).riType != XInfoDB::RI_TYPE_UNKNOWN) {
-                sComment = XInfoDB::recordInfoToString(g_pXInfoDB->getRecordInfoCache(XBinary::xVariantToQword(xvariant)), g_listRegions.at(i).riType);
-            }
+            // if (g_listRegions.at(i).riType != XInfoDB::RI_TYPE_UNKNOWN) {
+            //     sComment = XInfoDB::recordInfoToString(g_pXInfoDB->getRecordInfoCache(XBinary::xVariantToQword(xvariant)), g_listRegions.at(i).riType);
+            // }
 
             if (sComment != "") {
                 pPainter->drawText(rectComment, sComment);  // TODO Text Optional
