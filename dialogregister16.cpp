@@ -72,7 +72,7 @@ void DialogRegister16::initValue()
 
 void DialogRegister16::adjustValue()
 {
-    quint32 nCurrentValue = getCurrentVariant().var.v_uint32;
+    quint32 nCurrentValue = getCurrentVariant().var.toLongLong();
 
     if (!(ui->lineEditReg16->isFocused())) ui->lineEditReg16->setValue_uint32(nCurrentValue);
 
@@ -84,7 +84,7 @@ void DialogRegister16::adjustValue()
 
 void DialogRegister16::setValue()
 {
-    quint32 nCurrentValue = getCurrentVariant().var.v_uint32;
+    quint32 nCurrentValue = getCurrentVariant().var.toLongLong();
 
     if (ui->lineEditReg16->isFocused()) nCurrentValue = ui->lineEditReg16->_getValue().toULongLong();
 

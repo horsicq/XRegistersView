@@ -99,7 +99,7 @@ void DialogRegister64::initValue()
 
 void DialogRegister64::adjustValue()
 {
-    quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
+    quint64 nCurrentValue = getCurrentVariant().var.toLongLong();
 
     if (!(ui->lineEditReg64->isFocused())) ui->lineEditReg64->setValue_uint64(nCurrentValue);
 
@@ -125,7 +125,7 @@ void DialogRegister64::adjustValue()
 
 void DialogRegister64::setValue()
 {
-    quint64 nCurrentValue = getCurrentVariant().var.v_uint64;
+    quint64 nCurrentValue = getCurrentVariant().var.toLongLong();
 
     if (ui->lineEditReg64->isFocused()) nCurrentValue = ui->lineEditReg64->_getValue().toULongLong();
 

@@ -509,7 +509,7 @@ void XRegistersView::handleRegister(XInfoDB::XREG reg)
         XBinary::XVARIANT _var = g_pXInfoDB->getCurrentRegCache(_reg);
         XBinary::XVARIANT var = XInfoDB::getFlagFromReg(_var, reg);
 
-        _var = XInfoDB::setFlagToReg(_var, reg, !(var.var.v_bool));
+        _var = XInfoDB::setFlagToReg(_var, reg, !(var.var.toBool()));
 
         if (g_pXInfoDB->setCurrentReg(_reg, _var)) {
             g_pXInfoDB->setCurrentRegCache(_reg, _var);
